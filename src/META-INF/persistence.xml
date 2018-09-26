@@ -19,10 +19,10 @@
     <class>Entities.Cargo</class>
     <class>Entities.Telefono</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="Conexion"/>
-      <property name="javax.persistence.jdbc.user" value="Usuario"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/laspalmeras?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="Contra"/>
+      <property name="javax.persistence.jdbc.password" value="resident00RE"/>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>
