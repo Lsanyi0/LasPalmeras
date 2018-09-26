@@ -1,0 +1,169 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Entities;
+
+import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+/**
+ *
+ * @author User
+ */
+@Entity
+@Table(name = "producto")
+@NamedQueries({
+    @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p")})
+public class Producto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idProducto")
+    private Integer idProducto;
+    @Column(name = "idInventario")
+    private Integer idInventario;
+    @Basic(optional = false)
+    @Column(name = "Producto")
+    private String producto;
+    @Column(name = "Descripcion")
+    private String descripcion;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "Precio")
+    private Double precio;
+    @OneToMany(mappedBy = "idProducto")
+    private List<Detalleventa> detalleventaList;
+    @JoinColumn(name = "idCategoria", referencedColumnName = "idCategoria")
+    @ManyToOne
+    private Categoria idCategoria;
+    @JoinColumn(name = "idMarca", referencedColumnName = "idMarca")
+    @ManyToOne
+    private Marca idMarca;
+    @OneToMany(mappedBy = "idProducto")
+    private List<Detallecompra> detallecompraList;
+
+    public Producto() {
+    }
+
+    public Producto(Integer idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public Producto(Integer idProducto, String producto) {
+        this.idProducto = idProducto;
+        this.producto = producto;
+    }
+
+    public Integer getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(Integer idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public Integer getIdInventario() {
+        return idInventario;
+    }
+
+    public void setIdInventario(Integer idInventario) {
+        this.idInventario = idInventario;
+    }
+
+    public String getProducto() {
+        return producto;
+    }
+
+    public void setProducto(String producto) {
+        this.producto = producto;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+
+    public List<Detalleventa> getDetalleventaList() {
+        return detalleventaList;
+    }
+
+    public void setDetalleventaList(List<Detalleventa> detalleventaList) {
+        this.detalleventaList = detalleventaList;
+    }
+
+    public Categoria getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(Categoria idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public Marca getIdMarca() {
+        return idMarca;
+    }
+
+    public void setIdMarca(Marca idMarca) {
+        this.idMarca = idMarca;
+    }
+
+    public List<Detallecompra> getDetallecompraList() {
+        return detallecompraList;
+    }
+
+    public void setDetallecompraList(List<Detallecompra> detallecompraList) {
+        this.detallecompraList = detallecompraList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idProducto != null ? idProducto.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Producto)) {
+            return false;
+        }
+        Producto other = (Producto) object;
+        if ((this.idProducto == null && other.idProducto != null) || (this.idProducto != null && !this.idProducto.equals(other.idProducto))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Entities.Producto[ idProducto=" + idProducto + " ]";
+    }
+    
+}
