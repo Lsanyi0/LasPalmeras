@@ -395,7 +395,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_rbExistente1ActionPerformed
 
     private void btAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgregarActionPerformed
-
+        
     }//GEN-LAST:event_btAgregarActionPerformed
 
     private void tbBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbBuscarMouseClicked
@@ -421,9 +421,16 @@ public class GenerarVenta extends javax.swing.JFrame {
             int index = list.locationToIndex(evt.getPoint());
             
         }
-        else if (evt.getClickCount() == 1 && list.getModel().getSize() > 0)
+        else if (list.getModel().getSize() > 0)
         {
-           // utilidades.getInventario(list.getSelectedValue().toString());
+          String existencia = String.valueOf(utilidades.getInventarioByNombre(
+                              list.getSelectedValue().toString()));
+          String precio = String.valueOf(utilidades.getPrecioByNombre(
+                              list.getSelectedValue().toString()));
+          
+          lbExistencia.setText("Existencia: " + existencia);
+          lbPrecio.setText("Precio: $" + precio);
+          
         }
     }//GEN-LAST:event_lsBuscarMouseClicked
 

@@ -1,5 +1,7 @@
 package Forms;
 
+import Entities.Inventario;
+import Entities.Producto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -46,15 +48,26 @@ public class Utilidades {
      lista.setModel(listaDeshechable.getModel());
     }
     
-    /*/
-    public int getInventario(String nombreProducto)
+    public int getInventarioByNombre(String nombreProducto)
     {
-       String inv =  manager.createNamedQuery("getInventario")
-                .setParameter("producto", nombreProducto)
-                .getResultList().get(0).toString();       
-        return  Integer.parseInt(inv);
+        Producto prod = (Producto) manager.createNamedQuery("Producto.findByProducto")
+                  .setParameter("producto","%"+nombreProducto+"%")
+                  .getSingleResult();        
+        //System.out.println(prod.getIdProducto());
+        Inventario inv = (Inventario)  manager.createNamedQuery("Inventario.findByIdProducto")
+                .setParameter("idProducto", prod.getIdProducto())
+                .getSingleResult();      
+        //System.out.println(inv.getExistencia());
+        return inv.getExistencia();
     }
-    /*/
+    
+    public Double getPrecioByNombre(String nombreProducto)
+    {
+        Producto prod = (Producto) manager.createNamedQuery("Producto.findByProducto")
+                        .setParameter("producto", nombreProducto)
+                        .getSingleResult();
+        return prod.getPrecio();
+    }
     
     public void fillJTable()
     {

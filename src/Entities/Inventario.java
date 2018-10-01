@@ -32,9 +32,9 @@ public class Inventario implements Serializable {
     @Id
     @Column(name = "idProducto", unique = true, nullable = false)
     private Integer idProducto;
-    private BigInteger compra;
-    private BigInteger venta;
-    private BigInteger existencia;
+    private Integer compra;
+    private Integer venta;
+    private Integer existencia;
 
     public Inventario() {
     }
@@ -43,16 +43,16 @@ public class Inventario implements Serializable {
         return idProducto;
     }
 
-    public BigInteger getCompra() {
+    public Integer getCompra() {
         return compra;
     }
 
-    public BigInteger getVenta() {
+    public Integer getVenta() {
         return venta;
     }
 
 
-    public BigInteger getExistencia() {
+    public Integer getExistencia() {
         return existencia;
     }
     
