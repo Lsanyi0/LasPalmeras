@@ -17,15 +17,21 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author User
+ * @author Luis
  */
 @Entity
 @Table(name = "proveedor")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Proveedor.findAll", query = "SELECT p FROM Proveedor p")})
+    @NamedQuery(name = "Proveedor.findAll", query = "SELECT p FROM Proveedor p")
+    , @NamedQuery(name = "Proveedor.findByIdProveedor", query = "SELECT p FROM Proveedor p WHERE p.idProveedor = :idProveedor")
+    , @NamedQuery(name = "Proveedor.findByProveedor", query = "SELECT p FROM Proveedor p WHERE p.proveedor = :proveedor")
+    , @NamedQuery(name = "Proveedor.findByDireccion", query = "SELECT p FROM Proveedor p WHERE p.direccion = :direccion")})
 public class Proveedor implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -74,6 +80,7 @@ public class Proveedor implements Serializable {
         this.direccion = direccion;
     }
 
+    @XmlTransient
     public List<Compra> getCompraList() {
         return compraList;
     }
@@ -82,6 +89,7 @@ public class Proveedor implements Serializable {
         this.compraList = compraList;
     }
 
+    @XmlTransient
     public List<Telefono> getTelefonoList() {
         return telefonoList;
     }

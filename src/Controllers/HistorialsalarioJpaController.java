@@ -19,7 +19,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author User
+ * @author Luis
  */
 public class HistorialsalarioJpaController implements Serializable {
 

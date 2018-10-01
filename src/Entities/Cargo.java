@@ -17,15 +17,20 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author User
+ * @author Luis
  */
 @Entity
 @Table(name = "cargo")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cargo.findAll", query = "SELECT c FROM Cargo c")})
+    @NamedQuery(name = "Cargo.findAll", query = "SELECT c FROM Cargo c")
+    , @NamedQuery(name = "Cargo.findByIdCargo", query = "SELECT c FROM Cargo c WHERE c.idCargo = :idCargo")
+    , @NamedQuery(name = "Cargo.findByCargo", query = "SELECT c FROM Cargo c WHERE c.cargo = :cargo")})
 public class Cargo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,6 +67,7 @@ public class Cargo implements Serializable {
         this.cargo = cargo;
     }
 
+    @XmlTransient
     public List<Usuario> getUsuarioList() {
         return usuarioList;
     }

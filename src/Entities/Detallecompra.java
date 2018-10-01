@@ -20,15 +20,21 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author User
+ * @author Luis
  */
 @Entity
 @Table(name = "detallecompra")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Detallecompra.findAll", query = "SELECT d FROM Detallecompra d")})
+    @NamedQuery(name = "Detallecompra.findAll", query = "SELECT d FROM Detallecompra d")
+    , @NamedQuery(name = "Detallecompra.findByIdDetalleCompra", query = "SELECT d FROM Detallecompra d WHERE d.idDetalleCompra = :idDetalleCompra")
+    , @NamedQuery(name = "Detallecompra.findByCantidad", query = "SELECT d FROM Detallecompra d WHERE d.cantidad = :cantidad")
+    , @NamedQuery(name = "Detallecompra.findByPrecioUnitario", query = "SELECT d FROM Detallecompra d WHERE d.precioUnitario = :precioUnitario")
+    , @NamedQuery(name = "Detallecompra.findByFechaVencimiento", query = "SELECT d FROM Detallecompra d WHERE d.fechaVencimiento = :fechaVencimiento")})
 public class Detallecompra implements Serializable {
 
     private static final long serialVersionUID = 1L;

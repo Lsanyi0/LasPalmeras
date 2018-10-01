@@ -19,15 +19,22 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author User
+ * @author Luis
  */
 @Entity
 @Table(name = "producto")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p")})
+    @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p")
+    , @NamedQuery(name = "Producto.findByIdProducto", query = "SELECT p FROM Producto p WHERE p.idProducto = :idProducto")
+    , @NamedQuery(name = "Producto.findByProducto", query = "SELECT p FROM Producto p WHERE p.producto = :producto")
+    , @NamedQuery(name = "Producto.findByDescripcion", query = "SELECT p FROM Producto p WHERE p.descripcion = :descripcion")
+    , @NamedQuery(name = "Producto.findByPrecio", query = "SELECT p FROM Producto p WHERE p.precio = :precio")})
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,8 +43,6 @@ public class Producto implements Serializable {
     @Basic(optional = false)
     @Column(name = "idProducto")
     private Integer idProducto;
-    @Column(name = "idInventario")
-    private Integer idInventario;
     @Basic(optional = false)
     @Column(name = "Producto")
     private String producto;
@@ -77,14 +82,6 @@ public class Producto implements Serializable {
         this.idProducto = idProducto;
     }
 
-    public Integer getIdInventario() {
-        return idInventario;
-    }
-
-    public void setIdInventario(Integer idInventario) {
-        this.idInventario = idInventario;
-    }
-
     public String getProducto() {
         return producto;
     }
@@ -109,6 +106,7 @@ public class Producto implements Serializable {
         this.precio = precio;
     }
 
+    @XmlTransient
     public List<Detalleventa> getDetalleventaList() {
         return detalleventaList;
     }
@@ -133,6 +131,7 @@ public class Producto implements Serializable {
         this.idMarca = idMarca;
     }
 
+    @XmlTransient
     public List<Detallecompra> getDetallecompraList() {
         return detallecompraList;
     }

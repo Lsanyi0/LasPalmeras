@@ -17,15 +17,23 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author User
+ * @author Luis
  */
 @Entity
 @Table(name = "cliente")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cliente.findAll", query = "SELECT c FROM Cliente c")})
+    @NamedQuery(name = "Cliente.findAll", query = "SELECT c FROM Cliente c")
+    , @NamedQuery(name = "Cliente.findByIdCliente", query = "SELECT c FROM Cliente c WHERE c.idCliente = :idCliente")
+    , @NamedQuery(name = "Cliente.findByNombre", query = "SELECT c FROM Cliente c WHERE c.nombre = :nombre")
+    , @NamedQuery(name = "Cliente.findByApellido", query = "SELECT c FROM Cliente c WHERE c.apellido = :apellido")
+    , @NamedQuery(name = "Cliente.findByDireccion", query = "SELECT c FROM Cliente c WHERE c.direccion = :direccion")
+    , @NamedQuery(name = "Cliente.findByDui", query = "SELECT c FROM Cliente c WHERE c.dui = :dui")})
 public class Cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -94,6 +102,7 @@ public class Cliente implements Serializable {
         this.dui = dui;
     }
 
+    @XmlTransient
     public List<Venta> getVentaList() {
         return ventaList;
     }
@@ -102,6 +111,7 @@ public class Cliente implements Serializable {
         this.ventaList = ventaList;
     }
 
+    @XmlTransient
     public List<Telefono> getTelefonoList() {
         return telefonoList;
     }

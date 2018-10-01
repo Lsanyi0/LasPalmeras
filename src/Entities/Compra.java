@@ -22,15 +22,22 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author User
+ * @author Luis
  */
 @Entity
 @Table(name = "compra")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Compra.findAll", query = "SELECT c FROM Compra c")})
+    @NamedQuery(name = "Compra.findAll", query = "SELECT c FROM Compra c")
+    , @NamedQuery(name = "Compra.findByIdCompra", query = "SELECT c FROM Compra c WHERE c.idCompra = :idCompra")
+    , @NamedQuery(name = "Compra.findByFecha", query = "SELECT c FROM Compra c WHERE c.fecha = :fecha")
+    , @NamedQuery(name = "Compra.findByRepresentante", query = "SELECT c FROM Compra c WHERE c.representante = :representante")
+    , @NamedQuery(name = "Compra.findByDui", query = "SELECT c FROM Compra c WHERE c.dui = :dui")})
 public class Compra implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -99,6 +106,7 @@ public class Compra implements Serializable {
         this.idProveedor = idProveedor;
     }
 
+    @XmlTransient
     public List<Detallecompra> getDetallecompraList() {
         return detallecompraList;
     }

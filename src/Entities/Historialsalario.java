@@ -17,15 +17,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author User
+ * @author Luis
  */
 @Entity
 @Table(name = "historialsalario")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Historialsalario.findAll", query = "SELECT h FROM Historialsalario h")})
+    @NamedQuery(name = "Historialsalario.findAll", query = "SELECT h FROM Historialsalario h")
+    , @NamedQuery(name = "Historialsalario.findByIdHistorial", query = "SELECT h FROM Historialsalario h WHERE h.idHistorial = :idHistorial")
+    , @NamedQuery(name = "Historialsalario.findByAumentoParcial", query = "SELECT h FROM Historialsalario h WHERE h.aumentoParcial = :aumentoParcial")})
 public class Historialsalario implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -22,15 +22,23 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author User
+ * @author Luis
  */
 @Entity
 @Table(name = "venta")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Venta.findAll", query = "SELECT v FROM Venta v")})
+    @NamedQuery(name = "Venta.findAll", query = "SELECT v FROM Venta v")
+    , @NamedQuery(name = "Venta.findByIdVenta", query = "SELECT v FROM Venta v WHERE v.idVenta = :idVenta")
+    , @NamedQuery(name = "Venta.findByFecha", query = "SELECT v FROM Venta v WHERE v.fecha = :fecha")
+    , @NamedQuery(name = "Venta.findByIva", query = "SELECT v FROM Venta v WHERE v.iva = :iva")
+    , @NamedQuery(name = "Venta.findByDescuento", query = "SELECT v FROM Venta v WHERE v.descuento = :descuento")
+    , @NamedQuery(name = "Venta.findByNula", query = "SELECT v FROM Venta v WHERE v.nula = :nula")})
 public class Venta implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -127,6 +135,7 @@ public class Venta implements Serializable {
         this.idCliente = idCliente;
     }
 
+    @XmlTransient
     public List<Detalleventa> getDetalleventaList() {
         return detalleventaList;
     }

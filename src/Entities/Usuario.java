@@ -19,15 +19,24 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author User
+ * @author Luis
  */
 @Entity
 @Table(name = "usuario")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")})
+    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+    , @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario")
+    , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
+    , @NamedQuery(name = "Usuario.findByApellido", query = "SELECT u FROM Usuario u WHERE u.apellido = :apellido")
+    , @NamedQuery(name = "Usuario.findByDui", query = "SELECT u FROM Usuario u WHERE u.dui = :dui")
+    , @NamedQuery(name = "Usuario.findBySalario", query = "SELECT u FROM Usuario u WHERE u.salario = :salario")
+    , @NamedQuery(name = "Usuario.findByNUsuario", query = "SELECT u FROM Usuario u WHERE u.nUsuario = :nUsuario")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -115,6 +124,7 @@ public class Usuario implements Serializable {
         this.nUsuario = nUsuario;
     }
 
+    @XmlTransient
     public List<Venta> getVentaList() {
         return ventaList;
     }
@@ -123,6 +133,7 @@ public class Usuario implements Serializable {
         this.ventaList = ventaList;
     }
 
+    @XmlTransient
     public List<Estadousuario> getEstadousuarioList() {
         return estadousuarioList;
     }
@@ -147,6 +158,7 @@ public class Usuario implements Serializable {
         this.idCargo = idCargo;
     }
 
+    @XmlTransient
     public List<Telefono> getTelefonoList() {
         return telefonoList;
     }

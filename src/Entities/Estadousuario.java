@@ -22,15 +22,22 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author User
+ * @author Luis
  */
 @Entity
 @Table(name = "estadousuario")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Estadousuario.findAll", query = "SELECT e FROM Estadousuario e")})
+    @NamedQuery(name = "Estadousuario.findAll", query = "SELECT e FROM Estadousuario e")
+    , @NamedQuery(name = "Estadousuario.findByIdEstado", query = "SELECT e FROM Estadousuario e WHERE e.idEstado = :idEstado")
+    , @NamedQuery(name = "Estadousuario.findByEstado", query = "SELECT e FROM Estadousuario e WHERE e.estado = :estado")
+    , @NamedQuery(name = "Estadousuario.findByInicioLaboral", query = "SELECT e FROM Estadousuario e WHERE e.inicioLaboral = :inicioLaboral")
+    , @NamedQuery(name = "Estadousuario.findByFinLaboral", query = "SELECT e FROM Estadousuario e WHERE e.finLaboral = :finLaboral")})
 public class Estadousuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -106,6 +113,7 @@ public class Estadousuario implements Serializable {
         this.idUsuario = idUsuario;
     }
 
+    @XmlTransient
     public List<Historialsalario> getHistorialsalarioList() {
         return historialsalarioList;
     }
