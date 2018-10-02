@@ -9,8 +9,10 @@ public class GenerarVenta extends javax.swing.JFrame {
             
     public GenerarVenta() {
         initComponents();
+        utilidades.setScreenCentered(this);
         utilidades.fillJList(lsBuscar,"Producto");
         lbFechaExpedicion.setText(utilidades.getDate());
+        llenarComboBox();
     }
 
     @SuppressWarnings("unchecked")
@@ -78,6 +80,11 @@ public class GenerarVenta extends javax.swing.JFrame {
         });
 
         btAgregarCliente.setText("Agregar Nuevo Cliente");
+        btAgregarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAgregarClienteActionPerformed(evt);
+            }
+        });
 
         rbGrupo1.add(rbExistente1);
         rbExistente1.setText("Nuevo");
@@ -161,7 +168,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         cbBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Producto", "Marca", "Categoria" }));
 
         cbCantidad.setEditable(true);
-        cbCantidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Cantidad" }));
+        cbCantidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1" }));
 
         lsBuscar.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lsBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -195,7 +202,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbExistencia)
                             .addComponent(lbCantidad, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                         .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbCantidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbPrecio, javax.swing.GroupLayout.Alignment.TRAILING)))
@@ -279,6 +286,11 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         btImprimir.setForeground(new java.awt.Color(0, 133, 99));
         btImprimir.setText("Imprimir venta");
+        btImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btImprimirActionPerformed(evt);
+            }
+        });
 
         btCancelar.setForeground(new java.awt.Color(204, 0, 0));
         btCancelar.setText("Cancelar venta");
@@ -337,7 +349,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                                         .addGap(165, 165, 165)
                                         .addComponent(lbVenta))
                                     .addComponent(panelProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lbPedidos)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -401,7 +413,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_rbExistente1ActionPerformed
 
     private void btAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgregarActionPerformed
-        
+
     }//GEN-LAST:event_btAgregarActionPerformed
 
     private void tbBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbBuscarMouseClicked
@@ -420,38 +432,46 @@ public class GenerarVenta extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tbBuscarKeyTyped
 
-    private void llenarcbxConExistencia(String nombreProducto)
+    private void llenarComboBox()
     {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cbCantidad.getModel();
         model.removeAllElements();
-        for (int i = 1; i <= utilidades.getInventarioByNombre(nombreProducto) && i <= 25 ; i++) {
+        for (int i = 1; i <= 25 ; i++) {
             model.addElement(i);
         }
         cbCantidad.setModel(model);
     }
-    
+
     private void lsBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lsBuscarMouseClicked
         JList list = (JList)evt.getSource();
-        int cbx = Integer.valueOf(cbCantidad.getSelectedItem().toString());
-        if (evt.getClickCount() == 2 && list.getModel().getSize() > 0) 
-        {
-            utilidades.addToJTableVenta(dgvPedidos, lsBuscar.getSelectedValue(),cbx);
-            lbTotal.setText("Total a pagar: $" + utilidades.getTotal());
-        }
-        else if (list.getModel().getSize() > 0)
-        {
-          String existencia = String.valueOf(utilidades.getInventarioByNombre(
+        if (utilidades.validarComboBox(cbCantidad)) {
+            int cbx = Integer.valueOf(cbCantidad.getSelectedItem().toString());
+            if (evt.getClickCount() == 2 && list.getModel().getSize() > 0) 
+            {
+                utilidades.addToJTableVenta(dgvPedidos, lsBuscar.getSelectedValue(),cbx);
+                lbTotal.setText("Total a pagar: $" + utilidades.getTotal());
+            }
+                else if (list.getModel().getSize() > 0 && list.getSelectedValue() != null)
+            {
+                String existencia = String.valueOf(utilidades.getInventarioByNombre(
                               list.getSelectedValue().toString()));
-          String precio = String.valueOf(utilidades.getPrecioByNombre(
+                String precio = String.valueOf(utilidades.getPrecioByNombre(
                               list.getSelectedValue().toString()));
           
-          lbExistencia.setText("Existencia: " + existencia);
-          lbPrecio.setText("Precio: $" + precio);
-          
-          llenarcbxConExistencia(list.getSelectedValue().toString());
+                lbExistencia.setText("Existencia: " + existencia);
+                lbPrecio.setText("Precio: $" + precio);             
+            }
         }
         System.out.println(cbx);
     }//GEN-LAST:event_lsBuscarMouseClicked
+
+    private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
+        // TODO add your handling code here: metodo CrearVenta luego CrearDetalleVenta e imprimir;
+    }//GEN-LAST:event_btImprimirActionPerformed
+
+    private void btAgregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgregarClienteActionPerformed
+        // TODO add your handling code here: metodo agregarCliente, buscarClienteByNombre.
+    }//GEN-LAST:event_btAgregarClienteActionPerformed
  
     public static void main(String args[]) {
 

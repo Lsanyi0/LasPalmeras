@@ -54,7 +54,7 @@
                                   </Group>
                                   <Component id="panelProducto" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="175" max="32767" attributes="0"/>
+                              <EmptySpace pref="173" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="lbPedidos" min="-2" max="-2" attributes="0"/>
@@ -213,6 +213,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Agregar Nuevo Cliente"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btAgregarClienteActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JRadioButton" name="rbExistente1">
           <Properties>
@@ -274,7 +277,7 @@
                               <Component id="lbExistencia" min="-2" max="-2" attributes="0"/>
                               <Component id="lbCantidad" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="7" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="cbCantidad" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Component id="lbPrecio" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -367,7 +370,7 @@
             <Property name="editable" type="boolean" value="true"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="1">
-                <StringItem index="0" value="Cantidad"/>
+                <StringItem index="0" value="1"/>
               </StringArray>
             </Property>
           </Properties>
@@ -506,6 +509,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Imprimir venta"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btImprimirActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btCancelar">
       <Properties>

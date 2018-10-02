@@ -18,7 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,6 +42,20 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Venta.findByIva", query = "SELECT v FROM Venta v WHERE v.iva = :iva")
     , @NamedQuery(name = "Venta.findByDescuento", query = "SELECT v FROM Venta v WHERE v.descuento = :descuento")
     , @NamedQuery(name = "Venta.findByNula", query = "SELECT v FROM Venta v WHERE v.nula = :nula")})
+@NamedStoredProcedureQuery(
+    name = "Venta.vender",
+    procedureName = "venta",
+    parameters = {
+        @StoredProcedureParameter(name = "costumerName",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "costumerLName",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "Dui",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "Usser",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "IVA",mode = ParameterMode.IN,type = Double.class),
+        @StoredProcedureParameter(name = "Discount",mode = ParameterMode.IN,type = Double.class),
+        @StoredProcedureParameter(name = "Product",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "Quantity",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "MSG",mode = ParameterMode.OUT,type = String.class),
+    })
 public class Venta implements Serializable {
 
     private static final long serialVersionUID = 1L;

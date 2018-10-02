@@ -3,6 +3,8 @@ package Forms;
 import Entities.Inventario;
 import Entities.Producto;
 import Model.jtableVentaModel;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,11 +12,12 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
-
   
 public class Utilidades {
     
@@ -28,7 +31,7 @@ public class Utilidades {
     {
        emf = Persistence.createEntityManagerFactory("AgroServPU");
        manager = emf.createEntityManager();
-       temp = new ArrayList<>();
+       temp = new ArrayList<>();      
     }
     
     public String getDate()
@@ -82,23 +85,33 @@ public class Utilidades {
     public void addToJTableVenta(JTable jtable,String nombreProducto,int cantidad)
     {
         Producto prod = getProductoByNombre(nombreProducto);
-        jtableVentaModel venta = new jtableVentaModel(cantidad, prod.getProducto()
-                                    , prod.getPrecio());              
+        jtableVentaModel venta = new jtableVentaModel(cantidad, prod.getProducto() //El modelo para la tabla solo para crear el objeto que contega 
+                                    , prod.getPrecio());                           //los datos que se quieren ingresar a la tabla
         DefaultTableModel model = (DefaultTableModel) jtable.getModel();
         
-        int ya = buscarProductoEnTabla(temp, venta.getNombre());
+        int ya = buscarProductoEnTabla(temp, venta.getNombre());//Verificamos si el objeto temp(contiene todas las entradas a la tabla) ya posee un producto
         
-        if (ya != -1) {
-            temp.get(ya).setCantidad(cantidad+temp.get(ya).getCantidad());
+        if (ya != -1) {            
+            if (temp.get(ya).getCantidad() + venta.getCantidad() < getInventarioByNombre(nombreProducto)) {
+                temp.get(ya).setCantidad(cantidad+temp.get(ya).getCantidad());               
+            }
+            else
+            {
+                temp.get(ya).setCantidad(getInventarioByNombre(nombreProducto));                
+                mostrarAlerta("La Cantidad que intento ingresar es mayor al inventario "
+                                    + "disponible, se colocara el total de inventario "
+                                    + "como valor a vender.", 
+                                "Cantidad seleccionada mayor a la disponible");
+            }
             model.setRowCount(0);
-            temp.forEach((j) -> { //no se como pero java sabe que hacer ¯\_(ツ)_/¯
+            temp.forEach((jtableVentaModel j) -> { //no se como pero java sabe que hacer ¯\_(ツ)_/¯
                 model.addRow(j.toArray());
             });
         }
         else
         {
             temp.add(venta);
-            model.addRow(venta.toArray());      
+            model.addRow(venta.toArray());
         }
     }
     
@@ -119,5 +132,42 @@ public class Utilidades {
             } 
         }
         return -1;
+    }
+    
+    public boolean validarComboBox(JComboBox cbx)
+    {
+        try {
+            String i = cbx.getSelectedItem().toString();
+            Integer j = Integer.parseInt(i);
+            if (j <= 0) {
+                mostrarAlerta("La cantidad a vender no puede ser menor a 1", "Cantidad"
+                              + " no válida");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            mostrarAlerta("El campo cantidad solo acepta números, intente de nuevo.\n \n"
+                        + "Error: " + e.toString(), 
+                          "Ingrese solo numeros (Cantidad)");
+            return false;
+        }
+        return true;
+    }
+    public void mostrarAlerta(String mensaje, String titulo)
+    {
+        JOptionPane.showMessageDialog(null,mensaje,titulo,
+                                      JOptionPane.WARNING_MESSAGE);
+    }
+    public boolean login(String usuario, String clave)
+    {
+        boolean bool = (boolean) manager.createNamedQuery("Usuario.login")
+                                 .setParameter("usser", usuario)
+                                 .setParameter("pssword", clave)
+                                 .getSingleResult();
+        return bool;
+    }
+    public void setScreenCentered(JFrame jFrame)
+    {
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        jFrame.setLocation(dim.width/2-jFrame.getSize().width/2, dim.height/2-jFrame.getSize().height/2);
     }
 }

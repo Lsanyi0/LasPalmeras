@@ -6,6 +6,7 @@
 package Entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,10 +18,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.eclipse.persistence.annotations.Direction;
+import org.eclipse.persistence.annotations.NamedStoredFunctionQuery;
 
 /**
  *
@@ -37,7 +43,45 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuario.findByDui", query = "SELECT u FROM Usuario u WHERE u.dui = :dui")
     , @NamedQuery(name = "Usuario.findBySalario", query = "SELECT u FROM Usuario u WHERE u.salario = :salario")
     , @NamedQuery(name = "Usuario.findByNUsuario", query = "SELECT u FROM Usuario u WHERE u.nUsuario = :nUsuario")})
+@NamedStoredFunctionQuery(
+                           name="Usuario.login",
+                           functionName="login",
+                           parameters={
+                           @org.eclipse.persistence.annotations.StoredProcedureParameter(
+                                        direction = Direction.IN,
+                                        name = "usser",
+                                        queryParameter = "usser",
+                                        type = String.class),
+                           @org.eclipse.persistence.annotations.StoredProcedureParameter(
+                                        direction = Direction.IN,
+                                        name = "pssword",
+                                        queryParameter = "pssword",
+                                        type = String.class)},
+                           returnParameter = @org.eclipse.persistence.annotations.StoredProcedureParameter(
+                                    queryParameter = "RETURN",
+                                    type = Boolean.class
+                           ))
+@NamedStoredProcedureQuery(
+    name="Usuario.addUser",
+    procedureName = "addUser",
+    parameters = 
+       {
+            @StoredProcedureParameter(name = "Uname",mode = ParameterMode.IN,type = String.class),
+            @StoredProcedureParameter(name = "ULname",mode = ParameterMode.IN,type = String.class),
+            @StoredProcedureParameter(name = "UDUI",mode = ParameterMode.IN,type = String.class),
+            @StoredProcedureParameter(name = "URole",mode = ParameterMode.IN,type = String.class),
+            @StoredProcedureParameter(name = "Uposition",mode = ParameterMode.IN,type = String.class),
+            @StoredProcedureParameter(name = "Usalary",mode = ParameterMode.IN,type = Double.class),
+            @StoredProcedureParameter(name = "Usser",mode = ParameterMode.IN,type = String.class),
+            @StoredProcedureParameter(name = "Upassword",mode = ParameterMode.IN,type = String.class),
+            @StoredProcedureParameter(name = "Ustart",mode = ParameterMode.IN,type = Date.class),
+            @StoredProcedureParameter(name = "MSG",mode = ParameterMode.OUT,type = String.class),
+        })
+
 public class Usuario implements Serializable {
+
+    @Column(name = "uPassword")
+    private String uPassword;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -190,6 +234,14 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "Entities.Usuario[ idUsuario=" + idUsuario + " ]";
+    }
+
+    public String getUPassword() {
+        return uPassword;
+    }
+
+    public void setUPassword(String uPassword) {
+        this.uPassword = uPassword;
     }
     
 }

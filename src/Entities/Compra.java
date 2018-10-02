@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entities;
 
 import java.io.Serializable;
@@ -18,7 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,6 +36,25 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Compra.findByFecha", query = "SELECT c FROM Compra c WHERE c.fecha = :fecha")
     , @NamedQuery(name = "Compra.findByRepresentante", query = "SELECT c FROM Compra c WHERE c.representante = :representante")
     , @NamedQuery(name = "Compra.findByDui", query = "SELECT c FROM Compra c WHERE c.dui = :dui")})
+@NamedStoredProcedureQuery(
+    name = "Compra.comprar",
+    procedureName = "comopra",
+    parameters = {
+        @StoredProcedureParameter(name = "Provider",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "Direction",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "Phone",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "Representative",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "DUI",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "Category",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "Brand",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "Product",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "Description",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "Price",mode = ParameterMode.IN,type = Double.class),
+        @StoredProcedureParameter(name = "Quantity",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "unitPrice",mode = ParameterMode.IN,type = Double.class),
+        @StoredProcedureParameter(name = "expirationDate",mode = ParameterMode.IN,type = Date.class),
+        @StoredProcedureParameter(name = "MSG",mode = ParameterMode.OUT,type = String.class),
+    })
 public class Compra implements Serializable {
 
     private static final long serialVersionUID = 1L;

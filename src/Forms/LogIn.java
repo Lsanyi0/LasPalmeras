@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Forms;
+
+
 
 /**
  *
@@ -14,8 +11,10 @@ public class LogIn extends javax.swing.JFrame {
     /**
      * Creates new form LogIn
      */
+    private final Utilidades utilidades = new Utilidades();;
     public LogIn() {
         initComponents();
+        utilidades.setScreenCentered(this);
     }
 
     /**
@@ -36,6 +35,7 @@ public class LogIn extends javax.swing.JFrame {
         lbClave = new javax.swing.JLabel();
         lbUsuario = new javax.swing.JLabel();
         lbImagen = new javax.swing.JLabel();
+        noLog = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,6 +62,9 @@ public class LogIn extends javax.swing.JFrame {
 
         lbImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/User.png"))); // NOI18N
         lbImagen.setText(".");
+
+        noLog.setSelected(true);
+        noLog.setText("Nolog");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,7 +94,10 @@ public class LogIn extends javax.swing.JFrame {
                                 .addGap(142, 142, 142)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jButton2)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(noLog)))))
                         .addGap(0, 77, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -117,7 +123,9 @@ public class LogIn extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(noLog)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
         );
@@ -126,8 +134,22 @@ public class LogIn extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new GenerarVenta().setVisible(true);
-        this.dispose();
+        if (!noLog.isSelected()) {
+            if (!tbUsuario.getText().trim().equals("") && !tbClave.getText().trim().equals("")) {
+                if (utilidades.login(tbUsuario.getText(), tbClave.getText())) {
+                    new GenerarVenta().setVisible(true);
+                    this.dispose();
+                } else {
+                    utilidades.mostrarAlerta("Usuario o Clave incorrectos, "
+                            + "intente de nuevo porfavor.", "Inicio de sesion fallido");
+                }
+            } else {
+                utilidades.mostrarAlerta("Porfavor ingrese datos válidos",
+                        "Inicio de sesion fallido");
+            }
+        }
+        else {new GenerarVenta().setVisible(true);
+                    this.dispose();}
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -173,6 +195,7 @@ public class LogIn extends javax.swing.JFrame {
     private javax.swing.JLabel lbImagen;
     private javax.swing.JLabel lbInicioSesion;
     private javax.swing.JLabel lbUsuario;
+    private javax.swing.JCheckBox noLog;
     private javax.swing.JTextField tbClave;
     private javax.swing.JTextField tbUsuario;
     // End of variables declaration//GEN-END:variables
