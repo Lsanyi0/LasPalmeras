@@ -1,6 +1,7 @@
 package Model;
 
 public class jtableVentaModel {
+    int idProducto;
     int cantidad;
     String nombre;
     Double preciounitario;
@@ -8,6 +9,10 @@ public class jtableVentaModel {
     
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public int getIdProducto() {
+        return idProducto;
     }
 
     public void setNombre(String nombre) {
@@ -38,7 +43,6 @@ public class jtableVentaModel {
         return subtotal;
     }
 
-
     public Object[] toArray()
     {
         acutalizarSubtotal();
@@ -58,11 +62,16 @@ public class jtableVentaModel {
         this.subtotal = 0.00;
     }
     
-    public jtableVentaModel(int cantidad, String nombre, Double preciounitario) {
+    public jtableVentaModel(int idProducto,int cantidad, String nombre, Double preciounitario) {
+        this.idProducto = idProducto;
         this.cantidad = cantidad;
         this.nombre = nombre;
         this.preciounitario = preciounitario;
         this.subtotal = cantidad * preciounitario;
+    }
+
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
     }
     private void acutalizarSubtotal()
     {

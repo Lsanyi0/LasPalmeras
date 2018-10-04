@@ -1,5 +1,6 @@
 package Forms;
 
+import Entities.Cliente;
 import Entities.Inventario;
 import Entities.Producto;
 import Model.jtableVentaModel;
@@ -12,6 +13,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.StoredProcedureQuery;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -85,7 +87,7 @@ public class Utilidades {
     public void addToJTableVenta(JTable jtable,String nombreProducto,int cantidad)
     {
         Producto prod = getProductoByNombre(nombreProducto);
-        jtableVentaModel venta = new jtableVentaModel(cantidad, prod.getProducto() //El modelo para la tabla solo para crear el objeto que contega 
+        jtableVentaModel venta = new jtableVentaModel(prod.getIdProducto(),cantidad, prod.getProducto() //El modelo para la tabla solo para crear el objeto que contega 
                                     , prod.getPrecio());                           //los datos que se quieren ingresar a la tabla
         DefaultTableModel model = (DefaultTableModel) jtable.getModel();
         
@@ -169,5 +171,55 @@ public class Utilidades {
     {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         jFrame.setLocation(dim.width/2-jFrame.getSize().width/2, dim.height/2-jFrame.getSize().height/2);
+    }
+//    public void crearVenta()
+//    {
+//        StoredProcedureQuery nq = manager.createNamedStoredProcedureQuery("Venta.vender")
+//                    .setParameter("pidc", 1)
+//                    .setParameter("pidempleado",1)
+//                    .setParameter("piva",0.20)
+//                    .setParameter("pdesc", 0.0);
+//        nq.execute();
+//        System.out.println(nq.getOutputParameterValue("idventx"));
+//        //int idFactura = (int) nq.getOutputParameterValue("idventx");        
+//        //crearDetalleVenta(idFactura);
+//    }
+    public void crearVenta(String nCliente, String aCliente)
+    { 
+        try {
+            Cliente cli = (Cliente) manager.createQuery("SELECT c FROM Cliente c WHERE c.nombre = :nombre AND c.apellido = :apellido")
+                .setParameter("nombre", nCliente)
+                .setParameter("apellido",aCliente)
+                .getSingleResult();
+            
+            StoredProcedureQuery nq = manager.createNamedStoredProcedureQuery("Venta.vender")
+                        .setParameter("pidc", cli.getIdCliente())
+                        .setParameter("pidempleado",1)
+                        .setParameter("piva",0.20)
+                        .setParameter("pdesc", 0.0);
+            nq.execute();
+            int idFactura = Integer.valueOf(nq.getOutputParameterValue("idventx").toString());        
+            crearDetalleVenta(idFactura);
+        } catch (Exception e) {
+            mostrarAlerta("No se encontro al cliente en la base de datos intente de nuevo\nError:\n" +e.toString(), "Error!");
+        }    
+    }
+    public void crearDetalleVenta(int idFactura)
+    {
+        for (jtableVentaModel j : temp) {
+            StoredProcedureQuery nq = manager.createNamedStoredProcedureQuery("Detalleventa.detalleventa")
+                    .setParameter("pidprod", j.getIdProducto())
+                    .setParameter("pidventa",idFactura)
+                    .setParameter("pcantidad",j.getCantidad());
+            nq.execute();
+        }
+        mostrarAlerta("Venta satisfactoria", "Exito");
+    }
+    public void clearJTable(JTable jTable)
+    {
+        DefaultTableModel model = (DefaultTableModel) jTable.getModel();
+        model.setRowCount(0);
+        jTable.setModel(model);
+        temp.clear();
     }
 }

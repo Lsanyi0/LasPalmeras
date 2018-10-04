@@ -46,15 +46,11 @@ import javax.xml.bind.annotation.XmlTransient;
     name = "Venta.vender",
     procedureName = "venta",
     parameters = {
-        @StoredProcedureParameter(name = "costumerName",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "costumerLName",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "Dui",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "Usser",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "IVA",mode = ParameterMode.IN,type = Double.class),
-        @StoredProcedureParameter(name = "Discount",mode = ParameterMode.IN,type = Double.class),
-        @StoredProcedureParameter(name = "Product",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "Quantity",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "MSG",mode = ParameterMode.OUT,type = String.class),
+        @StoredProcedureParameter(name = "pidc",mode = ParameterMode.IN,type = Integer.class),      
+        @StoredProcedureParameter(name = "pidempleado",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "piva",mode = ParameterMode.IN,type = Double.class),
+        @StoredProcedureParameter(name = "pdesc",mode = ParameterMode.IN,type = Double.class),
+        @StoredProcedureParameter(name = "idventx",mode = ParameterMode.OUT,type = String.class),
     })
 public class Venta implements Serializable {
 

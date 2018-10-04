@@ -16,6 +16,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,6 +33,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Detalleventa.findAll", query = "SELECT d FROM Detalleventa d")
     , @NamedQuery(name = "Detalleventa.findByIdDetalleVenta", query = "SELECT d FROM Detalleventa d WHERE d.idDetalleVenta = :idDetalleVenta")
     , @NamedQuery(name = "Detalleventa.findByCantidad", query = "SELECT d FROM Detalleventa d WHERE d.cantidad = :cantidad")})
+@NamedStoredProcedureQuery(
+    name = "Detalleventa.detalleventa",
+    procedureName = "detalleventa",
+    parameters = {
+        @StoredProcedureParameter(name = "pidprod",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "pidventa",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "pcantidad",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "bandera",mode = ParameterMode.OUT,type = Integer.class),
+    })
 public class Detalleventa implements Serializable {
 
     private static final long serialVersionUID = 1L;
