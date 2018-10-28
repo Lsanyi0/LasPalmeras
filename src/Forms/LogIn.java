@@ -140,8 +140,9 @@ public class LogIn extends javax.swing.JFrame {
                     new GenerarVenta().setVisible(true);
                     this.dispose();
                 } else {
-                    utilidades.mostrarAlerta("Usuario o Clave incorrectos, "
-                            + "intente de nuevo porfavor.", "Inicio de sesion fallido");
+                    utilidades.mostrarAlerta("Usuario o Clave incorrectos,"
+                            + " intente de nuevo porfavor.", 
+                            "Inicio de sesion fallido");
                 }
             } else {
                 utilidades.mostrarAlerta("Porfavor ingrese datos válidos",

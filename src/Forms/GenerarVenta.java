@@ -1,19 +1,28 @@
 package Forms;
 
+import java.text.DecimalFormat;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+
 
 public class GenerarVenta extends javax.swing.JFrame {
 
     Utilidades utilidades = new Utilidades();
-            
+    DecimalFormat df = new DecimalFormat("#.00");
+    
     public GenerarVenta() {
         initComponents();
         utilidades.setScreenCentered(this);
         utilidades.fillJList(lsBuscar,"Producto");
         lbFechaExpedicion.setText(utilidades.getDate());
         llenarComboBox();
+        
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        dgvPedidos.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+        dgvPedidos.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
     }
 
     @SuppressWarnings("unchecked")
@@ -329,7 +338,7 @@ public class GenerarVenta extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -403,8 +412,6 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
         );
 
-        btVender.getAccessibleContext().setAccessibleName("Vender");
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -438,43 +445,51 @@ public class GenerarVenta extends javax.swing.JFrame {
         JList list = (JList)evt.getSource();
         if (utilidades.validarComboBox(cbCantidad)) {
             int cbx = Integer.valueOf(cbCantidad.getSelectedItem().toString());
-            if (evt.getClickCount() == 2 && list.getModel().getSize() > 0) 
+            if (evt.getClickCount() == 2 && list.getModel().getSize() > 0 && 
+                    utilidades.getInventarioByNombre(lsBuscar.getSelectedValue())>0) 
             {
                 utilidades.addToJTableVenta(dgvPedidos, lsBuscar.getSelectedValue(),cbx);
-                lbTotal.setText("Total a pagar: $" + utilidades.getTotal());
+                lbTotal.setText("Total a pagar: $" + df.format(utilidades.getTotal()));
             }
                 else if (list.getModel().getSize() > 0 && list.getSelectedValue() != null)
             {
-                String existencia = String.valueOf(utilidades.getInventarioByNombre(
-                              list.getSelectedValue().toString()));
-                String precio = String.valueOf(utilidades.getPrecioByNombre(
-                              list.getSelectedValue().toString()));
-          
-                lbExistencia.setText("Existencia: " + existencia);
-                lbPrecio.setText("Precio: $" + precio);             
+                actualizarCantidadInventario(list);
             }
         }
     }//GEN-LAST:event_lsBuscarMouseClicked
+    private void actualizarCantidadInventario(JList list)
+    {
 
+        String existencia = String.valueOf(utilidades.getInventarioByNombre(
+                      list.getSelectedValue().toString()));
+        String precio = String.valueOf(df.format(utilidades.getPrecioByNombre(
+                      list.getSelectedValue().toString())));
+
+        lbExistencia.setText("Existencia: " + existencia);
+        lbPrecio.setText("Precio: $" + precio);  
+    }
     private void btVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVenderActionPerformed
-        
-        if (dgvPedidos.getRowCount() >= 1) {
+       if (dgvPedidos.getRowCount() >= 1) {
             if(rbAnonimo.isSelected())
             {
                 utilidades.crearVenta("Anonimo", "");
+                utilidades.clearJTable(dgvPedidos);
             }
             else if(rbExistente.isSelected())
             {
-                utilidades.crearVenta(tbNombreCliente.getText(),tbApellidoCliente.getText());
+                utilidades.crearVenta(tbNombreCliente.getText(),
+                        tbApellidoCliente.getText());
+                utilidades.clearJTable(dgvPedidos);
             }
             else
             {      
                 utilidades.mostrarAlerta("Nada","No hara nada");
+                
             }
-            utilidades.clearJTable(dgvPedidos);
+            actualizarCantidadInventario(lsBuscar);
         }
-        else utilidades.mostrarAlerta("No puede vender si no se han agregado productos","Error");
-        // TODO add your handling code here: metodo CrearVenta luego CrearDetalleVenta e imprimir;
+        else utilidades.mostrarAlerta("No puede vender si no se han agregado productos",
+                "Error");
     }//GEN-LAST:event_btVenderActionPerformed
 
     private void rbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNuevoActionPerformed
