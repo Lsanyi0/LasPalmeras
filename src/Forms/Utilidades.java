@@ -22,50 +22,53 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class Utilidades {
-
+    
     private static EntityManager manager;
-
+    
     private static EntityManagerFactory emf;
-
+    
     private static ArrayList<jtableVentaModel> temp;
-
+    
     public Utilidades() {
         emf = Persistence.createEntityManagerFactory("AgroServPU");
         manager = emf.createEntityManager();
         temp = new ArrayList<>();
     }
-
-    //getDate devuelve un String que representa la fecha con formato d/M/a
+    
+    //getDate devuelve un String que representa la fecha con formato dia,mes,año
     public String getDate() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return dtf.format(LocalDateTime.now());
     }
-
+    
     public void fillJList(JList lista, String tabla) {
         List<String> linv = manager.createQuery("SELECT p.producto FROM " + tabla + " p")
                 .getResultList();
         setJListModel(linv, lista);
     }
-
+    
     public void fillJList(JList lista, String filtro, String busqueda, String tabla) {
         List<String> linv = manager.createQuery("SELECT p.producto FROM " + tabla
                 + " p WHERE p." + filtro + " LIKE '%" + busqueda + "%'")
                 .getResultList();
         setJListModel(linv, lista);
     }
-
+    
     private void setJListModel(List linv, JList lista) {
         JList listaDeshechable = new JList(linv.toArray());
         lista.setModel(listaDeshechable.getModel());
+        if (linv.size() > 0) {
+            lista.setSelectedIndex(0);
+        }
     }
-
+    
     public Producto getProductoByNombre(String nombreProducto) {
         Producto prod = (Producto) manager.createNamedQuery("Producto.findByProducto")
                 .setParameter("producto", "%" + nombreProducto + "%")
                 .getSingleResult();
         return prod;
     }
-
+    
     //Metodo getInventarioByNombre obtenemos un entero que representa la cantidad actual de
     //producto mediante su nombre
     public int getInventarioByNombre(String nombreProducto) {
@@ -75,13 +78,13 @@ public class Utilidades {
                 .getSingleResult();
         return inv.getExistencia();
     }
-
+    
     //getPrecioByNombre retorna un Double que representa el precio de venta del producto
     public Double getPrecioByNombre(String nombreProducto) {
         Producto prod = getProductoByNombre(nombreProducto);
         return prod.getPrecio();
     }
-
+    
     //Metodo addToJTableVenta() metodo especifico para llenar la tabla venta (Form GenarVenta)
     public void addToJTableVenta(JTable jtable, String nombreProducto, int cantidad) {
         Producto prod = getProductoByNombre(nombreProducto);
@@ -91,7 +94,7 @@ public class Utilidades {
         DefaultTableModel model = (DefaultTableModel) jtable.getModel();
         //Verificamos si el objeto temp(contiene todas las entradas a la tabla) ya posee un producto
         int ya = buscarProductoEnTabla(temp, venta.getNombre());
-
+        
         if (ya != -1) {
             if (temp.get(ya).getCantidad() + venta.getCantidad() < getInventarioByNombre(nombreProducto)) {
                 temp.get(ya).setCantidad(cantidad + temp.get(ya).getCantidad());
@@ -111,8 +114,8 @@ public class Utilidades {
             model.addRow(venta.toArray());
         }
     }
-
-    //Obtiene el total de la venta, sumando los subtotales de los productos que 
+    
+    //Obtiene el total de la venta, sumando los subtotales de los productos que
     //se encuentran en la tabla
     public Double getTotal() {
         Double total = 0.0;
@@ -121,7 +124,7 @@ public class Utilidades {
         }
         return total;
     }
-
+    
     //Busca un nombre de producto dentro de una tabla y si lo encuentra devuelve
     //la posision en que se encuentra, sino lo encuentra devuelve -1
     public int buscarProductoEnTabla(ArrayList<jtableVentaModel> obj, String prod) {
@@ -132,7 +135,7 @@ public class Utilidades {
         }
         return -1;
     }
-
+    
     public boolean validarComboBox(JComboBox cbx) {
         try {
             String i = cbx.getSelectedItem().toString();
@@ -149,12 +152,12 @@ public class Utilidades {
         }
         return true;
     }
-
+    
     public void mostrarAlerta(String mensaje, String titulo) {
         JOptionPane.showMessageDialog(null, mensaje, titulo,
                 JOptionPane.WARNING_MESSAGE);
     }
-
+    
     public boolean login(String usuario, String clave) {
         boolean bool = (boolean) manager.createNamedQuery("Usuario.login")
                 .setParameter("usser", usuario)
@@ -162,13 +165,13 @@ public class Utilidades {
                 .getSingleResult();
         return bool;
     }
-
+    
     public void setScreenCentered(JFrame jFrame) {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         jFrame.setLocation(dim.width / 2 - jFrame.getSize().width / 2,
                 dim.height / 2 - jFrame.getSize().height / 2);
     }
-
+    
     public void crearVenta(String nCliente, String aCliente) {
         try {
             Cliente cli = (Cliente) manager.createQuery("SELECT c FROM Cliente c"
@@ -176,7 +179,7 @@ public class Utilidades {
                     .setParameter("nombre", "%" + nCliente + "%")
                     .setParameter("apellido", "%" + aCliente + "%")
                     .getSingleResult();
-
+            
             StoredProcedureQuery nq = manager.createNamedStoredProcedureQuery("Venta.vender")
                     .setParameter("pidc", cli.getIdCliente())
                     .setParameter("pidempleado", 1)
@@ -191,7 +194,7 @@ public class Utilidades {
                     + " de nuevo\nError:\n" + e.toString(), "Error!");
         }
     }
-
+    
     private void crearDetalleVenta(int idFactura) {
         for (jtableVentaModel j : temp) {
             StoredProcedureQuery nq = manager.createNamedStoredProcedureQuery("Detalleventa.detalleventa")
@@ -202,11 +205,33 @@ public class Utilidades {
         }
         mostrarAlerta("Venta satisfactoria", "Exito");
     }
-
+    
     public void clearJTable(JTable jTable) {
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
         model.setRowCount(0);
         jTable.setModel(model);
         temp.clear();
+    }
+    public String getProductoEnLista(int index)
+    {
+        return temp.get(index).getNombre();
+    }
+    public void removeFromJTable(JTable jtable,int index)
+    {
+        DefaultTableModel model = (DefaultTableModel) jtable.getModel();
+        temp.remove(index);
+        model.setRowCount(0);
+        temp.forEach((jtableVentaModel j) -> { //no se como pero java sabe que hacer ¯\_(ツ)_/¯
+            model.addRow(j.toArray());
+        });
+    }
+    public void setCantidadJtable(JTable jtable,int index, int cantidad)
+    {
+        temp.get(index).setCantidad(cantidad);
+        DefaultTableModel model = (DefaultTableModel) jtable.getModel();
+        model.setRowCount(0);
+        temp.forEach((jtableVentaModel j) -> { //no se como pero java sabe que hacer ¯\_(ツ)_/¯
+            model.addRow(j.toArray());
+        });
     }
 }

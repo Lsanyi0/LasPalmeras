@@ -1,14 +1,16 @@
 package Forms;
 
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 
 
 public class GenerarVenta extends javax.swing.JFrame {
-
+    
     Utilidades utilidades = new Utilidades();
     DecimalFormat df = new DecimalFormat("#.00");
     
@@ -24,7 +26,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         dgvPedidos.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
         dgvPedidos.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -32,6 +34,9 @@ public class GenerarVenta extends javax.swing.JFrame {
         rbGrupo1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        ppmDataGrid = new javax.swing.JPopupMenu();
+        miEliminarElemento = new javax.swing.JMenuItem();
+        miModificarCantidad = new javax.swing.JMenuItem();
         panelCliente = new javax.swing.JPanel();
         tbNombreCliente = new javax.swing.JTextField();
         rbAnonimo = new javax.swing.JRadioButton();
@@ -69,6 +74,23 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbPedidos = new javax.swing.JLabel();
 
         jScrollPane1.setViewportView(jTextPane1);
+
+        miEliminarElemento.setText("Quitar producto");
+        miEliminarElemento.setActionCommand("Quitar Producto");
+        miEliminarElemento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miEliminarElementoActionPerformed(evt);
+            }
+        });
+        ppmDataGrid.add(miEliminarElemento);
+
+        miModificarCantidad.setText("Cambiar cantidad");
+        miModificarCantidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miModificarCantidadActionPerformed(evt);
+            }
+        });
+        ppmDataGrid.add(miModificarCantidad);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1360, 768));
@@ -345,10 +367,17 @@ public class GenerarVenta extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        dgvPedidos.setEnabled(false);
+        dgvPedidos.setCellSelectionEnabled(false);
+        dgvPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         dgvPedidos.setName("dgvPedidos"); // NOI18N
+        dgvPedidos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         dgvPedidos.getTableHeader().setResizingAllowed(false);
         dgvPedidos.getTableHeader().setReorderingAllowed(false);
+        dgvPedidos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                dgvPedidosMouseReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(dgvPedidos);
 
         lbPedidos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -374,20 +403,20 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(lbPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btVender)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
                         .addComponent(lbTotal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btCancelar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btVender, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(panelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(6, 6, 6))))
+                        .addGap(6, 6, 6))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -406,8 +435,8 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btCancelar)
                     .addComponent(lbTotal)
-                    .addComponent(btVender)
-                    .addComponent(lbPedidos))
+                    .addComponent(lbPedidos)
+                    .addComponent(btVender))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
         );
@@ -427,10 +456,10 @@ public class GenerarVenta extends javax.swing.JFrame {
             utilidades.fillJList(lsBuscar, filtro, busqueda,"Producto");
         }
         else if ( bs == 0) {
-          utilidades.fillJList(lsBuscar,"Producto");
+            utilidades.fillJList(lsBuscar,"Producto");
         }
     }//GEN-LAST:event_tbBuscarKeyTyped
-
+    
     private void llenarComboBox()
     {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cbCantidad.getModel();
@@ -445,13 +474,15 @@ public class GenerarVenta extends javax.swing.JFrame {
         JList list = (JList)evt.getSource();
         if (utilidades.validarComboBox(cbCantidad)) {
             int cbx = Integer.valueOf(cbCantidad.getSelectedItem().toString());
-            if (evt.getClickCount() == 2 && list.getModel().getSize() > 0 && 
-                    utilidades.getInventarioByNombre(lsBuscar.getSelectedValue())>0) 
+            if (evt.getClickCount() == 2 && list.getModel().getSize() > 0 &&
+                    utilidades.getInventarioByNombre(lsBuscar.getSelectedValue())>0)
             {
                 utilidades.addToJTableVenta(dgvPedidos, lsBuscar.getSelectedValue(),cbx);
+                dgvPedidos.setDefaultEditor(Object.class, null);
+                dgvPedidos.setRowSelectionAllowed(true);
                 lbTotal.setText("Total a pagar: $" + df.format(utilidades.getTotal()));
             }
-                else if (list.getModel().getSize() > 0 && list.getSelectedValue() != null)
+            else if (list.getModel().getSize() > 0 && list.getSelectedValue() != null)
             {
                 actualizarCantidadInventario(list);
             }
@@ -459,17 +490,16 @@ public class GenerarVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_lsBuscarMouseClicked
     private void actualizarCantidadInventario(JList list)
     {
-
         String existencia = String.valueOf(utilidades.getInventarioByNombre(
-                      list.getSelectedValue().toString()));
+                list.getSelectedValue().toString()));
         String precio = String.valueOf(df.format(utilidades.getPrecioByNombre(
-                      list.getSelectedValue().toString())));
-
+                list.getSelectedValue().toString())));
+        
         lbExistencia.setText("Existencia: " + existencia);
-        lbPrecio.setText("Precio: $" + precio);  
+        lbPrecio.setText("Precio: $" + precio);
     }
     private void btVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVenderActionPerformed
-       if (dgvPedidos.getRowCount() >= 1) {
+        if (dgvPedidos.getRowCount() >= 1) {
             if(rbAnonimo.isSelected())
             {
                 utilidades.crearVenta("Anonimo", "");
@@ -482,7 +512,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 utilidades.clearJTable(dgvPedidos);
             }
             else
-            {      
+            {
                 utilidades.mostrarAlerta("Nada","No hara nada");
                 
             }
@@ -511,19 +541,60 @@ public class GenerarVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_rbAnonimoActionPerformed
 
     private void btAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgregarActionPerformed
-
+        java.awt.event.MouseEvent evts = new java.awt.event.MouseEvent(lsBuscar, WIDTH, WIDTH, ICONIFIED, WIDTH, WIDTH, 2, rootPaneCheckingEnabled);
+        this.lsBuscarMouseClicked(evts);
     }//GEN-LAST:event_btAgregarActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
         utilidades.clearJTable(dgvPedidos);
+        lbTotal.setText("Total a pagar: $0.00");
     }//GEN-LAST:event_btCancelarActionPerformed
- 
-    public static void main(String args[]) {
 
+    private void dgvPedidosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dgvPedidosMouseReleased
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            int seleccion = dgvPedidos.getSelectedRow();
+            String concat = "("+utilidades.getProductoEnLista(seleccion)+")";
+            
+            miEliminarElemento.setText("Quitar producto "+concat);
+            miModificarCantidad.setText("Cambiar cantidad "+concat);
+            
+            ppmDataGrid.show(dgvPedidos, evt.getX(), evt.getY());
+        }     
+    }//GEN-LAST:event_dgvPedidosMouseReleased
+
+    private void miEliminarElementoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEliminarElementoActionPerformed
+        utilidades.removeFromJTable(dgvPedidos, dgvPedidos.getSelectedRow());
+        lbTotal.setText("Total a pagar: $" + df.format(utilidades.getTotal()));
+    }//GEN-LAST:event_miEliminarElementoActionPerformed
+
+    private void miModificarCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miModificarCantidadActionPerformed
+        String valor;
+	int num = -1;      
+        while (num == -1) {
+            valor = JOptionPane.showInputDialog("Cantidad:",dgvPedidos.getModel().getValueAt(dgvPedidos.getSelectedRow(), 0));
+            num = stringToInt(valor);
+        }
+        utilidades.setCantidadJtable(dgvPedidos, dgvPedidos.getSelectedRow(), num);
+    }//GEN-LAST:event_miModificarCantidadActionPerformed
+    private static int stringToInt(String string) {
+        
+        try {
+            return Integer.parseInt(string);
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null,
+                    "El numero que ingresó no es valido, porfavor intente de nuevo",
+                    "Ingrese un numero valido",
+                    JOptionPane.WARNING_MESSAGE);
+            return -1;
+        }
+    }
+    public static void main(String args[]) {
+        
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+        */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -541,7 +612,7 @@ public class GenerarVenta extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GenerarVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -578,8 +649,11 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JLabel lbTotal;
     private javax.swing.JLabel lbVenta;
     private javax.swing.JList<String> lsBuscar;
+    private javax.swing.JMenuItem miEliminarElemento;
+    private javax.swing.JMenuItem miModificarCantidad;
     private javax.swing.JPanel panelCliente;
     private javax.swing.JPanel panelProducto;
+    private javax.swing.JPopupMenu ppmDataGrid;
     private javax.swing.JRadioButton rbAnonimo;
     private javax.swing.JRadioButton rbExistente;
     private javax.swing.ButtonGroup rbGrupo1;

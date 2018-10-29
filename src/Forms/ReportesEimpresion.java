@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 public class ReportesEimpresion {
@@ -95,9 +96,8 @@ public class ReportesEimpresion {
             doc.close();
             Desktop des = Desktop.getDesktop();
             des.open(new File(filename));
-        } catch (IOException ee) {
-            //agregar mensaje emergente
+        } catch (IOException e) {
+            System.out.println("Error:" + e);
         }
-        System.out.println("Hecho!");
     }
 }
