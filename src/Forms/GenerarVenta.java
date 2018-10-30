@@ -571,15 +571,34 @@ public class GenerarVenta extends javax.swing.JFrame {
         String valor;
 	int num = -1;      
         while (num == -1) {
-            valor = JOptionPane.showInputDialog("Cantidad:",dgvPedidos.getModel().getValueAt(dgvPedidos.getSelectedRow(), 0));
+            valor = JOptionPane.showInputDialog("Cantidad:",
+                    dgvPedidos
+                            .getModel()
+                            .getValueAt(dgvPedidos
+                                    .getSelectedRow(), 0));
+            if (valor == null) 
+            {
+                return;
+            }
             num = stringToInt(valor);
+            if (num > utilidades
+                    .getInventarioByNombre((String) dgvPedidos
+                            .getModel()
+                            .getValueAt(dgvPedidos.getSelectedRow(), 1)))
+            {
+                num = -1;
+                utilidades.mostrarAlerta("La cantidad ingresada exede la cantidad"
+                        + " disponible, intente de nuevo.", "Cantidad no válida!");
+            }
         }
         utilidades.setCantidadJtable(dgvPedidos, dgvPedidos.getSelectedRow(), num);
+        lbTotal.setText("Total a pagar: $" + df.format(utilidades.getTotal()));
     }//GEN-LAST:event_miModificarCantidadActionPerformed
-    private static int stringToInt(String string) {
-        
+    private static int stringToInt(String string) {       
         try {
-            return Integer.parseInt(string);
+            int var = Integer.parseInt(string);
+            if (var >= 1) return var;
+            else return -1;
         }
         catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null,
