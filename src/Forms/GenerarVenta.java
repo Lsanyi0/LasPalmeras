@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class GenerarVenta extends javax.swing.JFrame {
     
     Utilidades utilidades = new Utilidades();
-    DecimalFormat df = new DecimalFormat("#.00");
+    DecimalFormat df = new DecimalFormat("$ 0.00");
     
     public GenerarVenta() {
         initComponents();
@@ -236,7 +236,7 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         lbCantidad.setText("Cantidad:");
 
-        lbPrecio.setText("Precio: $00.00");
+        lbPrecio.setText("Precio: $ 0.00");
 
         javax.swing.GroupLayout panelProductoLayout = new javax.swing.GroupLayout(panelProducto);
         panelProducto.setLayout(panelProductoLayout);
@@ -346,7 +346,7 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         lbTotal.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         lbTotal.setForeground(new java.awt.Color(191, 94, 0));
-        lbTotal.setText("Total a pagar: $00.00");
+        lbTotal.setText("Total a pagar: $ 0.00");
 
         lbEmpleado.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         lbEmpleado.setText("Empleado: empleado ");
@@ -367,7 +367,6 @@ public class GenerarVenta extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        dgvPedidos.setCellSelectionEnabled(false);
         dgvPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         dgvPedidos.setName("dgvPedidos"); // NOI18N
         dgvPedidos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -432,11 +431,12 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addComponent(panelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(panelProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btCancelar)
-                    .addComponent(lbTotal)
-                    .addComponent(lbPedidos)
-                    .addComponent(btVender))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbTotal, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btCancelar)
+                        .addComponent(lbPedidos)
+                        .addComponent(btVender)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
         );
@@ -480,7 +480,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 utilidades.addToJTableVenta(dgvPedidos, lsBuscar.getSelectedValue(),cbx);
                 dgvPedidos.setDefaultEditor(Object.class, null);
                 dgvPedidos.setRowSelectionAllowed(true);
-                lbTotal.setText("Total a pagar: $" + df.format(utilidades.getTotal()));
+                lbTotal.setText("Total a pagar: " + df.format(utilidades.getTotal()));
             }
             else if (list.getModel().getSize() > 0 && list.getSelectedValue() != null)
             {
@@ -564,7 +564,7 @@ public class GenerarVenta extends javax.swing.JFrame {
 
     private void miEliminarElementoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEliminarElementoActionPerformed
         utilidades.removeFromJTable(dgvPedidos, dgvPedidos.getSelectedRow());
-        lbTotal.setText("Total a pagar: $" + df.format(utilidades.getTotal()));
+        lbTotal.setText("Total a pagar: " + df.format(utilidades.getTotal()));
     }//GEN-LAST:event_miEliminarElementoActionPerformed
 
     private void miModificarCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miModificarCantidadActionPerformed
@@ -592,7 +592,7 @@ public class GenerarVenta extends javax.swing.JFrame {
             }
         }
         utilidades.setCantidadJtable(dgvPedidos, dgvPedidos.getSelectedRow(), num);
-        lbTotal.setText("Total a pagar: $" + df.format(utilidades.getTotal()));
+        lbTotal.setText("Total a pagar: " + df.format(utilidades.getTotal()));
     }//GEN-LAST:event_miModificarCantidadActionPerformed
     private static int stringToInt(String string) {       
         try {

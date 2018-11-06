@@ -13,8 +13,8 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 public class ReportesEimpresion {
     
-    Utilidades utilidades = new Utilidades();
-    DecimalFormat df = new DecimalFormat("#.00");
+    private static final Utilidades utilidades = new Utilidades();
+    static final DecimalFormat df = new DecimalFormat("$ 0.00");
 
     public ReportesEimpresion() {
     }
