@@ -3,6 +3,7 @@ package Forms;
 import Entities.Cliente;
 import Entities.Inventario;
 import Entities.Producto;
+import Entities.Usuario;
 import Model.jtableVentaModel;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -158,11 +159,14 @@ public class Utilidades {
                 JOptionPane.WARNING_MESSAGE);
     }
     
-    public boolean login(String usuario, String clave) {
+    public boolean login(String usuario, char[] clave) {
         boolean bool = (boolean) manager.createNamedQuery("Usuario.login")
                 .setParameter("usser", usuario)
                 .setParameter("pssword", clave)
                 .getSingleResult();
+        GenerarVenta.usuario = (Usuario) manager.createNamedQuery("Usuario.findByNUsuario")
+                .setParameter("nUsuario", usuario)
+                .getSingleResult();;
         return bool;
     }
     
@@ -172,17 +176,17 @@ public class Utilidades {
                 dim.height / 2 - jFrame.getSize().height / 2);
     }
     
-    public void crearVenta(String nCliente, String aCliente) {
+    public void crearVenta(Cliente cliente, int idEmpleado) {
         try {
             Cliente cli = (Cliente) manager.createQuery("SELECT c FROM Cliente c"
                     + " WHERE c.nombre LIKE :nombre AND c.apellido LIKE :apellido")
-                    .setParameter("nombre", "%" + nCliente + "%")
-                    .setParameter("apellido", "%" + aCliente + "%")
+                    .setParameter("nombre", "%" + cliente.getNombre() + "%")
+                    .setParameter("apellido", "%" + cliente.getApellido() + "%")
                     .getSingleResult();
             
             StoredProcedureQuery nq = manager.createNamedStoredProcedureQuery("Venta.vender")
                     .setParameter("pidc", cli.getIdCliente())
-                    .setParameter("pidempleado", 1)
+                    .setParameter("pidempleado", idEmpleado)
                     .setParameter("piva", 0.20)
                     .setParameter("pdesc", 0.0);
             nq.execute();
@@ -233,5 +237,12 @@ public class Utilidades {
         temp.forEach((jtableVentaModel j) -> { //no se como pero java sabe que hacer ¯\_(ツ)_/¯
             model.addRow(j.toArray());
         });
+    }
+    public Usuario getUsuarioByIdUsuario(int idUsuario)
+    {
+        Usuario usuario = (Usuario) manager.createNamedQuery("Usuario.findByIdUsuario")
+                .setParameter("idUsuario", idUsuario)
+                .getSingleResult();
+        return usuario;
     }
 }

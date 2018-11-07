@@ -122,4 +122,10 @@ public class Telefono implements Serializable {
         return "Entities.Telefono[ idTelefono=" + idTelefono + " ]";
     }
     
+    public boolean Validar()
+    {
+        boolean isValid = true;
+        if (!this.getTelefono().trim().isEmpty()) isValid = false;
+        return isValid;
+    }
 }

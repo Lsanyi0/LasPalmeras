@@ -28,36 +28,33 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
-                                  <Component id="lbClave" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="tbClave" min="-2" pref="161" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="lbImagen" min="-2" pref="142" max="-2" attributes="0"/>
                                       <Component id="lbInicioSesion" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                                  <Component id="lbUsuario" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="tbUsuario" min="-2" pref="161" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="142" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jButton1" min="-2" pref="85" max="-2" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                                      <Component id="noLog" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="lbUsuario" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="tbUsuario" min="-2" pref="161" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="lbClave" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="tbClave" min="-2" pref="161" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
                               </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="152" pref="152" max="-2" attributes="0"/>
+                              <Component id="noLog" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="0" pref="77" max="32767" attributes="0"/>
@@ -69,11 +66,19 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="2" attributes="0">
+                  <Component id="btRegistrar" alignment="2" max="32767" attributes="0"/>
+                  <Component id="btAcceder" alignment="2" pref="122" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="lbInicioSesion" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -84,17 +89,17 @@
                   <Component id="lbUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="tbClave" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lbClave" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lbClave" min="-2" max="-2" attributes="0"/>
+                  <Component id="tbClave" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+              <Component id="btAcceder" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="btRegistrar" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="noLog" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="12" max="32767" attributes="0"/>
+              <EmptySpace pref="20" max="32767" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -110,7 +115,7 @@
         <Property name="text" type="java.lang.String" value="INICIO DE SESI&#xd3;N"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="btAcceder">
       <Properties>
         <Property name="text" type="java.lang.String" value="Acceder"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -124,10 +129,10 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btAccederActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="btRegistrar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Registrar"/>
       </Properties>
@@ -138,8 +143,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="tbUsuario">
-    </Component>
-    <Component class="javax.swing.JTextField" name="tbClave">
+      <Properties>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="tbClave"/>
+        </Property>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lbClave">
       <Properties>
@@ -164,6 +172,11 @@
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Nolog"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="tbClave">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tbClaveKeyPressed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
