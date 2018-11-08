@@ -85,6 +85,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbFechaExpedicion = new javax.swing.JLabel();
         lbFactura = new javax.swing.JLabel();
         lbNumeroFactura = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         btVender = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
         lbTotal = new javax.swing.JLabel();
@@ -117,6 +118,8 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         panelCliente.setBorder(javax.swing.BorderFactory.createTitledBorder("Cliente"));
 
+        tbNombreCliente.setNextFocusableComponent(tbApellidoCliente);
+
         rbGrupo1.add(rbAnonimo);
         rbAnonimo.setText("Anonimo");
         rbAnonimo.addActionListener(new java.awt.event.ActionListener() {
@@ -142,9 +145,13 @@ public class GenerarVenta extends javax.swing.JFrame {
             }
         });
 
+        tbApellidoCliente.setNextFocusableComponent(tbDireccion);
+
         tbDireccion.setEnabled(false);
+        tbDireccion.setNextFocusableComponent(tbDUICliente);
 
         tbDUICliente.setEnabled(false);
+        tbDUICliente.setNextFocusableComponent(tbDUICliente);
 
         lbFactura1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         lbFactura1.setText("Nombre:");
@@ -170,6 +177,7 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         tbTelefono.setToolTipText("Si son multiples telefonos coloque una coma para separarlos");
         tbTelefono.setEnabled(false);
+        tbTelefono.setNextFocusableComponent(tbBuscarCliente);
 
         javax.swing.GroupLayout panelClienteLayout = new javax.swing.GroupLayout(panelCliente);
         panelCliente.setLayout(panelClienteLayout);
@@ -378,6 +386,13 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbNumeroFactura.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         lbNumeroFactura.setText("000000");
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout lbRegistroLayout = new javax.swing.GroupLayout(lbRegistro);
         lbRegistro.setLayout(lbRegistroLayout);
         lbRegistroLayout.setHorizontalGroup(
@@ -389,6 +404,8 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addGap(41, 41, 41)
                         .addComponent(lbFechaExpedicion)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(189, 189, 189)
                 .addGroup(lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbFactura, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbRegistroLayout.createSequentialGroup()
@@ -405,6 +422,10 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addGroup(lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbFechaExpedicion)
                     .addComponent(lbNumeroFactura)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbRegistroLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addContainerGap())
         );
 
         btVender.setForeground(new java.awt.Color(0, 133, 99));
@@ -585,48 +606,50 @@ public class GenerarVenta extends javax.swing.JFrame {
     private void btVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVenderActionPerformed
         if (dgvPedidos.getRowCount() >= 1) {
             Cliente cliente = new Cliente();
-            if(rbAnonimo.isSelected())
-            {
+            if (rbAnonimo.isSelected()) {
                 cliente.setNombre("Anonimo");
                 cliente.setApellido("");
-            }
-            else if(rbExistente.isSelected())
-            {
+            } else if (rbExistente.isSelected()) {
                 cliente.setNombre(tbNombreCliente.getText());
                 cliente.setApellido(tbApellidoCliente.getText());
-            }
-            else
-            {
+            } else {
                 List<Telefono> telefonos = new ArrayList<>();
                 if (tbTelefono.getText().contains(",")) {
                     String[] tels = tbTelefono.getText().split(",");
                     for (String tel : tels) {
-                        Telefono telefono = new Telefono();
-                        telefono.setTelefono(tel);
-                        telefonos.add(telefono);
+                        if (!tel.trim().isEmpty()) {
+                            Telefono telefono = new Telefono();
+                            telefono.setTelefono(tel.trim());
+                            telefonos.add(telefono);
+                        }
+                    }
+                } else {
+                    if (!tbTelefono.getText().trim().isEmpty()) {
+                        Telefono tel = new Telefono();
+                        tel.setTelefono(tbTelefono.getText().trim());
+                        telefonos.add(tel);
                     }
                 }
-                else{Telefono tel = new Telefono();tel.setTelefono(tbTelefono.getText());telefonos.add(tel);}
                 cliente.setNombre(tbNombreCliente.getText());
                 cliente.setApellido(tbApellidoCliente.getText());
                 cliente.setDui(tbDUICliente.getText());
                 cliente.setDireccion(tbDireccion.getText());
-                cliente.setTelefonoList(telefonos);
-                //Evaluar si el cliente es valido antes de llamar a CrearVenta
+                if (!telefonos.isEmpty()) {
+                    cliente.setTelefonoList(telefonos);
+                }
             }
             try {
                 utilidades.crearVenta(cliente, usuario.getIdUsuario());
             } catch (Exception e) {
-                utilidades.mostrarAlerta(e+"", "Error");
-            }
-            finally
-            {
+                utilidades.mostrarAlerta(e + "", "Error");
+            } finally {
                 utilidades.clearJTable(dgvPedidos);
                 actualizarCantidadInventario(lsBuscar);
             }
+        } else {
+            utilidades.mostrarAlerta("No puede vender si no se han agregado productos",
+                    "Error");
         }
-        else utilidades.mostrarAlerta("No puede vender si no se han agregado productos",
-                "Error");
     }//GEN-LAST:event_btVenderActionPerformed
 
     private void rbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNuevoActionPerformed
@@ -753,6 +776,10 @@ public class GenerarVenta extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_lbEmpleadoMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
     private static int stringToInt(String string) {
         try {
             int var = Integer.parseInt(string);
@@ -806,6 +833,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbBuscar;
     private javax.swing.JComboBox cbCantidad;
     private javax.swing.JTable dgvPedidos;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

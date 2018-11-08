@@ -3,6 +3,7 @@ package Forms;
 import Entities.Cliente;
 import Entities.Inventario;
 import Entities.Producto;
+import Entities.Telefono;
 import Entities.Usuario;
 import Model.jtableVentaModel;
 import java.awt.Dimension;
@@ -166,7 +167,7 @@ public class Utilidades {
                 .getSingleResult();
         GenerarVenta.usuario = (Usuario) manager.createNamedQuery("Usuario.findByNUsuario")
                 .setParameter("nUsuario", usuario)
-                .getSingleResult();;
+                .getSingleResult();
         return bool;
     }
     
@@ -184,6 +185,20 @@ public class Utilidades {
                     .setParameter("apellido", "%" + cliente.getApellido() + "%")
                     .getSingleResult();
             
+            if(cli.getIdCliente()!= null) 
+            {
+                try {
+                    if (cliente.Validar()) {
+                        AgregarCliente(cliente);
+                    } else {
+                        mostrarAlerta("Cliente no válido", "Error");
+                        return;
+                    }
+                } catch (Exception e) {
+                    mostrarAlerta(e.toString(), "Error");
+                }
+            }
+            
             StoredProcedureQuery nq = manager.createNamedStoredProcedureQuery("Venta.vender")
                     .setParameter("pidc", cli.getIdCliente())
                     .setParameter("pidempleado", idEmpleado)
@@ -194,10 +209,33 @@ public class Utilidades {
                     .toString());
             crearDetalleVenta(idFactura);
         } catch (NumberFormatException e) {
-            mostrarAlerta("No se encontro al cliente en la base de datos intente"
-                    + " de nuevo\nError:\n" + e.toString(), "Error!");
+            //oie io no c
         }
     }
+    
+   public void AgregarCliente(Cliente cliente)
+   {
+       try {
+           if (cliente.Validar()) {
+               List<Telefono> tels = cliente.getTelefonoList();
+               manager.getTransaction().begin(); //Iniciamos la transaccion
+               //"Insertamos" los telefonos a la DB, pero antes validandolos
+               for (Telefono tel : tels) if (tel.Validar()) manager.persist(tel); 
+               //flush sirve por ejemplo para que vaya a la BD y le busque ID a la entidad que deseamos ingresar
+               manager.flush();
+               //Busca id para el cliente
+               manager.persist(cliente);
+               manager.flush();
+               //Asignamos los telefonos previamente agregados a el cliente correspondiente
+               for (Telefono tel : tels) tel.setIdCliente(cliente);
+               //Hacemos commit a los cambios realizados
+               manager.getTransaction().commit();
+           }
+       } catch (Exception e) {
+           //Si falla en alguno de los pasos anteriores hacemos rollback
+           manager.getTransaction().rollback();
+       }
+   }
     
     private void crearDetalleVenta(int idFactura) {
         for (jtableVentaModel j : temp) {

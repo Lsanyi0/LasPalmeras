@@ -139,7 +139,7 @@ public class Cliente implements Serializable {
         }
         return true;
     }
-
+    
     public Object[] toArray()
     {
         return new Object[] 
@@ -156,11 +156,14 @@ public class Cliente implements Serializable {
     public String toString() {
         return nombre+" "+apellido+", "+dui;
     }
-        public boolean Validar()
+    public boolean Validar()
     {
         boolean isValid = true;
-        if (!this.getNombre().isEmpty()) isValid = false;
-        if (!this.getApellido().isEmpty()) isValid = false;
+        if (this.getNombre().trim().isEmpty()) isValid = false;
+        if (!this.getNombre().equals("Anonimo")) 
+        {
+            if (this.getApellido().trim().isEmpty()) isValid = false;
+        }
         return isValid;
     }
 }

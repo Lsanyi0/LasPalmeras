@@ -254,6 +254,11 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="tbNombreCliente">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="tbApellidoCliente"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="rbAnonimo">
           <Properties>
@@ -290,15 +295,26 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="tbApellidoCliente">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="tbDireccion"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tbDireccion">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="tbDUICliente"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tbDUICliente">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="tbDUICliente"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbFactura1">
@@ -376,6 +392,9 @@
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value="Si son multiples telefonos coloque una coma para separarlos"/>
             <Property name="enabled" type="boolean" value="false"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="tbBuscarCliente"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>
@@ -585,6 +604,8 @@
                       </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="189" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="lbFactura" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
@@ -607,6 +628,11 @@
                       <Component id="lbFechaExpedicion" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbNumeroFactura" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -643,6 +669,14 @@
             </Property>
             <Property name="text" type="java.lang.String" value="000000"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="jButton1"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
