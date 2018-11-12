@@ -32,16 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Detalleventa.findAll", query = "SELECT d FROM Detalleventa d")
     , @NamedQuery(name = "Detalleventa.findByIdDetalleVenta", query = "SELECT d FROM Detalleventa d WHERE d.idDetalleVenta = :idDetalleVenta")
-    , @NamedQuery(name = "Detalleventa.findByCantidad", query = "SELECT d FROM Detalleventa d WHERE d.cantidad = :cantidad")})
-@NamedStoredProcedureQuery(
-    name = "Detalleventa.detalleventa",
-    procedureName = "detalleventa",
-    parameters = {
-        @StoredProcedureParameter(name = "pidprod",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "pidventa",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "pcantidad",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "bandera",mode = ParameterMode.OUT,type = Integer.class),
-    })
+    , @NamedQuery(name = "Detalleventa.findByCantidad", query = "SELECT d FROM Detalleventa d WHERE d.cantidad = :cantidad")
+    , @NamedQuery(name = "Detalleventa.findByDescuento", query = "SELECT d FROM Detalleventa d WHERE d.descuento = :descuento")})
 public class Detalleventa implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,12 +44,18 @@ public class Detalleventa implements Serializable {
     private Integer idDetalleVenta;
     @Column(name = "Cantidad")
     private Integer cantidad;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "Descuento")
+    private Double descuento;
     @JoinColumn(name = "idProducto", referencedColumnName = "idProducto")
     @ManyToOne
     private Producto idProducto;
     @JoinColumn(name = "idVenta", referencedColumnName = "idVenta")
     @ManyToOne
     private Venta idVenta;
+    @JoinColumn(name = "idFechaVencimiento", referencedColumnName = "idFechavencimiento")
+    @ManyToOne
+    private Fechavencimiento idFechaVencimiento;
 
     public Detalleventa() {
     }
@@ -82,6 +80,14 @@ public class Detalleventa implements Serializable {
         this.cantidad = cantidad;
     }
 
+    public Double getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(Double descuento) {
+        this.descuento = descuento;
+    }
+
     public Producto getIdProducto() {
         return idProducto;
     }
@@ -96,6 +102,14 @@ public class Detalleventa implements Serializable {
 
     public void setIdVenta(Venta idVenta) {
         this.idVenta = idVenta;
+    }
+
+    public Fechavencimiento getIdFechaVencimiento() {
+        return idFechaVencimiento;
+    }
+
+    public void setIdFechaVencimiento(Fechavencimiento idFechaVencimiento) {
+        this.idFechaVencimiento = idFechaVencimiento;
     }
 
     @Override

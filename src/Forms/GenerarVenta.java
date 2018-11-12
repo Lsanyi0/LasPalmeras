@@ -22,11 +22,11 @@ public class GenerarVenta extends javax.swing.JFrame {
     
     public GenerarVenta() {
         initComponents();
-        
+        utilidades.getInv();
         utilidades.setScreenCentered(this);
         utilidades.fillJList(lsBuscar,"Producto");
         lbFechaExpedicion.setText(utilidades.getDate());
-        llenarComboBox();
+        llenarComboBox();      
         
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(JLabel.RIGHT);

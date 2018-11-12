@@ -82,7 +82,11 @@ public class Utilidades {
                 .getSingleResult();
         return inv.getExistencia();
     }
-    
+    public void getInv()
+    {
+        List<Inventario> inv = manager.createNamedQuery("Inventario.findAll").getResultList();
+        return;
+    }
     //getPrecioByNombre retorna un Double que representa el precio de venta del producto
     public Double getPrecioByNombre(String nombreProducto) {
         Producto prod = getProductoByNombre(nombreProducto);

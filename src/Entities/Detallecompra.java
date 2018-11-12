@@ -37,6 +37,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Detallecompra.findByFechaVencimiento", query = "SELECT d FROM Detallecompra d WHERE d.fechaVencimiento = :fechaVencimiento")})
 public class Detallecompra implements Serializable {
 
+    @JoinColumn(name = "idFechaVencimiento", referencedColumnName = "idFechavencimiento")
+    @ManyToOne
+    private Fechavencimiento idFechaVencimiento;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -136,6 +140,14 @@ public class Detallecompra implements Serializable {
     @Override
     public String toString() {
         return "Entities.Detallecompra[ idDetalleCompra=" + idDetalleCompra + " ]";
+    }
+
+    public Fechavencimiento getIdFechaVencimiento() {
+        return idFechaVencimiento;
+    }
+
+    public void setIdFechaVencimiento(Fechavencimiento idFechaVencimiento) {
+        this.idFechaVencimiento = idFechaVencimiento;
     }
     
 }
