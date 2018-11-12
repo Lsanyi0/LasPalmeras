@@ -139,10 +139,31 @@ public class Cliente implements Serializable {
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "Entities.Cliente[ idCliente=" + idCliente + " ]";
+    
+    public Object[] toArray()
+    {
+        return new Object[] 
+        {
+            this.getIdCliente(),
+            this.getNombre(),
+            this.getApellido(),
+            this.getDui(),
+            this.getDireccion(),
+        };
     }
     
+    @Override
+    public String toString() {
+        return nombre+" "+apellido+", "+dui;
+    }
+    public boolean Validar()
+    {
+        boolean isValid = true;
+        if (this.getNombre().trim().isEmpty()) isValid = false;
+        if (!this.getNombre().equals(Forms.GenerarVenta.rbAnonimo.getText())) 
+        {
+            if (this.getApellido().trim().isEmpty()) isValid = false;
+        }
+        return isValid;
+    }
 }

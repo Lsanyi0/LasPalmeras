@@ -1,11 +1,14 @@
 package Model;
 
+import java.text.DecimalFormat;
+
 public class jtableVentaModel {
-    int idProducto;
-    int cantidad;
-    String nombre;
-    Double preciounitario;
-    private Double subtotal; 
+    private int idProducto;
+    private int cantidad;
+    private String nombre;
+    private Double preciounitario;
+    private Double subtotal;
+    private final DecimalFormat df = new DecimalFormat("$ 0.00"); 
     
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
@@ -27,7 +30,7 @@ public class jtableVentaModel {
         this.subtotal = subtotal;
     }
      
-    public int getCantidad() {
+    public int getCantidad() {    
         return cantidad;
     }
 
@@ -49,8 +52,8 @@ public class jtableVentaModel {
         Object[] arr = {
                         this.cantidad,
                         this.nombre,
-                        this.preciounitario,
-                        this.subtotal
+                        df.format(this.preciounitario),
+                        df.format(this.subtotal)
                     };
         return arr;
     }
@@ -67,7 +70,7 @@ public class jtableVentaModel {
         this.cantidad = cantidad;
         this.nombre = nombre;
         this.preciounitario = preciounitario;
-        this.subtotal = cantidad * preciounitario;
+        acutalizarSubtotal();
     }
 
     public void setIdProducto(int idProducto) {

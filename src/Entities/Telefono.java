@@ -122,4 +122,18 @@ public class Telefono implements Serializable {
         return "Entities.Telefono[ idTelefono=" + idTelefono + " ]";
     }
     
+    public boolean Validar()
+    {
+        boolean isValid = true;
+        if (this.getTelefono().trim().isEmpty()) isValid = false;
+        if (!isPhoneNumber(this.getTelefono())) isValid = false;
+        return isValid;
+    }
+    
+    public static boolean isPhoneNumber(String nTelefono)
+    {
+        //Cualquier string que vaya con #-# agregar {#} si se quiere limitar la cantidad de digitos
+        String regexStr = "^[0-9\\-]*$";
+        return nTelefono.matches(regexStr);
+    }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="rbGrupo1">
     </Component>
@@ -13,6 +13,31 @@
       <SubComponents>
         <Component class="javax.swing.JTextPane" name="jTextPane1">
         </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPopupMenu" name="ppmDataGrid">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+      <SubComponents>
+        <MenuItem class="javax.swing.JMenuItem" name="miEliminarElemento">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Quitar producto"/>
+            <Property name="actionCommand" type="java.lang.String" value="Quitar Producto"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miEliminarElementoActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="miModificarCantidad">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cambiar cantidad"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miModificarCantidadActionPerformed"/>
+          </Events>
+        </MenuItem>
       </SubComponents>
     </Container>
   </NonVisualComponents>
@@ -59,24 +84,24 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lbPedidos" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btVender" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                       <Component id="lbTotal" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="btCancelar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="btVender" min="-2" pref="131" max="-2" attributes="0"/>
                   </Group>
+              </Group>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lbRegistro" max="32767" attributes="0"/>
                           <Component id="panelCliente" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="btCancelar" min="-2" pref="225" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -99,14 +124,16 @@
                   <Component id="panelProducto" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lbTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btVender" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lbPedidos" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lbTotal" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbPedidos" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btVender" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="jScrollPane2" pref="266" max="32767" attributes="0"/>
+              <Component id="jScrollPane2" pref="271" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -119,7 +146,6 @@
             <TitledBorder title="Cliente"/>
           </Border>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Cliente"/>
       </Properties>
 
       <Layout>
@@ -128,31 +154,69 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                          <Component id="rbAnonimo" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                          <Component id="rbExistente" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                          <Component id="rbNuevo" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPane4" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lbFactura1" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbFactura2" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbFactura4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbFactura3" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="lbFactura5" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                                          <Component id="tbBuscarCliente" min="-2" pref="243" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Component id="lbFactura1" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="lbFactura3" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="tbNombreCliente" pref="243" max="32767" attributes="0"/>
+                                              <Component id="tbApellidoCliente" pref="243" max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                                  <Component id="rbAnonimo" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                                  <Component id="rbExistente" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                                  <Component id="rbNuevo" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="tbNombreCliente" min="-2" pref="243" max="-2" attributes="0"/>
-                              <Component id="tbApellidoCliente" min="-2" pref="243" max="-2" attributes="0"/>
-                              <Component id="tbDUICliente" alignment="0" min="-2" pref="243" max="-2" attributes="0"/>
-                              <Component id="tbDireccion" alignment="0" min="-2" pref="243" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="btAgregarNuevoCliente" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lbFactura6" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lbFactura2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lbFactura4" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="tbTelefono" alignment="1" min="-2" pref="259" max="-2" attributes="0"/>
+                                      <Component id="tbDUICliente" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="tbDireccion" alignment="1" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="313" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -163,34 +227,50 @@
                       <Component id="rbAnonimo" alignment="3" max="32767" attributes="0"/>
                       <Component id="rbExistente" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="rbNuevo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btAgregarNuevoCliente" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="tbDireccion" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="tbDUICliente" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="tbNombreCliente" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbFactura2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbFactura1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="tbApellidoCliente" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbFactura4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbFactura3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="tbNombreCliente" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbFactura1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tbBuscarCliente" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbFactura6" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tbTelefono" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbFactura5" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="tbApellidoCliente" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbFactura3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbFactura2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="tbDireccion" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbFactura4" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="tbDUICliente" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="163" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane4" pref="194" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="tbNombreCliente">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="tbApellidoCliente"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="rbAnonimo">
           <Properties>
@@ -202,6 +282,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbAnonimoActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JRadioButton" name="rbExistente">
           <Properties>
@@ -227,15 +310,26 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="tbApellidoCliente">
+          <Properties>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="tbDireccion"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tbDireccion">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="tbDUICliente"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tbDUICliente">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="tbDUICliente"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbFactura1">
@@ -270,6 +364,66 @@
             <Property name="text" type="java.lang.String" value="DUI:"/>
           </Properties>
         </Component>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane4">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JList" name="lsBuscarCliente">
+              <Properties>
+                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                  <StringArray count="0"/>
+                </Property>
+                <Property name="selectionMode" type="int" value="0"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Component class="javax.swing.JTextField" name="tbBuscarCliente">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tbBuscarClienteKeyTyped"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbFactura5">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Consolas" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Buscar:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbFactura6">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Consolas" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Telefono/s:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="tbTelefono">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Si son multiples telefonos coloque una coma para separarlos"/>
+            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="tbBuscarCliente"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btAgregarNuevoCliente">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Agregar Nuevo Ciente"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btAgregarNuevoClienteActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JLabel" name="lbVenta">
@@ -287,7 +441,7 @@
             <TitledBorder title="Producto"/>
           </Border>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
 
       <Layout>
@@ -295,7 +449,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lbExistencia" min="-2" max="-2" attributes="0"/>
@@ -316,10 +470,10 @@
                               </Group>
                           </Group>
                       </Group>
-                      <Component id="btAgregar" min="-2" pref="151" max="-2" attributes="0"/>
+                      <Component id="btAgregar" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane3" pref="410" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane3" pref="364" max="32767" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -344,7 +498,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btAgregar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="131" max="32767" attributes="0"/>
+                  <EmptySpace min="122" pref="296" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -353,6 +507,9 @@
         <Component class="javax.swing.JTextField" name="tbBuscar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Buscar Producto"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="lsBuscar"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbBuscarMouseClicked"/>
@@ -366,14 +523,18 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Agregar"/>
             <Property name="name" type="java.lang.String" value="" noResource="true"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="btVender"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btAgregarActionPerformed"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="btAgregarKeyPressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lbExistencia">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Existencia: 000"/>
+            <Property name="text" type="java.lang.String" value="Existencia: 0"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbBuscar">
@@ -384,6 +545,10 @@
                 <StringItem index="1" value="Marca"/>
                 <StringItem index="2" value="Categoria"/>
               </StringArray>
+            </Property>
+            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="cbBuscar"/>
             </Property>
           </Properties>
           <AuxValues>
@@ -416,9 +581,14 @@
                   <StringArray count="0"/>
                 </Property>
                 <Property name="selectionMode" type="int" value="0"/>
+                <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="cbCantidad"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lsBuscarMouseClicked"/>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="lsBuscarKeyPressed"/>
+                <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="lsBuscarValueChanged"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="GenerarVenta_lsBuscar"/>
@@ -434,7 +604,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbPrecio">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Precio: $00.00"/>
+            <Property name="text" type="java.lang.String" value="Precio: $ 0.00"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -446,7 +616,7 @@
             <TitledBorder title="Registro"/>
           </Border>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="."/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
 
       <Layout>
@@ -528,10 +698,10 @@
           <Color blue="63" green="85" red="0" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Vender"/>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="btCancelar"/>
+        </Property>
       </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Vender"/>
-      </AccessibilityProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btVenderActionPerformed"/>
       </Events>
@@ -555,7 +725,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="5e" red="bf" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Total a pagar: $00.00"/>
+        <Property name="text" type="java.lang.String" value="Total a pagar: $ 0.00"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lbEmpleado">
@@ -563,8 +733,15 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Consolas" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Empleado: empleado "/>
+        <Property name="text" type="java.lang.String" value="Empleado: N/A"/>
+        <Property name="toolTipText" type="java.lang.String" value="Cambiar de usuario"/>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Empleado: "/>
+      </AccessibilityProperties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lbEmpleadoMouseClicked"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <AuxValues>
@@ -577,18 +754,29 @@
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="4" rowCount="0">
-                <Column editable="true" title="CANTIDAD" type="java.lang.Integer"/>
+                <Column editable="true" title="CANTIDAD" type="java.lang.String"/>
                 <Column editable="true" title="NOMBRE" type="java.lang.String"/>
-                <Column editable="true" title="PRECIO UNITARIO" type="java.lang.Double"/>
-                <Column editable="true" title="SUBTOTAL" type="java.lang.Double"/>
+                <Column editable="true" title="PRECIO UNITARIO" type="java.lang.String"/>
+                <Column editable="true" title="SUBTOTAL" type="java.lang.String"/>
               </Table>
             </Property>
-            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Default Cursor"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="dgvPedidos" noResource="true"/>
+            <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
+              <JTableSelectionModel selectionMode="0"/>
+            </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="false" resizingAllowed="false"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="dgvPedidosMouseReleased"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
