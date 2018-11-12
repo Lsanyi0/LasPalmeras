@@ -2,6 +2,7 @@ package Forms;
 
 import Entities.Cliente;
 import Entities.Telefono;
+import Entities.Usuario;
 import java.util.List;
 import java.text.DecimalFormat;
 import javax.swing.DefaultComboBoxModel;
@@ -9,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
-import Entities.Usuario;
 import java.util.ArrayList;
 
 
@@ -18,6 +18,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     Utilidades utilidades = new Utilidades();
     DecimalFormat df = new DecimalFormat("$ 0.00");
     public static Usuario usuario = null;
+    public static Cliente cliente;
     
     public GenerarVenta() {
         initComponents();
@@ -69,6 +70,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbFactura5 = new javax.swing.JLabel();
         lbFactura6 = new javax.swing.JLabel();
         tbTelefono = new javax.swing.JTextField();
+        btAgregarNuevoCliente = new javax.swing.JButton();
         lbVenta = new javax.swing.JLabel();
         panelProducto = new javax.swing.JPanel();
         tbBuscar = new javax.swing.JTextField();
@@ -85,7 +87,6 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbFechaExpedicion = new javax.swing.JLabel();
         lbFactura = new javax.swing.JLabel();
         lbNumeroFactura = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         btVender = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
         lbTotal = new javax.swing.JLabel();
@@ -169,15 +170,29 @@ public class GenerarVenta extends javax.swing.JFrame {
         lsBuscarCliente.setToolTipText("");
         jScrollPane4.setViewportView(lsBuscarCliente);
 
+        tbBuscarCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tbBuscarClienteKeyTyped(evt);
+            }
+        });
+
         lbFactura5.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         lbFactura5.setText("Buscar:");
 
         lbFactura6.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
-        lbFactura6.setText("Telefono:");
+        lbFactura6.setText("Telefono/s:");
 
         tbTelefono.setToolTipText("Si son multiples telefonos coloque una coma para separarlos");
         tbTelefono.setEnabled(false);
         tbTelefono.setNextFocusableComponent(tbBuscarCliente);
+
+        btAgregarNuevoCliente.setText("Agregar Nuevo Ciente");
+        btAgregarNuevoCliente.setEnabled(false);
+        btAgregarNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAgregarNuevoClienteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelClienteLayout = new javax.swing.GroupLayout(panelCliente);
         panelCliente.setLayout(panelClienteLayout);
@@ -186,44 +201,50 @@ public class GenerarVenta extends javax.swing.JFrame {
             .addGroup(panelClienteLayout.createSequentialGroup()
                 .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelClienteLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(rbAnonimo)
-                        .addGap(31, 31, 31)
-                        .addComponent(rbExistente)
-                        .addGap(34, 34, 34)
-                        .addComponent(rbNuevo)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(panelClienteLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane4))
                     .addGroup(panelClienteLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelClienteLayout.createSequentialGroup()
-                                .addComponent(lbFactura5)
-                                .addGap(28, 28, 28)
-                                .addComponent(tbBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelClienteLayout.createSequentialGroup()
+                                .addContainerGap()
                                 .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(panelClienteLayout.createSequentialGroup()
-                                        .addComponent(lbFactura1)
-                                        .addGap(28, 28, 28))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelClienteLayout.createSequentialGroup()
-                                        .addComponent(lbFactura3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tbNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-                                    .addComponent(tbApellidoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE))))
+                                        .addComponent(lbFactura5)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(tbBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(panelClienteLayout.createSequentialGroup()
+                                        .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(panelClienteLayout.createSequentialGroup()
+                                                .addComponent(lbFactura1)
+                                                .addGap(28, 28, 28))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelClienteLayout.createSequentialGroup()
+                                                .addComponent(lbFactura3)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                        .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(tbNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                                            .addComponent(tbApellidoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)))))
+                            .addGroup(panelClienteLayout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(rbAnonimo)
+                                .addGap(31, 31, 31)
+                                .addComponent(rbExistente)
+                                .addGap(34, 34, 34)
+                                .addComponent(rbNuevo)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbFactura6)
-                            .addComponent(lbFactura2)
-                            .addComponent(lbFactura4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tbTelefono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tbDUICliente, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tbDireccion, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addGroup(panelClienteLayout.createSequentialGroup()
+                                .addComponent(btAgregarNuevoCliente)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(panelClienteLayout.createSequentialGroup()
+                                .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbFactura6)
+                                    .addComponent(lbFactura2)
+                                    .addComponent(lbFactura4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tbTelefono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tbDUICliente, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(tbDireccion, javax.swing.GroupLayout.Alignment.TRAILING))))))
                 .addContainerGap())
         );
         panelClienteLayout.setVerticalGroup(
@@ -232,7 +253,8 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rbAnonimo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(rbExistente)
-                    .addComponent(rbNuevo))
+                    .addComponent(rbNuevo)
+                    .addComponent(btAgregarNuevoCliente))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelClienteLayout.createSequentialGroup()
@@ -256,7 +278,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                     .addComponent(tbTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbFactura5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -348,7 +370,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                                 .addComponent(lbPrecio))))
                     .addComponent(btAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
                 .addContainerGap())
         );
         panelProductoLayout.setVerticalGroup(
@@ -368,7 +390,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                     .addComponent(lbExistencia))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btAgregar)
-                .addGap(122, 294, Short.MAX_VALUE))
+                .addGap(122, 296, Short.MAX_VALUE))
         );
 
         lbRegistro.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro"));
@@ -386,13 +408,6 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbNumeroFactura.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         lbNumeroFactura.setText("000000");
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout lbRegistroLayout = new javax.swing.GroupLayout(lbRegistro);
         lbRegistro.setLayout(lbRegistroLayout);
         lbRegistroLayout.setHorizontalGroup(
@@ -404,8 +419,6 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addGap(41, 41, 41)
                         .addComponent(lbFechaExpedicion)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(189, 189, 189)
                 .addGroup(lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbFactura, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbRegistroLayout.createSequentialGroup()
@@ -422,10 +435,6 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addGroup(lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbFechaExpedicion)
                     .addComponent(lbNumeroFactura)))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbRegistroLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap())
         );
 
         btVender.setForeground(new java.awt.Color(0, 133, 99));
@@ -545,7 +554,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addComponent(lbPedidos)
                         .addComponent(btVender)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))
         );
 
         lbEmpleado.getAccessibleContext().setAccessibleName("Empleado: ");
@@ -605,45 +614,20 @@ public class GenerarVenta extends javax.swing.JFrame {
     }
     private void btVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVenderActionPerformed
         if (dgvPedidos.getRowCount() >= 1) {
-            Cliente cliente = new Cliente();
+           if (cliente == null) cliente = new Cliente();
             if (rbAnonimo.isSelected()) {
-                cliente.setNombre("Anonimo");
+                cliente.setNombre(rbAnonimo.getText());
                 cliente.setApellido("");
             } else if (rbExistente.isSelected()) {
                 cliente.setNombre(tbNombreCliente.getText());
                 cliente.setApellido(tbApellidoCliente.getText());
-            } else {
-                List<Telefono> telefonos = new ArrayList<>();
-                if (tbTelefono.getText().contains(",")) {
-                    String[] tels = tbTelefono.getText().split(",");
-                    for (String tel : tels) {
-                        if (!tel.trim().isEmpty()) {
-                            Telefono telefono = new Telefono();
-                            telefono.setTelefono(tel.trim());
-                            telefonos.add(telefono);
-                        }
-                    }
-                } else {
-                    if (!tbTelefono.getText().trim().isEmpty()) {
-                        Telefono tel = new Telefono();
-                        tel.setTelefono(tbTelefono.getText().trim());
-                        telefonos.add(tel);
-                    }
-                }
-                cliente.setNombre(tbNombreCliente.getText());
-                cliente.setApellido(tbApellidoCliente.getText());
-                cliente.setDui(tbDUICliente.getText());
-                cliente.setDireccion(tbDireccion.getText());
-                if (!telefonos.isEmpty()) {
-                    cliente.setTelefonoList(telefonos);
-                }
             }
+            
             try {
                 utilidades.crearVenta(cliente, usuario.getIdUsuario());
             } catch (Exception e) {
                 utilidades.mostrarAlerta(e + "", "Error");
             } finally {
-                utilidades.clearJTable(dgvPedidos);
                 actualizarCantidadInventario(lsBuscar);
             }
         } else {
@@ -661,6 +645,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         lsBuscarCliente.setVisible(false);
         tbBuscarCliente.setVisible(false);
         lbFactura5.setVisible(false);
+        btAgregarNuevoCliente.setEnabled(true);
     }//GEN-LAST:event_rbNuevoActionPerformed
 
     private void rbExistenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbExistenteActionPerformed
@@ -672,6 +657,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         lsBuscarCliente.setVisible(true);
         tbBuscarCliente.setVisible(true);
         lbFactura5.setVisible(true);
+        btAgregarNuevoCliente.setEnabled(false);
     }//GEN-LAST:event_rbExistenteActionPerformed
 
     private void rbAnonimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAnonimoActionPerformed
@@ -683,6 +669,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         lsBuscarCliente.setVisible(false);
         tbBuscarCliente.setVisible(false);
         lbFactura5.setVisible(false);
+        btAgregarNuevoCliente.setEnabled(false);
     }//GEN-LAST:event_rbAnonimoActionPerformed
 
     private void btAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgregarActionPerformed
@@ -777,9 +764,42 @@ public class GenerarVenta extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lbEmpleadoMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btAgregarNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgregarNuevoClienteActionPerformed
+        List<Telefono> telefonos = new ArrayList<>();
+        cliente = new Cliente();
+        if (tbTelefono.getText().contains(",")) {
+            String[] tels = tbTelefono.getText().split(",");
+            for (String tel : tels) {
+                if (!tel.trim().isEmpty()) {
+                    Telefono telefono = new Telefono();
+                    telefono.setTelefono(tel.trim());
+                    telefonos.add(telefono);
+                }
+            }
+        } else {
+            if (!tbTelefono.getText().trim().isEmpty()) {
+                Telefono tel = new Telefono();
+                tel.setTelefono(tbTelefono.getText().trim());
+                telefonos.add(tel);
+            }
+        }
+        cliente.setNombre(tbNombreCliente.getText());
+        cliente.setApellido(tbApellidoCliente.getText());
+        cliente.setDui(tbDUICliente.getText());
+        cliente.setDireccion(tbDireccion.getText());
+        if (!telefonos.isEmpty()) {
+            cliente.setTelefonoList(telefonos);
+        }
+        utilidades.AgregarCliente(cliente);
+    }//GEN-LAST:event_btAgregarNuevoClienteActionPerformed
+
+    private void tbBuscarClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBuscarClienteKeyTyped
+        Integer cantidad = tbBuscarCliente.getText().length();
+        if (cantidad >=2) {
+            utilidades.fillJList(lsBuscar, "Nombre", tbBuscarCliente.getText(), "cliente");
+        }
+        else ;
+    }//GEN-LAST:event_tbBuscarClienteKeyTyped
     private static int stringToInt(String string) {
         try {
             int var = Integer.parseInt(string);
@@ -828,12 +848,12 @@ public class GenerarVenta extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAgregar;
+    private javax.swing.JButton btAgregarNuevoCliente;
     private javax.swing.JButton btCancelar;
     private javax.swing.JButton btVender;
     private javax.swing.JComboBox<String> cbBuscar;
     private javax.swing.JComboBox cbCantidad;
-    private javax.swing.JTable dgvPedidos;
-    private javax.swing.JButton jButton1;
+    public static javax.swing.JTable dgvPedidos;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -864,7 +884,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JPanel panelCliente;
     private javax.swing.JPanel panelProducto;
     private javax.swing.JPopupMenu ppmDataGrid;
-    private javax.swing.JRadioButton rbAnonimo;
+    public static javax.swing.JRadioButton rbAnonimo;
     private javax.swing.JRadioButton rbExistente;
     private javax.swing.ButtonGroup rbGrupo1;
     private javax.swing.JRadioButton rbNuevo;

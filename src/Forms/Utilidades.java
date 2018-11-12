@@ -1,21 +1,23 @@
 package Forms;
 
 import Entities.Cliente;
+import Entities.Detalleventa;
 import Entities.Inventario;
 import Entities.Producto;
 import Entities.Telefono;
 import Entities.Usuario;
+import Entities.Venta;
 import Model.jtableVentaModel;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.StoredProcedureQuery;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -56,7 +58,7 @@ public class Utilidades {
         setJListModel(linv, lista);
     }
     
-    private void setJListModel(List linv, JList lista) {
+    public void setJListModel(List linv, JList lista) {
         JList listaDeshechable = new JList(linv.toArray());
         lista.setModel(listaDeshechable.getModel());
         if (linv.size() > 0) {
@@ -178,38 +180,48 @@ public class Utilidades {
     }
     
     public void crearVenta(Cliente cliente, int idEmpleado) {
-        try {
-            Cliente cli = (Cliente) manager.createQuery("SELECT c FROM Cliente c"
-                    + " WHERE c.nombre LIKE :nombre AND c.apellido LIKE :apellido")
-                    .setParameter("nombre", "%" + cliente.getNombre() + "%")
-                    .setParameter("apellido", "%" + cliente.getApellido() + "%")
-                    .getSingleResult();
-            
-            if(cli.getIdCliente()!= null) 
-            {
-                try {
-                    if (cliente.Validar()) {
-                        AgregarCliente(cliente);
-                    } else {
-                        mostrarAlerta("Cliente no válido", "Error");
-                        return;
-                    }
-                } catch (Exception e) {
-                    mostrarAlerta(e.toString(), "Error");
-                }
+        //Extraemos todos los clientes en la DB
+        List<Cliente> clientes = manager.createNamedQuery("Cliente.findAll")
+                .getResultList();
+        //Los "recorremos" todos en busca de concidencias
+        Cliente cli = clientes.stream()
+                .filter(client -> cliente.getNombre().equals(client.getNombre())
+                && cliente.getApellido().equals(client.getApellido()))
+                .findAny()
+                .orElse(null);
+        
+        if (cli != null) {
+            if (cli.getIdCliente() == null) {
+                mostrarAlerta("Cliente nuevo intente ingresarlo primero.", 
+                        "Error: la venta no puede ser realizada");
+                return;
             }
-            
-            StoredProcedureQuery nq = manager.createNamedStoredProcedureQuery("Venta.vender")
-                    .setParameter("pidc", cli.getIdCliente())
-                    .setParameter("pidempleado", idEmpleado)
-                    .setParameter("piva", 0.20)
-                    .setParameter("pdesc", 0.0);
-            nq.execute();
-            int idFactura = Integer.valueOf(nq.getOutputParameterValue("idventx")
-                    .toString());
-            crearDetalleVenta(idFactura);
+        }
+        else {
+            mostrarAlerta("Cliente no existente, intente de nuevo", "Error");
+            return;
+        }
+        Venta venta = new Venta();
+
+        venta.setIdCliente(cli);
+        venta.setIdUsuario(GenerarVenta.usuario);
+        venta.setFecha(new Date());
+        venta.setIva(0.13);
+        venta.setDescuento(0.0);
+        venta.setNula('0');
+        
+        try {
+            manager.getTransaction().begin();
+            manager.persist(venta);
+            manager.flush();
+            manager.getTransaction().commit();
         } catch (NumberFormatException e) {
-            //oie io no c
+            manager.getTransaction().rollback();
+            mostrarAlerta("Algo salio mal, intente de nuevo /n Error: "+e, 
+                    "Error:");
+        }
+        finally{
+            crearDetalleVenta(venta);
         }
     }
     
@@ -231,21 +243,34 @@ public class Utilidades {
                //Hacemos commit a los cambios realizados
                manager.getTransaction().commit();
            }
+           else mostrarAlerta("Porfavor ingrese nombre, y apellido validos", "Error");
        } catch (Exception e) {
            //Si falla en alguno de los pasos anteriores hacemos rollback
+           mostrarAlerta("Algo salio mal al ingresar nuevo usuario, porfavor "
+                   + "intente de nuevo /n Error: "+e, "Error");
            manager.getTransaction().rollback();
        }
    }
     
-    private void crearDetalleVenta(int idFactura) {
-        for (jtableVentaModel j : temp) {
-            StoredProcedureQuery nq = manager.createNamedStoredProcedureQuery("Detalleventa.detalleventa")
-                    .setParameter("pidprod", j.getIdProducto())
-                    .setParameter("pidventa", idFactura)
-                    .setParameter("pcantidad", j.getCantidad());
-            nq.execute();
+    private void crearDetalleVenta(Venta venta) {
+        try {
+            manager.getTransaction().begin();
+            for (jtableVentaModel j : temp) {
+                Detalleventa det = new Detalleventa();
+                det.setIdVenta(venta);
+                det.setIdProducto(new Producto(j.getIdProducto()));
+                det.setCantidad(j.getCantidad());
+                manager.persist(det);
+            }
+            manager.getTransaction().commit();
+        } catch (Exception e) {
+            manager.getTransaction().rollback();
+            mostrarAlerta("Error: " +e, "Error");
+        } finally {
+            GenerarVenta.cliente = null;
+            clearJTable(GenerarVenta.dgvPedidos);
+            mostrarAlerta("Venta satisfactoria", "Exito");
         }
-        mostrarAlerta("Venta satisfactoria", "Exito");
     }
     
     public void clearJTable(JTable jTable) {

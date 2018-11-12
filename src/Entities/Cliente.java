@@ -160,7 +160,7 @@ public class Cliente implements Serializable {
     {
         boolean isValid = true;
         if (this.getNombre().trim().isEmpty()) isValid = false;
-        if (!this.getNombre().equals("Anonimo")) 
+        if (!this.getNombre().equals(Forms.GenerarVenta.rbAnonimo.getText())) 
         {
             if (this.getApellido().trim().isEmpty()) isValid = false;
         }

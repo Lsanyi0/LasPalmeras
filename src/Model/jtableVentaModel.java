@@ -3,12 +3,12 @@ package Model;
 import java.text.DecimalFormat;
 
 public class jtableVentaModel {
-    int idProducto;
-    int cantidad;
-    String nombre;
-    Double preciounitario;
+    private int idProducto;
+    private int cantidad;
+    private String nombre;
+    private Double preciounitario;
     private Double subtotal;
-    DecimalFormat df = new DecimalFormat("#.00"); 
+    private final DecimalFormat df = new DecimalFormat("$ 0.00"); 
     
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
