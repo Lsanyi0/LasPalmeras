@@ -15,7 +15,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -31,6 +34,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c")
     , @NamedQuery(name = "Categoria.findByIdCategoria", query = "SELECT c FROM Categoria c WHERE c.idCategoria = :idCategoria")
     , @NamedQuery(name = "Categoria.findByCategoria", query = "SELECT c FROM Categoria c WHERE c.categoria = :categoria")})
+@NamedStoredProcedureQuery(
+        name="Categoria.insertarcategoria",
+        procedureName="insertcategoria",
+        parameters = {
+        @StoredProcedureParameter(name = "pcat",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "bandera",mode = ParameterMode.OUT,type = Integer.class),
+        @StoredProcedureParameter(name = "codigo",mode = ParameterMode.OUT,type = Integer.class),
+    }
+)
 public class Categoria implements Serializable {
 
     private static final long serialVersionUID = 1L;

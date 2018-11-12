@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entities;
 
 import java.io.Serializable;
@@ -17,7 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -35,6 +33,18 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Producto.findByProducto", query = "SELECT p FROM Producto p WHERE p.producto LIKE :producto")
     , @NamedQuery(name = "Producto.findByDescripcion", query = "SELECT p FROM Producto p WHERE p.descripcion = :descripcion")
     , @NamedQuery(name = "Producto.findByPrecio", query = "SELECT p FROM Producto p WHERE p.precio = :precio")})
+@NamedStoredProcedureQuery(
+        name="Producto.insertprod",
+        procedureName="insertProd",
+        parameters = {
+        @StoredProcedureParameter(name = "pidcat",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "pidmarca",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "pproducto",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "pdescripcion",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "pprecio",mode = ParameterMode.IN,type = Double.class),
+        @StoredProcedureParameter(name = "minsert",mode = ParameterMode.OUT,type = Integer.class),
+    }
+)
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
