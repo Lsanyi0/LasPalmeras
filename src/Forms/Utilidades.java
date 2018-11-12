@@ -4,15 +4,11 @@ import Entities.Categoria;
 import Entities.Cliente;
 import Entities.Detalleventa;
 import Entities.Inventario;
-import Entities.Marca;
 import Entities.Producto;
-<<<<<<< HEAD
 import Entities.Proveedor;
-=======
 import Entities.Telefono;
 import Entities.Usuario;
 import Entities.Venta;
->>>>>>> 1d0476c85ab455916e0e4011341659e8e4eccfb4
 import Model.jtableVentaModel;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -20,16 +16,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-<<<<<<< HEAD
-import java.util.HashSet;
-=======
->>>>>>> 1d0476c85ab455916e0e4011341659e8e4eccfb4
 import java.util.List;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ComboBox;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.StoredProcedureQuery;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -77,13 +68,8 @@ public class Utilidades {
             lista.setSelectedIndex(0);
         }
     }
-<<<<<<< HEAD
-    public Producto getProductoByNombre(String nombreProducto)
-    {
-=======
-    
+
     public Producto getProductoByNombre(String nombreProducto) {
->>>>>>> 1d0476c85ab455916e0e4011341659e8e4eccfb4
         Producto prod = (Producto) manager.createNamedQuery("Producto.findByProducto")
                 .setParameter("producto", "%" + nombreProducto + "%")
                 .getSingleResult();
@@ -300,7 +286,6 @@ public class Utilidades {
         jTable.setModel(model);
         temp.clear();
     }
-<<<<<<< HEAD
 
     public void persist(Object object) {
         manager.getTransaction().begin();
@@ -425,7 +410,7 @@ public class Utilidades {
                     .getSingleResult();
                     inte=c.getIdCategoria();
     return inte;
-=======
+    }
     public String getProductoEnLista(int index)
     {
         return temp.get(index).getNombre();
@@ -454,6 +439,5 @@ public class Utilidades {
                 .setParameter("idUsuario", idUsuario)
                 .getSingleResult();
         return usuario;
->>>>>>> 1d0476c85ab455916e0e4011341659e8e4eccfb4
     }
 }
