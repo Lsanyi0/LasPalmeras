@@ -38,22 +38,13 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Compra.findByDui", query = "SELECT c FROM Compra c WHERE c.dui = :dui")})
 @NamedStoredProcedureQuery(
     name = "Compra.comprar",
-    procedureName = "comopra",
+    procedureName = "GenerarCompra",
     parameters = {
-        @StoredProcedureParameter(name = "Provider",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "Direction",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "Phone",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "Representative",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "DUI",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "Category",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "Brand",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "Product",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "Description",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "Price",mode = ParameterMode.IN,type = Double.class),
-        @StoredProcedureParameter(name = "Quantity",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "unitPrice",mode = ParameterMode.IN,type = Double.class),
-        @StoredProcedureParameter(name = "expirationDate",mode = ParameterMode.IN,type = Date.class),
-        @StoredProcedureParameter(name = "MSG",mode = ParameterMode.OUT,type = String.class),
+        @StoredProcedureParameter(name = "pidprov",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "pfecha",mode = ParameterMode.IN,type = Date.class),
+        @StoredProcedureParameter(name = "prepresentante",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "pdui",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "midcompra",mode = ParameterMode.OUT,type = Integer.class),
     })
 public class Compra implements Serializable {
 

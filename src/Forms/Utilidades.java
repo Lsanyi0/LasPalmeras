@@ -1,15 +1,22 @@
 package Forms;
 
+import Entities.Categoria;
 import Entities.Cliente;
 import Entities.Inventario;
+import Entities.Marca;
 import Entities.Producto;
+import Entities.Proveedor;
 import Model.jtableVentaModel;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -60,7 +67,6 @@ public class Utilidades {
      JList listaDeshechable = new JList(linv.toArray());
      lista.setModel(listaDeshechable.getModel());
     }
-    
     public Producto getProductoByNombre(String nombreProducto)
     {
         Producto prod = (Producto) manager.createNamedQuery("Producto.findByProducto")
@@ -221,5 +227,130 @@ public class Utilidades {
         model.setRowCount(0);
         jTable.setModel(model);
         temp.clear();
+    }
+
+    public void persist(Object object) {
+        manager.getTransaction().begin();
+        try {
+            manager.persist(object);
+            manager.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            manager.getTransaction().rollback();
+        } finally {
+            manager.close();
+        }
+    }
+    public void fillcombobox(JComboBox CBcat){
+    List<Categoria> listado = manager.createNamedQuery("Categoria.findAll").getResultList();
+    for(Categoria c : listado){
+        CBcat.addItem(c.getCategoria());
+    }
+    }
+    public void fillJTable(JTable jtable, String tabla,String []titulos){
+    List<Producto> listado = manager.createQuery("SELECT p FROM "+tabla+" p").getResultList();
+    DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
+        for (Producto p : listado) {
+            Modelo.addRow(new Object[]{p.getIdProducto(),p.getProducto(),p.getDescripcion(),p.getIdMarca().getMarca()});
+        }
+        jtable.setModel(Modelo);
+    }
+    public void fillJTable(JTable jtable,String tabla,String filtro,String busqueda,String []titulos){
+    List<Producto> listado = manager.createQuery("SELECT p FROM "+tabla+" p where p."+filtro+" like %"+busqueda+"%").getResultList();
+    DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
+        for (Producto p : listado) {
+            Modelo.addRow(new Object[]{p.getProducto(),p.getDescripcion()});
+        }
+        jtable.setModel(Modelo);
+    }
+    public List<Producto> obtenerproducto(String tabla,int id,String filtro){
+        List<Producto> listado2 = manager.createQuery("SELECT p FROM "+tabla+" p where p."+filtro+"="+id).getResultList();
+        return listado2;
+    }
+    public int insertmarca(String marca){
+    int insert=0;
+    int insert2=0;
+        try {
+            StoredProcedureQuery np=manager.createNamedStoredProcedureQuery("Marca.insertarmarca")
+                    .setParameter("pmarca",marca);
+                    np.execute();
+                    insert2 = Integer.valueOf(np.getOutputParameterValue("bandera").toString());
+                    insert = Integer.valueOf(np.getOutputParameterValue("codigo").toString());
+        } catch (Exception e) {
+        }
+        return insert;
+    }
+    public int insertProveedor(String prov,String dir){
+    int codigo=0;
+    int bandera=-1;
+        try {
+            StoredProcedureQuery np=manager.createNamedStoredProcedureQuery("Proveedor.insertarproveedor")
+                    .setParameter("pproveedor",prov)
+                    .setParameter("pdireccion",dir);
+                    np.execute();
+                    bandera = Integer.valueOf(np.getOutputParameterValue("bandera").toString());
+                    codigo = Integer.valueOf(np.getOutputParameterValue("codigo").toString());
+        } catch (Exception e) {
+        }
+    return codigo;}
+    
+    public int insertarcategoria(String categ){
+    int codigo=0;
+    int b=-1;
+    try {
+            StoredProcedureQuery np=manager.createNamedStoredProcedureQuery("Categoria.insertarcategoria")
+                    .setParameter("pcat",categ);
+                    np.execute();
+                    b = Integer.valueOf(np.getOutputParameterValue("bandera").toString());
+                    codigo = Integer.valueOf(np.getOutputParameterValue("codigo").toString());
+        } catch (Exception e) {
+        }   
+    return codigo;}
+    
+    public int crearProducto(String cat,String marc,String prod,String desc,double precio){
+       int insertp=-1;
+       int insertmarca=0;
+        try {
+                    StoredProcedureQuery np = manager.createNamedStoredProcedureQuery("Producto.insertprod")
+                    .setParameter("pidcat",insertarcategoria(cat))
+                    .setParameter("pidmarca",insertmarca(marc))
+                    .setParameter("pproducto",prod)
+                    .setParameter("pdescripcion",desc)
+                    .setParameter("pprecio",precio);
+                     np.execute();
+                     insertp = Integer.valueOf(np.getOutputParameterValue("minsert").toString());
+        } catch (Exception e) {
+        }
+        return insertp;
+    }
+    public void crearCompra(String proveedor,String dir,Date fecha,String representante,String dui){
+        int insertCompra =0;
+        try{
+            Proveedor p = (Proveedor) manager.createNamedQuery("Proveedor.findByProveedor")
+                    .setParameter("proveedor","%"+proveedor+"%")
+                    .getSingleResult();
+            StoredProcedureQuery np = manager.createNamedStoredProcedureQuery("Compra.comprar")
+                    .setParameter("pidprov",insertProveedor(proveedor,dir))
+                    .setParameter("pfecha",fecha)
+                    .setParameter(("prepresentante"),representante)
+                    .setParameter("pdui",dui);
+                    np.execute();
+                    insertCompra=Integer.valueOf(np.getOutputParameterValue("midcompra").toString());
+            }catch(Exception e){
+            
+            }
+    }
+    public List<Proveedor> fillcomboboxp(){
+    List<Proveedor> listado = manager.createNamedQuery("Proveedor.findAll").getResultList();
+    return listado;
+    }
+    
+    public int getidcategoriabyn(String cat){
+    int inte=0;
+    Categoria c = (Categoria) manager.createNamedQuery("Categoria.findByCategoria")
+                    .setParameter("categoria",cat)
+                    .getSingleResult();
+                    inte=c.getIdCategoria();
+    return inte;
     }
 }

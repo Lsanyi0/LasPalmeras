@@ -15,7 +15,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -32,6 +35,15 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Proveedor.findByIdProveedor", query = "SELECT p FROM Proveedor p WHERE p.idProveedor = :idProveedor")
     , @NamedQuery(name = "Proveedor.findByProveedor", query = "SELECT p FROM Proveedor p WHERE p.proveedor = :proveedor")
     , @NamedQuery(name = "Proveedor.findByDireccion", query = "SELECT p FROM Proveedor p WHERE p.direccion = :direccion")})
+@NamedStoredProcedureQuery(
+    name = "Proveedor.insertarproveedor",
+    procedureName = "insertproveedor",
+    parameters = {
+        @StoredProcedureParameter(name = "pproveedor",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "pdireccion",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "bandera",mode = ParameterMode.OUT,type = Integer.class),
+        @StoredProcedureParameter(name = "codigo",mode = ParameterMode.OUT,type = Integer.class),
+    })
 public class Proveedor implements Serializable {
 
     private static final long serialVersionUID = 1L;
