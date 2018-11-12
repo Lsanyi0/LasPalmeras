@@ -8,23 +8,22 @@
     <class>Entities.Categoria</class>
     <class>Entities.Proveedor</class>
     <class>Entities.Cliente</class>
-    <class>Entities.Venta</class>
-    <class>Entities.Detalleventa</class>
-    <class>Entities.Detallecompra</class>
     <class>Entities.Estadousuario</class>
     <class>Entities.Telefono</class>
     <class>Entities.Compra</class>
     <class>Entities.Rol</class>
-    <class>Entities.Inventario</class>
     <class>Entities.Historialsalario</class>
     <class>Entities.Producto</class>
     <class>Entities.Inventario</class>
     <class>Entities.Fechavencimiento</class>
+    <class>Entities.Venta</class>
+    <class>Entities.Detalleventa</class>
+    <class>Entities.Detallecompra</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/laspalmeras"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/laspalmeras1"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="tejada987"/>
+      <property name="javax.persistence.jdbc.password" value="resident00RE"/>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>

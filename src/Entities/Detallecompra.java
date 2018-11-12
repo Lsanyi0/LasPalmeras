@@ -6,7 +6,6 @@
 package Entities;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,8 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,13 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Detallecompra.findAll", query = "SELECT d FROM Detallecompra d")
     , @NamedQuery(name = "Detallecompra.findByIdDetalleCompra", query = "SELECT d FROM Detallecompra d WHERE d.idDetalleCompra = :idDetalleCompra")
     , @NamedQuery(name = "Detallecompra.findByCantidad", query = "SELECT d FROM Detallecompra d WHERE d.cantidad = :cantidad")
-    , @NamedQuery(name = "Detallecompra.findByPrecioUnitario", query = "SELECT d FROM Detallecompra d WHERE d.precioUnitario = :precioUnitario")
-    , @NamedQuery(name = "Detallecompra.findByFechaVencimiento", query = "SELECT d FROM Detallecompra d WHERE d.fechaVencimiento = :fechaVencimiento")})
+    , @NamedQuery(name = "Detallecompra.findByPrecioUnitario", query = "SELECT d FROM Detallecompra d WHERE d.precioUnitario = :precioUnitario")})
 public class Detallecompra implements Serializable {
-
-    @JoinColumn(name = "idFechaVencimiento", referencedColumnName = "idFechavencimiento")
-    @ManyToOne
-    private Fechavencimiento idFechaVencimiento;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,15 +44,15 @@ public class Detallecompra implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "PrecioUnitario")
     private Double precioUnitario;
-    @Column(name = "fechaVencimiento")
-    @Temporal(TemporalType.DATE)
-    private Date fechaVencimiento;
     @JoinColumn(name = "idCompra", referencedColumnName = "idCompra")
     @ManyToOne
     private Compra idCompra;
     @JoinColumn(name = "idProducto", referencedColumnName = "idProducto")
     @ManyToOne
     private Producto idProducto;
+    @JoinColumn(name = "idFechaVencimiento", referencedColumnName = "idFechavencimiento")
+    @ManyToOne
+    private Fechavencimiento idFechaVencimiento;
 
     public Detallecompra() {
     }
@@ -93,14 +85,6 @@ public class Detallecompra implements Serializable {
         this.precioUnitario = precioUnitario;
     }
 
-    public Date getFechaVencimiento() {
-        return fechaVencimiento;
-    }
-
-    public void setFechaVencimiento(Date fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
-    }
-
     public Compra getIdCompra() {
         return idCompra;
     }
@@ -115,6 +99,14 @@ public class Detallecompra implements Serializable {
 
     public void setIdProducto(Producto idProducto) {
         this.idProducto = idProducto;
+    }
+
+    public Fechavencimiento getIdFechaVencimiento() {
+        return idFechaVencimiento;
+    }
+
+    public void setIdFechaVencimiento(Fechavencimiento idFechaVencimiento) {
+        this.idFechaVencimiento = idFechaVencimiento;
     }
 
     @Override
@@ -140,14 +132,6 @@ public class Detallecompra implements Serializable {
     @Override
     public String toString() {
         return "Entities.Detallecompra[ idDetalleCompra=" + idDetalleCompra + " ]";
-    }
-
-    public Fechavencimiento getIdFechaVencimiento() {
-        return idFechaVencimiento;
-    }
-
-    public void setIdFechaVencimiento(Fechavencimiento idFechaVencimiento) {
-        this.idFechaVencimiento = idFechaVencimiento;
     }
     
 }

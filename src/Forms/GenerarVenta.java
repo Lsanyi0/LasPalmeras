@@ -22,7 +22,6 @@ public class GenerarVenta extends javax.swing.JFrame {
     
     public GenerarVenta() {
         initComponents();
-        utilidades.getInv();
         utilidades.setScreenCentered(this);
         utilidades.fillJList(lsBuscar,"Producto");
         lbFechaExpedicion.setText(utilidades.getDate());
@@ -593,7 +592,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         if (utilidades.validarComboBox(cbCantidad)) {
             int cbx = Integer.valueOf(cbCantidad.getSelectedItem().toString());
             if (evt.getClickCount() == 2 && list.getModel().getSize() > 0 &&
-                    utilidades.getInventarioByNombre(lsBuscar.getSelectedValue())>0)
+                    utilidades.getExistenciaByNombre(lsBuscar.getSelectedValue())>0)
             {
                 utilidades.addToJTableVenta(dgvPedidos, lsBuscar.getSelectedValue(),cbx);
                 dgvPedidos.setDefaultEditor(Object.class, null);
@@ -604,7 +603,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_lsBuscarMouseClicked
     private void actualizarCantidadInventario(JList list)
     {
-        String existencia = String.valueOf(utilidades.getInventarioByNombre(
+        String existencia = String.valueOf(utilidades.getExistenciaByNombre(
                 list.getSelectedValue().toString()));
         String precio = String.valueOf(df.format(utilidades.getPrecioByNombre(
                 list.getSelectedValue().toString())));
@@ -714,7 +713,7 @@ public class GenerarVenta extends javax.swing.JFrame {
             }
             num = stringToInt(valor);
             if (num > utilidades
-                    .getInventarioByNombre((String) dgvPedidos
+                    .getExistenciaByNombre((String) dgvPedidos
                             .getModel()
                             .getValueAt(dgvPedidos.getSelectedRow(), 1)))
             {

@@ -78,12 +78,16 @@ public class Utilidades {
     
     //Metodo getInventarioByNombre obtenemos un entero que representa la cantidad actual de
     //producto mediante su nombre
-    public int getInventarioByNombre(String nombreProducto) {
+    public int getExistenciaByNombre(String nombreProducto) {
         Producto prod = getProductoByNombre(nombreProducto);
-        Inventario inv = (Inventario) manager.createNamedQuery("Inventario.findByIdProducto")
+        List<Inventario> inv =  manager.createNamedQuery("Inventario.findByIdProducto")
                 .setParameter("idProducto", prod.getIdProducto())
-                .getSingleResult();
-        return inv.getExistencia();
+                .getResultList();
+        Integer existencia = 0;
+        for (Inventario inve : inv) {
+           existencia += inve.getExistencia();
+        }
+        return existencia;
     }
     public void getInv()
     {
@@ -107,10 +111,10 @@ public class Utilidades {
         int ya = buscarProductoEnTabla(temp, venta.getNombre());
         
         if (ya != -1) {
-            if (temp.get(ya).getCantidad() + venta.getCantidad() < getInventarioByNombre(nombreProducto)) {
+            if (temp.get(ya).getCantidad() + venta.getCantidad() < getExistenciaByNombre(nombreProducto)) {
                 temp.get(ya).setCantidad(cantidad + temp.get(ya).getCantidad());
             } else {
-                temp.get(ya).setCantidad(getInventarioByNombre(nombreProducto));
+                temp.get(ya).setCantidad(getExistenciaByNombre(nombreProducto));
                 mostrarAlerta("La Cantidad que intento ingresar es mayor al inventario "
                         + "disponible, se colocara el total de inventario "
                         + "como valor a vender.",
@@ -213,8 +217,6 @@ public class Utilidades {
         venta.setIdCliente(cli);
         venta.setIdUsuario(GenerarVenta.usuario);
         venta.setFecha(new Date());
-        venta.setIva(0.13);
-        venta.setDescuento(0.0);
         venta.setNula('0');
         
         try {

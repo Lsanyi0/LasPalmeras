@@ -39,8 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Venta.findAll", query = "SELECT v FROM Venta v")
     , @NamedQuery(name = "Venta.findByIdVenta", query = "SELECT v FROM Venta v WHERE v.idVenta = :idVenta")
     , @NamedQuery(name = "Venta.findByFecha", query = "SELECT v FROM Venta v WHERE v.fecha = :fecha")
-    , @NamedQuery(name = "Venta.findByIva", query = "SELECT v FROM Venta v WHERE v.iva = :iva")
-    , @NamedQuery(name = "Venta.findByDescuento", query = "SELECT v FROM Venta v WHERE v.descuento = :descuento")
     , @NamedQuery(name = "Venta.findByNula", query = "SELECT v FROM Venta v WHERE v.nula = :nula")})
 @NamedStoredProcedureQuery(
     name = "Venta.vender",
@@ -54,6 +52,9 @@ import javax.xml.bind.annotation.XmlTransient;
     })
 public class Venta implements Serializable {
 
+    @OneToMany(mappedBy = "idVenta")
+    private List<Detalleventa> detalleventaList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,13 +63,8 @@ public class Venta implements Serializable {
     private Integer idVenta;
     @Basic(optional = false)
     @Column(name = "Fecha")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "IVA")
-    private Double iva;
-    @Column(name = "Descuento")
-    private Double descuento;
     @Column(name = "NULA")
     private Character nula;
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
@@ -77,8 +73,6 @@ public class Venta implements Serializable {
     @JoinColumn(name = "idCliente", referencedColumnName = "idCliente")
     @ManyToOne
     private Cliente idCliente;
-    @OneToMany(mappedBy = "idVenta")
-    private List<Detalleventa> detalleventaList;
 
     public Venta() {
     }
@@ -108,22 +102,6 @@ public class Venta implements Serializable {
         this.fecha = fecha;
     }
 
-    public Double getIva() {
-        return iva;
-    }
-
-    public void setIva(Double iva) {
-        this.iva = iva;
-    }
-
-    public Double getDescuento() {
-        return descuento;
-    }
-
-    public void setDescuento(Double descuento) {
-        this.descuento = descuento;
-    }
-
     public Character getNula() {
         return nula;
     }
@@ -146,15 +124,6 @@ public class Venta implements Serializable {
 
     public void setIdCliente(Cliente idCliente) {
         this.idCliente = idCliente;
-    }
-
-    @XmlTransient
-    public List<Detalleventa> getDetalleventaList() {
-        return detalleventaList;
-    }
-
-    public void setDetalleventaList(List<Detalleventa> detalleventaList) {
-        this.detalleventaList = detalleventaList;
     }
 
     @Override
@@ -180,6 +149,15 @@ public class Venta implements Serializable {
     @Override
     public String toString() {
         return "Entities.Venta[ idVenta=" + idVenta + " ]";
+    }
+
+    @XmlTransient
+    public List<Detalleventa> getDetalleventaList() {
+        return detalleventaList;
+    }
+
+    public void setDetalleventaList(List<Detalleventa> detalleventaList) {
+        this.detalleventaList = detalleventaList;
     }
     
 }

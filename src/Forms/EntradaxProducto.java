@@ -617,7 +617,7 @@ public class EntradaxProducto extends javax.swing.JFrame {
         this.tbDescripcion.setText(listado1.get(0).getDescripcion());
         this.CBXCategoria.removeAllItems();
         this.CBXCategoria.addItem(listado1.get(0).getIdCategoria().getCategoria());
-        this.dpFechaVencimiento.setDate(listado1.get(0).getDetallecompraList().get(0).getFechaVencimiento());
+//        this.dpFechaVencimiento.setDate(listado1.get(0).getDetallecompraList().get(0).getFechaVencimiento());
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void btGuardarEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarEntradaActionPerformed
