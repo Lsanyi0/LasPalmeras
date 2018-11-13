@@ -16,6 +16,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,6 +34,18 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Detallecompra.findByIdDetalleCompra", query = "SELECT d FROM Detallecompra d WHERE d.idDetalleCompra = :idDetalleCompra")
     , @NamedQuery(name = "Detallecompra.findByCantidad", query = "SELECT d FROM Detallecompra d WHERE d.cantidad = :cantidad")
     , @NamedQuery(name = "Detallecompra.findByPrecioUnitario", query = "SELECT d FROM Detallecompra d WHERE d.precioUnitario = :precioUnitario")})
+@NamedStoredProcedureQuery(
+        name="DetalleCompra.InsertCompra",
+        procedureName="GenerarDCompra",
+        parameters = {
+        @StoredProcedureParameter(name = "pidcompra",mode = ParameterMode.IN,type = Integer.class),
+            @StoredProcedureParameter(name = "pidproducto",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "pcantidad",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "ppreciou",mode = ParameterMode.IN,type = Double.class),
+        @StoredProcedureParameter(name = "pidfechaVencimiento",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "x",mode = ParameterMode.OUT,type = Integer.class),
+    }
+)
 public class Detallecompra implements Serializable {
 
     private static final long serialVersionUID = 1L;

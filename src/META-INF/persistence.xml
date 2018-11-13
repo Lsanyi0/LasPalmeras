@@ -20,10 +20,10 @@
     <class>Entities.Detalleventa</class>
     <class>Entities.Detallecompra</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/laspalmeras1"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/laspalmeras1?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="resident00RE"/>
+      <property name="javax.persistence.jdbc.password" value="tejada987"/>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>

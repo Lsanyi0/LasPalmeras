@@ -4,14 +4,18 @@ import Entities.Categoria;
 import Entities.Cliente;
 import Entities.Detalleventa;
 import Entities.Inventario;
+import Entities.Marca;
 import Entities.Producto;
 import Entities.Proveedor;
 import Entities.Telefono;
 import Entities.Usuario;
 import Entities.Venta;
+import EntradaXProducto.Productos;
 import Model.jtableVentaModel;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -311,7 +315,8 @@ public class Utilidades {
     List<Producto> listado = manager.createQuery("SELECT p FROM "+tabla+" p").getResultList();
     DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
         for (Producto p : listado) {
-            Modelo.addRow(new Object[]{p.getIdProducto(),p.getProducto(),p.getDescripcion(),p.getIdMarca().getMarca()});
+//            p.getIdProducto(),p.getProducto(),p.getDescripcion(),p.getIdMarca().getMarca()
+            Modelo.addRow(new Object[]{Integer.toString(p.getIdProducto()),p.getProducto(),p.getDescripcion(),p.getIdMarca().getMarca()});
         }
         jtable.setModel(Modelo);
     }
@@ -441,5 +446,47 @@ public class Utilidades {
                 .setParameter("idUsuario", idUsuario)
                 .getSingleResult();
         return usuario;
+    }
+    public void fillcomboboxMarca(JComboBox cbMarca){
+    List<Marca> listado = manager.createNamedQuery("Marca.findAll").getResultList();
+    cbMarca.removeAllItems();
+        for(Marca m : listado){
+            cbMarca.addItem(m.getMarca());
+        }
+    }
+    public void fillcomboboxc(JComboBox CBcat,String catp){
+    List<Categoria> listado = manager.createNamedQuery("Categoria.findAll").getResultList();
+    CBcat.removeAllItems();
+    CBcat.addItem(catp);
+    for(Categoria c : listado){
+        if(c.getCategoria()==catp){
+        
+        }
+        else if(c.getCategoria()!=catp){
+        CBcat.addItem(c.getCategoria());
+        }
+    }
+    }
+    public void fillcomboboxcatp(JComboBox CBcat){
+    List<Categoria> listado = manager.createNamedQuery("Categoria.findAll").getResultList();
+    CBcat.removeAllItems();
+    for(Categoria c : listado){
+        CBcat.addItem(c.getCategoria());
+    }
+    }
+    public void llenarJtablepe(ArrayList<Productos> lpn,JTable jtable,String []titulos){
+        DateFormat formatoFecha = null;
+        formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+        DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
+            for (Productos pn : lpn){
+                
+                    String[] registrop =
+                    {Integer.toString(pn.getCodigo()),pn.getProducto(),pn.getMarca(),pn.getCategoria(),
+                    pn.getDescripcion(),Double.toString(pn.getPrecio()),Integer.toString(pn.getCantidad()),
+                    formatoFecha.format(pn.getFechavencimiento())};
+                    
+                    Modelo.addRow(registrop);
+            }
+            jtable.setModel(Modelo);
     }
 }
