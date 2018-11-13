@@ -448,39 +448,34 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Component id="btAgregar" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lbExistencia" min="-2" max="-2" attributes="0"/>
                               <Component id="cbBuscar" alignment="0" min="-2" pref="82" max="-2" attributes="0"/>
                               <Component id="lbCantidad" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbDescuento" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="tbBuscar" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="cbCantidad" alignment="0" max="32767" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="lbPrecio" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="tbBuscar" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cbCantidad" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lbPrecio" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="tbDescuento" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <Component id="btAgregar" max="32767" attributes="0"/>
                   </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jScrollPane3" min="-2" pref="360" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane3" pref="364" max="32767" attributes="0"/>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jScrollPane3" alignment="1" max="32767" attributes="0"/>
+              <Component id="jScrollPane3" alignment="1" pref="391" max="32767" attributes="0"/>
               <Group type="102" alignment="1" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cbBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -491,14 +486,19 @@
                       <Component id="cbCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbCantidad" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbPrecio" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbDescuento" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tbDescuento" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbExistencia" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbPrecio" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btAgregar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="122" pref="296" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -563,6 +563,9 @@
                 <StringItem index="0" value="1"/>
               </StringArray>
             </Property>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="tbDescuento"/>
+            </Property>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
@@ -606,6 +609,21 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Precio: $ 0.00"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbDescuento">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Descuento:"/>
+            <Property name="toolTipText" type="java.lang.String" value="Descuento al precio unitario del producto"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="tbDescuento">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0.00"/>
+            <Property name="toolTipText" type="java.lang.String" value="Dejar en blanco si no se aplicara desuento"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -753,10 +771,11 @@
         <Component class="javax.swing.JTable" name="dgvPedidos">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="0">
+              <Table columnCount="5" rowCount="0">
                 <Column editable="true" title="CANTIDAD" type="java.lang.String"/>
                 <Column editable="true" title="NOMBRE" type="java.lang.String"/>
                 <Column editable="true" title="PRECIO UNITARIO" type="java.lang.String"/>
+                <Column editable="true" title="DESCUENTO" type="java.lang.String"/>
                 <Column editable="true" title="SUBTOTAL" type="java.lang.String"/>
               </Table>
             </Property>

@@ -121,7 +121,7 @@ public class pruebaImpresion extends javax.swing.JFrame {
     private void btAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgregarProductoActionPerformed
         id+=1;
         jtableVentaModel jvf = new jtableVentaModel(id,Integer.parseInt(tbCantidad.getText())
-                ,tbNombreProd.getText(),Double.parseDouble(tbPrecioUnitario.getText()));
+                ,tbNombreProd.getText(),Double.parseDouble(tbPrecioUnitario.getText()),0.0);
         jventafake.add(jvf);
         System.out.println(jventafake.size());
     }//GEN-LAST:event_btAgregarProductoActionPerformed
