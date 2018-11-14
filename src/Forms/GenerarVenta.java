@@ -81,6 +81,8 @@ public class GenerarVenta extends javax.swing.JFrame {
         lsBuscar = new javax.swing.JList<>();
         lbCantidad = new javax.swing.JLabel();
         lbPrecio = new javax.swing.JLabel();
+        lbDescuento = new javax.swing.JLabel();
+        tbDescuento = new javax.swing.JTextField();
         lbRegistro = new javax.swing.JPanel();
         lbFecha = new javax.swing.JLabel();
         lbFechaExpedicion = new javax.swing.JLabel();
@@ -322,6 +324,7 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         cbCantidad.setEditable(true);
         cbCantidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1" }));
+        cbCantidad.setNextFocusableComponent(tbDescuento);
 
         lsBuscar.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lsBuscar.setNextFocusableComponent(cbCantidad);
@@ -346,6 +349,12 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         lbPrecio.setText("Precio: $ 0.00");
 
+        lbDescuento.setText("Descuento:");
+        lbDescuento.setToolTipText("Descuento al precio unitario del producto");
+
+        tbDescuento.setText("0.00");
+        tbDescuento.setToolTipText("Dejar en blanco si no se aplicara desuento");
+
         javax.swing.GroupLayout panelProductoLayout = new javax.swing.GroupLayout(panelProducto);
         panelProducto.setLayout(panelProductoLayout);
         panelProductoLayout.setHorizontalGroup(
@@ -353,28 +362,26 @@ public class GenerarVenta extends javax.swing.JFrame {
             .addGroup(panelProductoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelProductoLayout.createSequentialGroup()
                         .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbExistencia)
                             .addComponent(cbBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbCantidad))
-                        .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelProductoLayout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(tbBuscar, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cbCantidad, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(panelProductoLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lbPrecio))))
-                    .addComponent(btAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
+                            .addComponent(lbCantidad)
+                            .addComponent(lbDescuento))
+                        .addGap(11, 11, 11)
+                        .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(tbBuscar, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbCantidad, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbPrecio, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tbDescuento))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         panelProductoLayout.setVerticalGroup(
             panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProductoLayout.createSequentialGroup()
                 .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -385,11 +392,15 @@ public class GenerarVenta extends javax.swing.JFrame {
                     .addComponent(lbCantidad))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbPrecio)
-                    .addComponent(lbExistencia))
+                    .addComponent(lbDescuento)
+                    .addComponent(tbDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbExistencia)
+                    .addComponent(lbPrecio))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btAgregar)
-                .addGap(122, 296, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         lbRegistro.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro"));
@@ -471,11 +482,11 @@ public class GenerarVenta extends javax.swing.JFrame {
 
             },
             new String [] {
-                "CANTIDAD", "NOMBRE", "PRECIO UNITARIO", "SUBTOTAL"
+                "CANTIDAD", "NOMBRE", "PRECIO UNITARIO", "DESCUENTO", "SUBTOTAL"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -594,7 +605,7 @@ public class GenerarVenta extends javax.swing.JFrame {
             if (evt.getClickCount() == 2 && list.getModel().getSize() > 0 &&
                     utilidades.getExistenciaByNombre(lsBuscar.getSelectedValue())>0)
             {
-                utilidades.addToJTableVenta(dgvPedidos, lsBuscar.getSelectedValue(),cbx);
+                utilidades.addToJTableVenta(dgvPedidos, lsBuscar.getSelectedValue(),cbx,Double.valueOf(tbDescuento.getText()));
                 dgvPedidos.setDefaultEditor(Object.class, null);
                 dgvPedidos.setRowSelectionAllowed(true);
                 lbTotal.setText("Total a pagar: " + df.format(utilidades.getTotal()));
@@ -859,6 +870,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel lbCantidad;
+    private javax.swing.JLabel lbDescuento;
     private javax.swing.JLabel lbEmpleado;
     private javax.swing.JLabel lbExistencia;
     private javax.swing.JLabel lbFactura;
@@ -891,6 +903,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JTextField tbBuscar;
     private javax.swing.JTextField tbBuscarCliente;
     private javax.swing.JTextField tbDUICliente;
+    private javax.swing.JTextField tbDescuento;
     private javax.swing.JTextField tbDireccion;
     private javax.swing.JTextField tbNombreCliente;
     private javax.swing.JTextField tbTelefono;

@@ -25,7 +25,8 @@ import javax.persistence.Table;
     , @NamedQuery(name = "Inventario.findByIdProducto", query = "SELECT i FROM Inventario i WHERE i.idProducto = :idProducto")
     , @NamedQuery(name = "Inventario.findByCompra", query = "SELECT i FROM Inventario i WHERE i.compra = :compra")
     , @NamedQuery(name = "Inventario.findByVenta", query = "SELECT i FROM Inventario i WHERE i.venta = :venta")
-    , @NamedQuery(name = "Inventario.findByExistencia", query = "SELECT i FROM Inventario i WHERE i.existencia = :existencia")})
+    , @NamedQuery(name = "Inventario.findByExistencia", query = "SELECT i FROM Inventario i WHERE i.existencia = :existencia")
+    , @NamedQuery(name = "Inventario.findIdFechaVencimiento",query = "SELECT i.idFechavencimiento FROM Inventario i JOIN Fechavencimiento f WHERE i.existencia >= 1 AND i.idFechavencimiento = F.idFechavencimiento AND i.idProducto = :idProd ORDER BY f.fechavencimiento ASC")})
 public class Inventario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,6 +35,8 @@ public class Inventario implements Serializable {
     private int idDetalleCompra;
     @Column(name = "idProducto")
     private Integer idProducto;
+    @Column(name = "idFechavencimiento")
+    private Integer idFechavencimiento;
     @Column(name = "Compra")
     private Integer compra;
     @Column(name = "Venta")
@@ -59,7 +62,15 @@ public class Inventario implements Serializable {
     public void setIdProducto(Integer idProducto) {
         this.idProducto = idProducto;
     }
+    
+    public Integer getIdFechavencimiento() {
+        return idFechavencimiento;
+    }
 
+    public void setIdFechavencimiento(Integer idFechavencimiento) {
+        this.idFechavencimiento = idFechavencimiento;
+    }
+    
     public Integer getCompra() {
         return compra;
     }
