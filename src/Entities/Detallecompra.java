@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Detallecompra.findByCantidad", query = "SELECT d FROM Detallecompra d WHERE d.cantidad = :cantidad")
     , @NamedQuery(name = "Detallecompra.findByPrecioUnitario", query = "SELECT d FROM Detallecompra d WHERE d.precioUnitario = :precioUnitario")})
 @NamedStoredProcedureQuery(
-        name="DetalleCompra.InsertCompra",
+        name="DetalleCompra.InsertDCompra",
         procedureName="GenerarDCompra",
         parameters = {
         @StoredProcedureParameter(name = "pidcompra",mode = ParameterMode.IN,type = Integer.class),

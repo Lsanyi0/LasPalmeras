@@ -16,13 +16,13 @@ public class Compra {
     int idProveedor;
     Date fecha;
     String representante;
-    String dui;
+    String duir;
 //int idCompra,
-    public Compra( int idProveedor, Date fecha, String representante, String dui) {
+    public Compra( int idProveedor, Date fecha, String representante, String duir) {
 //        this.idCompra = idCompra;
         this.idProveedor = idProveedor;
         this.fecha = fecha;
         this.representante = representante;
-        this.dui = dui;
+        this.duir = duir;
     }
 }
