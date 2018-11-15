@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p")
     , @NamedQuery(name = "Producto.findByIdProducto", query = "SELECT p FROM Producto p WHERE p.idProducto = :idProducto")
     , @NamedQuery(name = "Producto.findByProducto", query = "SELECT p FROM Producto p WHERE p.producto LIKE :producto")
+    , @NamedQuery(name = "Producto.findByNombreProducto", query = "SELECT p.idProducto FROM Producto p WHERE p.producto LIKE :producto")
     , @NamedQuery(name = "Producto.findByDescripcion", query = "SELECT p FROM Producto p WHERE p.descripcion = :descripcion")
     , @NamedQuery(name = "Producto.findByPrecio", query = "SELECT p FROM Producto p WHERE p.precio = :precio")})
 @NamedStoredProcedureQuery(

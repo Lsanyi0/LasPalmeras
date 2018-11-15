@@ -26,7 +26,8 @@ import javax.persistence.Table;
     , @NamedQuery(name = "Inventario.findByCompra", query = "SELECT i FROM Inventario i WHERE i.compra = :compra")
     , @NamedQuery(name = "Inventario.findByVenta", query = "SELECT i FROM Inventario i WHERE i.venta = :venta")
     , @NamedQuery(name = "Inventario.findByExistencia", query = "SELECT i FROM Inventario i WHERE i.existencia = :existencia")
-    , @NamedQuery(name = "Inventario.findIdFechaVencimiento",query = "SELECT i.idFechavencimiento FROM Inventario i JOIN Fechavencimiento f WHERE i.existencia >= 1 AND i.idFechavencimiento = F.idFechavencimiento AND i.idProducto = :idProd ORDER BY f.fechavencimiento ASC")})
+    , @NamedQuery(name = "Inventario.findIdFechaVencimiento",query = "SELECT i.idFechavencimiento FROM Inventario i JOIN Fechavencimiento f WHERE i.existencia >= 1 AND i.idFechavencimiento = F.idFechavencimiento AND i.idProducto = :idProd ORDER BY f.fechavencimiento ASC")
+    , @NamedQuery(name = "Inventario.findExistenciaPorFechaVencimientoById",query = "SELECT i.existencia FROM Inventario i JOIN Fechavencimiento f WHERE i.existencia >= 1 AND i.idFechavencimiento = F.idFechavencimiento AND i.idProducto = :idProd ORDER BY f.fechavencimiento ASC")})
 public class Inventario implements Serializable {
 
     private static final long serialVersionUID = 1L;
