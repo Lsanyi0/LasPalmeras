@@ -602,13 +602,15 @@ public class GenerarVenta extends javax.swing.JFrame {
         JList list = (JList)evt.getSource();
         if (utilidades.validarComboBox(cbCantidad)) {
             int cbx = Integer.valueOf(cbCantidad.getSelectedItem().toString());
+            Double desc = Double.valueOf(tbDescuento.getText());
             if (evt.getClickCount() == 2 && list.getModel().getSize() > 0 &&
                     utilidades.getExistenciaByNombre(lsBuscar.getSelectedValue())>0)
             {
-                utilidades.addToJTableVenta(dgvPedidos, lsBuscar.getSelectedValue(),cbx,Double.valueOf(tbDescuento.getText()));
+                utilidades.addToJTableVenta(dgvPedidos, lsBuscar.getSelectedValue(),cbx,desc);
                 dgvPedidos.setDefaultEditor(Object.class, null);
                 dgvPedidos.setRowSelectionAllowed(true);
                 lbTotal.setText("Total a pagar: " + df.format(utilidades.getTotal()));
+                tbDescuento.setText("0.00");
             }
         }
     }//GEN-LAST:event_lsBuscarMouseClicked
@@ -639,6 +641,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 utilidades.mostrarAlerta(e + "", "Error");
             } finally {
                 actualizarCantidadInventario(lsBuscar);
+                focusRbExistente();
             }
         } else {
             utilidades.mostrarAlerta("No puede vender si no se han agregado productos",
@@ -823,6 +826,12 @@ public class GenerarVenta extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return -1;
         }
+    }
+    public void focusRbExistente()
+    {
+        rbExistente.setSelected(true);
+        java.awt.event.ActionEvent evt =  new java.awt.event.ActionEvent(this, 0, "");
+        rbExistenteActionPerformed(evt);
     }
     public static void main(String args[]) {
         

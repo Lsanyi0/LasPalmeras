@@ -41,10 +41,13 @@ public class Utilidades {
     
     private static ArrayList<jtableVentaModel> temp;
     
+    private final ReportesEimpresion reportes;
+    
     public Utilidades() {
         emf = Persistence.createEntityManagerFactory("AgroServPU");
         manager = emf.createEntityManager();
         temp = new ArrayList<>();
+        reportes = new ReportesEimpresion();
     }
     
     //getDate devuelve un String que representa la fecha con formato dia,mes,año
@@ -115,8 +118,8 @@ public class Utilidades {
                 temp.get(ya).setCantidad(cantidad + temp.get(ya).getCantidad());
             } else {
                 temp.get(ya).setCantidad(getExistenciaByNombre(nombreProducto));
-                mostrarAlerta("La Cantidad que intento ingresar es mayor al inventario "
-                        + "disponible, se colocara el total de inventario "
+                mostrarAlerta("La Cantidad que intentó ingresar es mayor al inventario "
+                        + "disponible, se colocará la cantidad máxima disponible "
                         + "como valor a vender.",
                         "Cantidad seleccionada mayor a la disponible");
             }
@@ -223,14 +226,11 @@ public class Utilidades {
             manager.getTransaction().begin();
             manager.persist(venta);
             manager.flush();
-            manager.getTransaction().commit();
+            crearDetalleVenta(venta);            
         } catch (NumberFormatException e) {
             manager.getTransaction().rollback();
             mostrarAlerta("Algo salio mal, intente de nuevo /n Error: "+e,
                     "Error:");
-        }
-        finally{
-            crearDetalleVenta(venta);
         }
     }
     
@@ -270,24 +270,27 @@ public class Utilidades {
     
     private void crearDetalleVenta(Venta venta) {
         try {
-            manager.getTransaction().begin();
             for (jtableVentaModel j : temp) {
                 Detalleventa det = new Detalleventa();
                 det.setIdProducto(new Producto(j.getIdProducto()));
                 det.setIdVenta(venta);
                 det.setIdFechaVencimiento(new Fechavencimiento(getIdFechaVencimiento(j.getIdProducto())));
                 det.setCantidad(j.getCantidad());
-                det.setDescuento(0.00);
+                det.setDescuento(j.getDescuento());
                 manager.persist(det);
             }
+            manager.flush();
             manager.getTransaction().commit();
-        } catch (Exception e) {
-            manager.getTransaction().rollback();
-            mostrarAlerta("Error: " +e, "Error");
-        } finally {
+          
+            reportes.crearFactura(temp, venta.getIdVenta(), 
+                    GenerarVenta.cliente.getNombre()+" "+GenerarVenta.cliente.getApellido(), 
+                    GenerarVenta.cliente.getDireccion());       
+            
             GenerarVenta.cliente = null;
             clearJTable(GenerarVenta.dgvPedidos);
             mostrarAlerta("Venta satisfactoria", "Exito");
+        } catch (Exception e) {
+            mostrarAlerta("Error: " +e, "Error");
         }
     }
     
@@ -321,7 +324,7 @@ public class Utilidades {
         DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
         for (Producto p : listado) {
 //            p.getIdProducto(),p.getProducto(),p.getDescripcion(),p.getIdMarca().getMarca()
-            Modelo.addRow(new Object[]{Integer.toString(p.getIdProducto()),p.getProducto(),p.getDescripcion(),p.getIdMarca().getMarca()});
+Modelo.addRow(new Object[]{Integer.toString(p.getIdProducto()),p.getProducto(),p.getDescripcion(),p.getIdMarca().getMarca()});
         }
         jtable.setModel(Modelo);
     }
@@ -453,45 +456,45 @@ public class Utilidades {
         return usuario;
     }
     public void fillcomboboxMarca(JComboBox cbMarca){
-    List<Marca> listado = manager.createNamedQuery("Marca.findAll").getResultList();
-    cbMarca.removeAllItems();
+        List<Marca> listado = manager.createNamedQuery("Marca.findAll").getResultList();
+        cbMarca.removeAllItems();
         for(Marca m : listado){
             cbMarca.addItem(m.getMarca());
         }
     }
     public void fillcomboboxc(JComboBox CBcat,String catp){
-    List<Categoria> listado = manager.createNamedQuery("Categoria.findAll").getResultList();
-    CBcat.removeAllItems();
-    CBcat.addItem(catp);
-    for(Categoria c : listado){
-        if(c.getCategoria()==catp){
-        
+        List<Categoria> listado = manager.createNamedQuery("Categoria.findAll").getResultList();
+        CBcat.removeAllItems();
+        CBcat.addItem(catp);
+        for(Categoria c : listado){
+            if(c.getCategoria()==catp){
+                
+            }
+            else if(c.getCategoria()!=catp){
+                CBcat.addItem(c.getCategoria());
+            }
         }
-        else if(c.getCategoria()!=catp){
-        CBcat.addItem(c.getCategoria());
-        }
-    }
     }
     public void fillcomboboxcatp(JComboBox CBcat){
-    List<Categoria> listado = manager.createNamedQuery("Categoria.findAll").getResultList();
-    CBcat.removeAllItems();
-    for(Categoria c : listado){
-        CBcat.addItem(c.getCategoria());
-    }
+        List<Categoria> listado = manager.createNamedQuery("Categoria.findAll").getResultList();
+        CBcat.removeAllItems();
+        for(Categoria c : listado){
+            CBcat.addItem(c.getCategoria());
+        }
     }
     public void llenarJtablepe(ArrayList<Productos> lpn,JTable jtable,String []titulos){
         DateFormat formatoFecha = null;
         formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
         DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
-            for (Productos pn : lpn){
-                
-                    String[] registrop =
-                    {Integer.toString(pn.getCodigo()),pn.getProducto(),pn.getMarca(),pn.getCategoria(),
-                    pn.getDescripcion(),Double.toString(pn.getPrecio()),Integer.toString(pn.getCantidad()),
-                    formatoFecha.format(pn.getFechavencimiento())};
-                    
-                    Modelo.addRow(registrop);
-            }
-            jtable.setModel(Modelo);
+        for (Productos pn : lpn){
+            
+            String[] registrop =
+            {Integer.toString(pn.getCodigo()),pn.getProducto(),pn.getMarca(),pn.getCategoria(),
+                pn.getDescripcion(),Double.toString(pn.getPrecio()),Integer.toString(pn.getCantidad()),
+                formatoFecha.format(pn.getFechavencimiento())};
+            
+            Modelo.addRow(registrop);
+        }
+        jtable.setModel(Modelo);
     }
 }
