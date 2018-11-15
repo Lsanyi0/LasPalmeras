@@ -16,7 +16,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,6 +37,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Fechavencimiento.findAll", query = "SELECT f FROM Fechavencimiento f")
     , @NamedQuery(name = "Fechavencimiento.findByIdFechavencimiento", query = "SELECT f FROM Fechavencimiento f WHERE f.idFechavencimiento = :idFechavencimiento")
     , @NamedQuery(name = "Fechavencimiento.findByFechavencimiento", query = "SELECT f FROM Fechavencimiento f WHERE f.fechavencimiento = :fechavencimiento")})
+@NamedStoredProcedureQuery(
+    name = "Fechavencimiento.insertarfechav",
+    procedureName = "insertfechaVencimiento",
+    parameters = {
+        @StoredProcedureParameter(name = "pfechavenc",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "bandera",mode = ParameterMode.OUT,type = Integer.class),
+        @StoredProcedureParameter(name = "mfechavenc",mode = ParameterMode.OUT,type = Integer.class),
+    })
 public class Fechavencimiento implements Serializable {
 
     private static final long serialVersionUID = 1L;

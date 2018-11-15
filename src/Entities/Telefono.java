@@ -16,6 +16,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,6 +33,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Telefono.findAll", query = "SELECT t FROM Telefono t")
     , @NamedQuery(name = "Telefono.findByIdTelefono", query = "SELECT t FROM Telefono t WHERE t.idTelefono = :idTelefono")
     , @NamedQuery(name = "Telefono.findByTelefono", query = "SELECT t FROM Telefono t WHERE t.telefono = :telefono")})
+@NamedStoredProcedureQuery(
+    name = "Telefono.insertartelefono",
+    procedureName = "inserttelefono",
+    parameters = {
+        @StoredProcedureParameter(name = "pidU",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "pidcli",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "idprov",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "ptel",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "bandera",mode = ParameterMode.OUT,type = Integer.class),
+    })
 public class Telefono implements Serializable {
 
     private static final long serialVersionUID = 1L;
