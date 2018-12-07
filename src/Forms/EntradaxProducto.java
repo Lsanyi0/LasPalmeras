@@ -377,6 +377,11 @@ public class EntradaxProducto extends javax.swing.JFrame {
         btEliminarProducto.setBackground(new java.awt.Color(255, 102, 102));
         btEliminarProducto.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btEliminarProducto.setText("Eliminar Producto");
+        btEliminarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btEliminarProductoActionPerformed(evt);
+            }
+        });
 
         panelRegistro.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fecha de expedicion", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
@@ -611,17 +616,24 @@ public class EntradaxProducto extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void btGuardarEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarEntradaActionPerformed
+        int x=0;
         if(validarCamposGuardarEnt()==true){
             if(this.RBNuevoProv.isSelected()==true){
-                utilidades.crearDetCompra(
+                x=utilidades.crearDetCompra(
                           this.lpn,utilidades.insertProveedor(this.tbNombreP.getText(),this.tbDireccionP.getText(),this.tbtelefonop.getText()),
                                             fechaActual,this.tbRepresentante.getText(),this.tbduirep.getText());
                 
             }
             else if(this.RBNuevoProv.isSelected()==false){
-                utilidades.crearDetCompra(
+                x=utilidades.crearDetCompra(
                           this.lpn,utilidades.findProvbyname(this.CBProveedores.getSelectedItem().toString()),
                                             fechaActual,this.tbRepresentante.getText(),this.tbduirep.getText());
+            }
+            if(x!=-1){
+                JOptionPane.showMessageDialog(null, "Registro existoso","Registro",JOptionPane.INFORMATION_MESSAGE);                
+                clearforNew();
+                deshabilitarPP();
+                this.dgvEntradas.removeAll();
             }
         }
         else if(validarCamposGuardarEnt()==false){
@@ -667,15 +679,37 @@ public class EntradaxProducto extends javax.swing.JFrame {
 
     private void btnAgregarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarProdActionPerformed
         if(validarCamposAggProd()==true){
-        String []tituloss = {"id","producto","marca","categoria","descripcion","precio","cantidad","caducidad"};
-                lpn.add(new Productos(LidProducto,this.TBCategoria.getText(),this.tbMarca.getText(),
+            int existente;
+            existente=utilidades.buscarProdEnArrayEP(lpn,LidProducto);
+            String []tituloss = {"id","producto","marca","categoria","descripcion","precio","cantidad","caducidad"};
+            if(existente==-1){
+            
+                    lpn.add(new Productos(LidProducto,this.TBCategoria.getText(),this.tbMarca.getText(),
                                     this.tbNombre.getText(),this.tbDescripcion.getText(),
                                     Double.parseDouble(this.tbPrecioU.getText()),
                                     Integer.parseInt(this.cbcant.getSelectedItem().toString()),this.dpFechaVencimiento.getDate()));
-                                    utilidades.llenarJtablepe(this.lpn, this.dgvEntradas, tituloss);
+                                    utilidades.llenarJtablePE(this.lpn, this.dgvEntradas, tituloss);
+            }else if(existente!=-1){
+                int r= JOptionPane.showConfirmDialog(
+                        null,"AVISO!ya tiene un producto en lista de compra si continua se le aumentara el producto, se editara la caducidad y el precio. ¿desea continuar?","CONTINUAR!",JOptionPane.YES_NO_OPTION);
+                if(r==JOptionPane.YES_OPTION){
+                    lpn.get(existente).
+                    setCantidad(lpn.get(existente).getCantidad()+
+                            Integer.parseInt(this.cbcant.getSelectedItem().toString()));
+                    lpn.get(existente).setFechavencimiento(this.dpFechaVencimiento.getDate());
+                    lpn.get(existente).setPrecio(Double.parseDouble(this.tbPrecioU.getText()));
+                    utilidades.llenarJtablePE(this.lpn, this.dgvEntradas, tituloss);
+                }
+                else if(r==JOptionPane.NO_OPTION){
+                
+                }
+                else if(r==JOptionPane.CLOSED_OPTION){
+            
+                }
+            }
         }
         else if(validarCamposAggProd()==false){
-        JOptionPane.showMessageDialog(null, "Algun campo esta vacio","Registro",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Algun campo esta vacio","Registro",JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnAgregarProdActionPerformed
 
@@ -710,13 +744,13 @@ public class EntradaxProducto extends javax.swing.JFrame {
         if((evt.getKeyChar()=='.')&&(this.tbPrecioU.getText().contains("."))) {
             evt.consume();
         }
+        if(this.tbPrecioU.getText().length()>10){
+            evt.consume();
+        }
     }//GEN-LAST:event_tbPrecioUKeyTyped
 
     private void tbNombrePKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbNombrePKeyTyped
         if(!Character.isAlphabetic(evt.getKeyChar())&&(evt.getKeyChar()!=' ')) {
-            evt.consume();
-        }
-        if((evt.getKeyChar()==' ')&&(this.tbNombreP.getText().contains(" "))) {
             evt.consume();
         }
     }//GEN-LAST:event_tbNombrePKeyTyped
@@ -725,10 +759,13 @@ public class EntradaxProducto extends javax.swing.JFrame {
         if(!Character.isDigit(evt.getKeyChar())) {
             evt.consume();
         }
+        if(this.tbtelefonop.getText().length()>12) {
+            evt.consume();
+        }
     }//GEN-LAST:event_tbtelefonopKeyTyped
 
     private void tbRepresentanteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbRepresentanteKeyTyped
-        if(!Character.isAlphabetic(evt.getKeyChar())) {
+        if(!Character.isAlphabetic(evt.getKeyChar())&&(evt.getKeyChar()!=' ')) {
             evt.consume();
         }
     }//GEN-LAST:event_tbRepresentanteKeyTyped
@@ -738,6 +775,9 @@ public class EntradaxProducto extends javax.swing.JFrame {
             evt.consume();
         }
         if((evt.getKeyChar()=='-')&&(this.tbduirep.getText().contains("-"))) {
+            evt.consume();
+        }
+        if(this.tbduirep.getText().length()>12) {
             evt.consume();
         }
     }//GEN-LAST:event_tbduirepKeyTyped
@@ -751,7 +791,40 @@ public class EntradaxProducto extends javax.swing.JFrame {
         utilidades.fillJTable(this.TbBProduct,"Producto","producto",this.txtBusquedaP.getText(), titulos);
         this.TbBProduct.setDefaultEditor(Object.class,null);
     }//GEN-LAST:event_txtBusquedaPKeyTyped
-   public void deshabilitarPP(){
+
+    private void btEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEliminarProductoActionPerformed
+            int r= JOptionPane.showConfirmDialog(null,"confirmar eliminacion de producto","CONTINUAR!",JOptionPane.YES_NO_OPTION);
+            if(r==JOptionPane.YES_OPTION){
+                String []tituloss = {"id","producto","marca","categoria","descripcion","precio","cantidad","caducidad"};
+                int fila = this.dgvEntradas.getSelectedRow();
+                int idproducto = Integer.parseInt(this.dgvEntradas.getValueAt(fila,0).toString());
+                utilidades.eliminarProdPE(this.lpn, idproducto);
+                utilidades.llenarJtablePE(this.lpn, this.dgvEntradas, tituloss);
+            }
+            else if(r==JOptionPane.NO_OPTION){
+                
+            }
+            else if(r==JOptionPane.CLOSED_OPTION){
+            
+            }
+
+    }//GEN-LAST:event_btEliminarProductoActionPerformed
+    public void clearforNew(){
+        this.lpn=null;
+        this.tbNombre.setText("");
+        this.tbDescripcion.setText("");
+        this.tbDireccionP.setText("");
+        this.tbMarca.setText("");
+        this.tbPrecioU.setText("");
+        this.tbRepresentante.setText("");
+        this.tbduirep.setText("");
+        this.TBCategoria.setText("");
+        this.tbNombreP.setText("");
+        this.tbDireccionP.setText("");
+        this.tbtelefonop.setText("");
+        lpn=new ArrayList<>();
+    }
+    public void deshabilitarPP(){
         for(int i=0;i<this.panelProducto.getComponents().length;i++) {
             this.panelProducto.getComponent(i).setEnabled(false);
         }
@@ -805,13 +878,16 @@ public class EntradaxProducto extends javax.swing.JFrame {
     }
     public boolean validarCamposGuardarEnt(){
         boolean validado=false;
-            if((this.RBNuevoProv.isSelected()==true)&&(this.tbNombreP.getText().length()!=0)&&
-                (this.tbDireccionP.getText().length()!=0)&&(this.tbtelefonop.getText().length()!=0)
-                &&(validarrepresentante()==true)&&(this.dgvEntradas.getRowCount()>0)){
+            if(this.RBNuevoProv.isSelected()==true){
+                if((this.tbNombreP.getText().length()!=0)&&
+                    (this.tbDireccionP.getText().length()!=0)&&(this.tbtelefonop.getText().length()!=0)
+                    &&(validarrepresentante()==true)&&(this.dgvEntradas.getRowCount()>0)){
                 validado=true;
+                }
             }
-            else if((this.RBNuevoProv.isSelected()==false)&&(validarrepresentante()==true)&&(this.dgvEntradas.getRowCount()==0)){
-                validado=true;
+            else if(this.RBNuevoProv.isSelected()==false){
+                if((validarrepresentante()==true)&&(this.dgvEntradas.getRowCount()>0)){
+                validado=true;}
             }
             else{validado=false;}
     return validado;}

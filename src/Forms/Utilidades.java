@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -150,7 +151,6 @@ public class Utilidades {
         }
         return -1;
     }
-    
     public boolean validarComboBox(JComboBox cbx) {
         try {
             String i = cbx.getSelectedItem().toString();
@@ -342,6 +342,22 @@ public class Utilidades {
         List<Producto> listado2 = manager.createQuery("SELECT p FROM "+tabla+" p where p."+filtro+"="+id).getResultList();
         return listado2;
     }
+    public int UpdateProd(int idproducto,String categoria,String marca,String producto,String descripcion,Double precio){
+        int insert=0;
+        try {
+            StoredProcedureQuery np=manager.createNamedStoredProcedureQuery("Producto.UpdateProd")
+                    .setParameter("pidProducto",idproducto)
+                    .setParameter("pidCategoria",insertarcategoria(categoria))
+                    .setParameter("pidMarca",insertmarca(marca))
+                    .setParameter("pproducto",producto)
+                    .setParameter("pdescripcion",descripcion)
+                    .setParameter("pprecio",precio);
+            np.execute();
+            insert = Integer.valueOf(np.getOutputParameterValue("x").toString());
+        } catch (Exception e) {
+        }
+        return insert;
+    }
     public int insertmarca(String marca){
         int insert=0;
         int insert2=0;
@@ -407,7 +423,6 @@ public class Utilidades {
     
     public int crearProducto(String cat,String marc,String prod,String desc,double precio){
         int insertp=-1;
-        int insertmarca=0;
         try {
             StoredProcedureQuery np = manager.createNamedStoredProcedureQuery("Producto.insertprod")
                     .setParameter("pidcat",insertarcategoria(cat))
@@ -421,7 +436,6 @@ public class Utilidades {
         }
         return insertp;
     }
-
     public List<Proveedor> fillcomboboxp(){
         List<Proveedor> listado = manager.createNamedQuery("Proveedor.findAll").getResultList();
         return listado;
@@ -471,19 +485,34 @@ public class Utilidades {
             cbMarca.addItem(m.getMarca());
         }
     }
+    public void fillcomboboxM(JComboBox CBMarca,String Marca){
+    List<Marca> listado = manager.createNamedQuery("Marca.findAll").getResultList();
+    CBMarca.removeAllItems();
+    CBMarca.addItem(Marca);
+    for(Marca M : listado){
+        if(M.getMarca()==Marca){
+        
+        }
+        else if(M.getMarca()!=Marca){
+        CBMarca.addItem(M.getMarca());
+        }
+    }
+    }
+    //llena el com    bobox cuando un producto tiene una categoria por si el usuario no desea modificar esa parte, el usuario no culpara al 
+    //sistema(o al desarrollador) que el le lleno el combobox de manera aleatoria sin poner el que tiene el producto de primero en el combobox
     public void fillcomboboxc(JComboBox CBcat,String catp){
     List<Categoria> listado = manager.createNamedQuery("Categoria.findAll").getResultList();
     CBcat.removeAllItems();
     CBcat.addItem(catp);
     for(Categoria c : listado){
         if(c.getCategoria()==catp){
-        
         }
         else if(c.getCategoria()!=catp){
         CBcat.addItem(c.getCategoria());
         }
     }
     }
+    
     public void fillcomboboxcatp(JComboBox CBcat){
     List<Categoria> listado = manager.createNamedQuery("Categoria.findAll").getResultList();
     CBcat.removeAllItems();
@@ -491,21 +520,44 @@ public class Utilidades {
         CBcat.addItem(c.getCategoria());
     }
     }
-    public void llenarJtablepe(ArrayList<Productos> lpn,JTable jtable,String []titulos){
+        //busca si el codigo del producto ya esta en la el arraylist si no lo encuentra devuelve -1
+    //si lo encuentra devuelve el codigo del producto   //formulario EntradaxProducto
+    public int buscarProdEnArrayEP(ArrayList<Productos> lpn,int idprod){
+    int codigo=-1;
+        for (int i = 0; i < lpn.size(); i++) {
+            if (lpn.get(i).getCodigo()==idprod) {
+                codigo=i;
+            }
+            else if(lpn.get(i).getCodigo()!=idprod){
+                codigo =-1;
+            }
+        }  
+    return codigo;}
+    //llena el grid view con el arraylist de productos //formulario EntradaxProducto
+    public void llenarJtablePE(ArrayList<Productos> lpn,JTable jtable,String []titulos){
         DateFormat formatoFecha = null;
         formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
         DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
             for (Productos pn : lpn){
+                String[] registrop =
+                {Integer.toString(pn.getCodigo()),pn.getProducto(),pn.getMarca(),pn.getCategoria(),
+                pn.getDescripcion(),Double.toString(pn.getPrecio()),Integer.toString(pn.getCantidad()),
+                formatoFecha.format(pn.getFechavencimiento())};
+                Modelo.addRow(registrop);
                 
-                    String[] registrop =
-                    {Integer.toString(pn.getCodigo()),pn.getProducto(),pn.getMarca(),pn.getCategoria(),
-                    pn.getDescripcion(),Double.toString(pn.getPrecio()),Integer.toString(pn.getCantidad()),
-                    formatoFecha.format(pn.getFechavencimiento())};
-                    
-                    Modelo.addRow(registrop);
             }
             jtable.setModel(Modelo);
             jtable.setDefaultEditor(Object.class, null);
+    }
+    public void eliminarProdPE(ArrayList<Productos> lpn ,int idprod){
+        for (int i = 0; i < lpn.size(); i++) {
+            if (lpn.get(i).getCodigo()==idprod) {
+                lpn.remove(i);
+            }
+            else if(lpn.get(i).getCodigo()!=idprod){
+                
+            }
+        }  
     }
     public int insertFechaVencimiento(String fecha){
         int codigo=-1;
@@ -536,8 +588,8 @@ public class Utilidades {
             }
         return insertCompra;
     }
-    public void crearDetCompra(ArrayList<Productos>lpn,int idprov,Date fecha,String representante,String dui){
-        int x;
+    public int crearDetCompra(ArrayList<Productos>lpn,int idprov,Date fecha,String representante,String dui){
+        int x=-2;
         DateFormat f=null;
         f =new SimpleDateFormat("yyyy-MM-dd");
         
@@ -559,5 +611,5 @@ public class Utilidades {
         
         }
 
-    }
+    return x;}
 }

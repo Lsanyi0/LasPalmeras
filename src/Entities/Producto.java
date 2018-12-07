@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.ParameterMode;
@@ -33,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Producto.findByProducto", query = "SELECT p FROM Producto p WHERE p.producto LIKE :producto")
     , @NamedQuery(name = "Producto.findByDescripcion", query = "SELECT p FROM Producto p WHERE p.descripcion = :descripcion")
     , @NamedQuery(name = "Producto.findByPrecio", query = "SELECT p FROM Producto p WHERE p.precio = :precio")})
-@NamedStoredProcedureQuery(
+ @NamedStoredProcedureQueries ({
+    @NamedStoredProcedureQuery(
         name="Producto.insertprod",
         procedureName="insertProd",
         parameters = {
@@ -43,8 +45,23 @@ import javax.xml.bind.annotation.XmlTransient;
         @StoredProcedureParameter(name = "pdescripcion",mode = ParameterMode.IN,type = String.class),
         @StoredProcedureParameter(name = "pprecio",mode = ParameterMode.IN,type = Double.class),
         @StoredProcedureParameter(name = "minsert",mode = ParameterMode.OUT,type = Integer.class),
-    }
-)
+        }),
+    @NamedStoredProcedureQuery(
+        name="Producto.UpdateProd",
+        procedureName="actualizarProd",
+        parameters = {
+        @StoredProcedureParameter(name = "pidProducto",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "pidCategoria",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "pidMarca",mode = ParameterMode.IN,type = Integer.class),
+        @StoredProcedureParameter(name = "pproducto",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "pdescripcion",mode = ParameterMode.IN,type = String.class),
+        @StoredProcedureParameter(name = "pprecio",mode = ParameterMode.IN,type = Double.class),
+        @StoredProcedureParameter(name = "x",mode = ParameterMode.OUT,type = Integer.class),
+        })
+ })
+
+//in pidProducto int,in pidCategoria int,in pidMarca int, in pproducto varchar(60),in pdescripcion varchar(60),in pprecio double(5,2),out x int
+
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
