@@ -10,6 +10,7 @@ public class jtableVentaModel {
     private Double descuento;
     private Double subtotal;
     private final DecimalFormat df = new DecimalFormat("$ 0.00");
+    private final DecimalFormat dfd = new DecimalFormat("-$ 0.00");
     
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
@@ -52,9 +53,13 @@ public class jtableVentaModel {
     }
     
     public Double getSubtotal() {
+        acutalizarSubtotal();
         return subtotal;
     }
-    
+    public Double getSubtotalSinDescuento()
+    {
+        return preciounitario * cantidad;
+    }
     public Object[] toArray()
     {
         acutalizarSubtotal();
@@ -62,7 +67,7 @@ public class jtableVentaModel {
             this.cantidad,
             this.nombre,
             df.format(this.preciounitario),
-            df.format(this.descuento),
+            dfd.format(this.descuento),
             df.format(this.subtotal)
         };
         return arr;
@@ -90,6 +95,6 @@ public class jtableVentaModel {
     }
     private void acutalizarSubtotal()
     {
-        setSubtotal(cantidad * preciounitario);
+        setSubtotal((cantidad * preciounitario)-descuento);
     }
 }

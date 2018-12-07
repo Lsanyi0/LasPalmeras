@@ -1,8 +1,11 @@
 package Forms;
 
+import jReports.MysqlConnection;
+import Entities.Cliente;
 import Model.jtableVentaModel;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
+import java.util.HashMap;
+import java.util.Map;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -15,12 +18,14 @@ public class pruebaImpresion extends javax.swing.JFrame {
     ArrayList<jtableVentaModel> jventafake;
     ReportesEimpresion re;
     Utilidades utilidades ;
+    MysqlConnection con = null;
     public pruebaImpresion() {
         initComponents();
         this.btImprimir.requestFocus();
         jventafake = new ArrayList<>();
         re = new ReportesEimpresion();
         utilidades = new Utilidades();
+        con = new MysqlConnection();
     }
     
     @SuppressWarnings("unchecked")
@@ -33,6 +38,7 @@ public class pruebaImpresion extends javax.swing.JFrame {
         tbPrecioUnitario = new javax.swing.JTextField();
         tbCantidad = new javax.swing.JTextField();
         btJasperR = new javax.swing.JButton();
+        tbDescuento = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,43 +87,61 @@ public class pruebaImpresion extends javax.swing.JFrame {
             }
         });
 
+        tbDescuento.setText("0.01");
+        tbDescuento.setToolTipText("Precio");
+        tbDescuento.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tbDescuentoFocusGained(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tbPrecioUnitario)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(tbNombreProd, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(btAgregarProducto)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tbNombreProd)
-                    .addComponent(tbCantidad, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(btAgregarProducto)
-                .addContainerGap(28, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btImprimir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btJasperR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(50, 50, 50))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btImprimir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btJasperR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(50, 50, 50))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(tbDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tbCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tbPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tbNombreProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(tbCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(tbNombreProd, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tbPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tbCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tbPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tbDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btAgregarProducto)
-                .addGap(1, 1, 1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btImprimir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btJasperR))
@@ -141,26 +165,36 @@ public class pruebaImpresion extends javax.swing.JFrame {
     private void btAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgregarProductoActionPerformed
         id+=1;
         jtableVentaModel jvf = new jtableVentaModel(id,Integer.parseInt(tbCantidad.getText())
-                ,tbNombreProd.getText(),Double.parseDouble(tbPrecioUnitario.getText()),0.0);
+                ,tbNombreProd.getText(),Double.parseDouble(tbPrecioUnitario.getText()),Double.parseDouble(tbDescuento.getText()));
         jventafake.add(jvf);
         System.out.println(jventafake.size());
     }//GEN-LAST:event_btAgregarProductoActionPerformed
 
     private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
-        re.crearFactura(jventafake);
+        Cliente cli = new Cliente();
+        re.crearFactura(jventafake,1,"Luis Albanes",cli.getDireccion());
     }//GEN-LAST:event_btImprimirActionPerformed
 
     private void btJasperRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btJasperRActionPerformed
         JasperReport reporte;
-        String path = ".src\\jReports\\ProductosMasVendidos.jasper";
+        String path = ".\\src\\jReports\\VentasEnMayoreo.jasper";
+        Map params = new HashMap();
+        params.put("Fecha1", "2017-01-01");
+        params.put("Fecha2", "2018-12-31");
         try {
             reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(path, null);//WIP
-            JasperViewer viewer = new JasperViewer(jasperPrint);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, params, MysqlConnection.MysqlConnection());//WIP
+            JasperViewer viewer = new JasperViewer(jasperPrint,false);
+            viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            viewer.setVisible(true);
         } catch (JRException e) {
             utilidades.mostrarAlerta("Nel prro :V /n Error:" + e, "Error");
         }
     }//GEN-LAST:event_btJasperRActionPerformed
+
+    private void tbDescuentoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tbDescuentoFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbDescuentoFocusGained
     
     /**
      * @param args the command line arguments
@@ -202,6 +236,7 @@ public class pruebaImpresion extends javax.swing.JFrame {
     private javax.swing.JButton btImprimir;
     private javax.swing.JButton btJasperR;
     private javax.swing.JTextField tbCantidad;
+    private javax.swing.JTextField tbDescuento;
     private javax.swing.JTextField tbNombreProd;
     private javax.swing.JTextField tbPrecioUnitario;
     // End of variables declaration//GEN-END:variables
