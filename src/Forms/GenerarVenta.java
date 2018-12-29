@@ -72,7 +72,6 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbFactura6 = new javax.swing.JLabel();
         tbTelefono = new javax.swing.JTextField();
         btAgregarNuevoCliente = new javax.swing.JButton();
-        lbVenta = new javax.swing.JLabel();
         panelProducto = new javax.swing.JPanel();
         tbBuscar = new javax.swing.JTextField();
         btAgregar = new javax.swing.JButton();
@@ -121,6 +120,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         ppmDataGrid.add(miModificarCantidad);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Ventas");
         setSize(new java.awt.Dimension(1360, 768));
 
         panelCliente.setBorder(javax.swing.BorderFactory.createTitledBorder("Cliente"));
@@ -284,12 +284,9 @@ public class GenerarVenta extends javax.swing.JFrame {
                     .addComponent(tbTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbFactura5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        lbVenta.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lbVenta.setText("VENTA");
 
         panelProducto.setBorder(javax.swing.BorderFactory.createTitledBorder("Producto"));
         panelProducto.setToolTipText("");
@@ -435,7 +432,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(feedbackCorrecto)
                     .addComponent(feedbackError))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbFeedback, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -543,7 +540,8 @@ public class GenerarVenta extends javax.swing.JFrame {
         jScrollPane2.setViewportView(dgvPedidos);
 
         lbPedidos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lbPedidos.setText("Venta:");
+        lbPedidos.setText("Productos a vender:");
+        lbPedidos.setToolTipText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -554,12 +552,6 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addComponent(jScrollPane2))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(lbEmpleado)
-                        .addGap(165, 165, 165)
-                        .addComponent(lbVenta)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(panelProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
@@ -567,26 +559,25 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbTotal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btVender, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btVender, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(panelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(6, 6, 6))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addGap(45, 45, 45)
+                        .addComponent(lbEmpleado)
+                        .addGap(167, 167, 167))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbEmpleado)
-                    .addComponent(lbVenta))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -594,14 +585,14 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addComponent(panelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(panelProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbTotal, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btCancelar)
-                        .addComponent(lbPedidos)
-                        .addComponent(btVender)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btCancelar)
+                    .addComponent(lbPedidos)
+                    .addComponent(btVender)
+                    .addComponent(lbEmpleado)
+                    .addComponent(lbTotal))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE))
         );
 
         lbEmpleado.getAccessibleContext().setAccessibleName("Empleado: ");
@@ -975,7 +966,6 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JLabel lbPrecio;
     private javax.swing.JPanel lbRegistro;
     private javax.swing.JLabel lbTotal;
-    private javax.swing.JLabel lbVenta;
     private javax.swing.JList<String> lsBuscar;
     private javax.swing.JList<String> lsBuscarCliente;
     private javax.swing.JMenuItem miEliminarElemento;

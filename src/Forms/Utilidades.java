@@ -205,6 +205,7 @@ public class Utilidades {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         jFrame.setLocation(dim.width / 2 - jFrame.getSize().width / 2,
                 dim.height / 2 - jFrame.getSize().height / 2);
+        jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Imagenes/palmera.png")));
     }
     
     public void crearVenta(Cliente cliente, int idEmpleado) {

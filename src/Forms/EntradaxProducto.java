@@ -124,6 +124,7 @@ public class EntradaxProducto extends javax.swing.JFrame {
         MenuTableBusq.add(jMenuItem1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Compras");
         setResizable(false);
 
         panelProducto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PRODUCTO ENTRANTE", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(0, 0, 255))); // NOI18N
@@ -444,7 +445,6 @@ public class EntradaxProducto extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("E:\\CICLO II 2018\\Tecnicas de produccion de sistemas\\refresh1.png")); // NOI18N
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
