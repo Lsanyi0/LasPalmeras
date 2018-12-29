@@ -6,12 +6,15 @@
 package Entities;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -19,25 +22,23 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "inventario")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Inventario.findAll", query = "SELECT i FROM Inventario i")
     , @NamedQuery(name = "Inventario.findByIdDetalleCompra", query = "SELECT i FROM Inventario i WHERE i.idDetalleCompra = :idDetalleCompra")
     , @NamedQuery(name = "Inventario.findByIdProducto", query = "SELECT i FROM Inventario i WHERE i.idProducto = :idProducto")
     , @NamedQuery(name = "Inventario.findByCompra", query = "SELECT i FROM Inventario i WHERE i.compra = :compra")
     , @NamedQuery(name = "Inventario.findByVenta", query = "SELECT i FROM Inventario i WHERE i.venta = :venta")
-    , @NamedQuery(name = "Inventario.findByExistencia", query = "SELECT i FROM Inventario i WHERE i.existencia = :existencia")
-    , @NamedQuery(name = "Inventario.findIdFechaVencimiento",query = "SELECT i.idFechavencimiento FROM Inventario i JOIN Fechavencimiento f WHERE i.existencia >= 1 AND i.idFechavencimiento = F.idFechavencimiento AND i.idProducto = :idProd ORDER BY f.fechavencimiento ASC")
-    , @NamedQuery(name = "Inventario.findExistenciaPorFechaVencimientoById",query = "SELECT i.existencia FROM Inventario i JOIN Fechavencimiento f WHERE i.existencia >= 1 AND i.idFechavencimiento = F.idFechavencimiento AND i.idProducto = :idProd ORDER BY f.fechavencimiento ASC")})
+    , @NamedQuery(name = "Inventario.findByExistencia", query = "SELECT i FROM Inventario i WHERE i.existencia = :existencia")})
 public class Inventario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
+    @Basic(optional = false)
     @Column(name = "idDetalleCompra")
     private int idDetalleCompra;
+    @Id
     @Column(name = "idProducto")
     private Integer idProducto;
-    @Column(name = "idFechavencimiento")
-    private Integer idFechavencimiento;
     @Column(name = "Compra")
     private Integer compra;
     @Column(name = "Venta")
@@ -63,15 +64,7 @@ public class Inventario implements Serializable {
     public void setIdProducto(Integer idProducto) {
         this.idProducto = idProducto;
     }
-    
-    public Integer getIdFechavencimiento() {
-        return idFechavencimiento;
-    }
 
-    public void setIdFechavencimiento(Integer idFechavencimiento) {
-        this.idFechavencimiento = idFechavencimiento;
-    }
-    
     public Integer getCompra() {
         return compra;
     }

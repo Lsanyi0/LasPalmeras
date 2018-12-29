@@ -21,8 +21,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
+import javax.persistence.CacheStoreMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -43,6 +43,8 @@ public class Utilidades {
     private static ArrayList<jtableVentaModel> temp;
     
     private final ReportesEimpresion reportes;
+    
+    public static boolean transacionExitosa = false;
     
     public Utilidades() {
         emf = Persistence.createEntityManagerFactory("AgroServPU");
@@ -91,6 +93,7 @@ public class Utilidades {
         Producto prod = getProductoByNombre(nombreProducto);
         List<Inventario> inv =  manager.createNamedQuery("Inventario.findByIdProducto")
                 .setParameter("idProducto", prod.getIdProducto())
+                .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
                 .getResultList();
         Integer existencia = 0;
         for (Inventario inve : inv) {
@@ -338,30 +341,18 @@ public class Utilidades {
         try {
             for (jtableVentaModel j : temp) {
                 Detalleventa det = new Detalleventa();
-                int cantidad = getCantidadPorFechaVencimientoById(findIdProductoByNombre(j.getNombre()));
-                if (loteSeAcaba(j, cantidad)) {
-                    saltarLote(j, cantidad, venta);
-                }
-                else
-                {
-                    det.setIdProducto(new Producto(j.getIdProducto()));
-                    det.setIdVenta(venta);
-                    det.setIdFechaVencimiento(new Fechavencimiento(getIdFechaVencimiento(j.getIdProducto())));
-                    det.setCantidad(j.getCantidad());
-                    det.setDescuento(j.getDescuento());
-                    manager.persist(det);
-                }
+                det.setIdProducto(new Producto(j.getIdProducto()));
+                det.setIdVenta(venta);
+                det.setIdFechaVencimiento(null);
+                det.setCantidad(j.getCantidad());
+                det.setDescuento(j.getDescuento());
+                manager.persist(det);
             }
-            manager.flush();
             manager.getTransaction().commit();
-            
-            reportes.crearFactura(temp, venta.getIdVenta(),
-                    GenerarVenta.cliente.getNombre()+" "+GenerarVenta.cliente.getApellido(),
-                    GenerarVenta.cliente.getDireccion());
-            
             GenerarVenta.cliente = null;
             clearJTable(GenerarVenta.dgvPedidos);
-            mostrarAlerta("Venta satisfactoria", "Exito");
+            transacionExitosa = true;
+          //mostrarAlerta("Venta satisfactoria", "Exito");
         } catch (Exception e) {
             manager.getTransaction().rollback();
             mostrarAlerta("Error: " +e, "Error");
@@ -566,31 +557,31 @@ jtable.setDefaultEditor(Object.class, null);
         }
     }
     public void fillcomboboxM(JComboBox CBMarca,String Marca){
-    List<Marca> listado = manager.createNamedQuery("Marca.findAll").getResultList();
-    CBMarca.removeAllItems();
-    CBMarca.addItem(Marca);
-    for(Marca M : listado){
-        if(M.getMarca()==Marca){
-        
-        }
-        else if(M.getMarca()!=Marca){
-        CBMarca.addItem(M.getMarca());
+        List<Marca> listado = manager.createNamedQuery("Marca.findAll").getResultList();
+        CBMarca.removeAllItems();
+        CBMarca.addItem(Marca);
+        for(Marca M : listado){
+            if(M.getMarca()==Marca){
+                
+            }
+            else if(M.getMarca()!=Marca){
+                CBMarca.addItem(M.getMarca());
+            }
         }
     }
-    }
-    //llena el com    bobox cuando un producto tiene una categoria por si el usuario no desea modificar esa parte, el usuario no culpara al 
+    //llena el com    bobox cuando un producto tiene una categoria por si el usuario no desea modificar esa parte, el usuario no culpara al
     //sistema(o al desarrollador) que el le lleno el combobox de manera aleatoria sin poner el que tiene el producto de primero en el combobox
     public void fillcomboboxc(JComboBox CBcat,String catp){
-    List<Categoria> listado = manager.createNamedQuery("Categoria.findAll").getResultList();
-    CBcat.removeAllItems();
-    CBcat.addItem(catp);
-    for(Categoria c : listado){
-        if(c.getCategoria()==catp){
+        List<Categoria> listado = manager.createNamedQuery("Categoria.findAll").getResultList();
+        CBcat.removeAllItems();
+        CBcat.addItem(catp);
+        for(Categoria c : listado){
+            if(c.getCategoria()==catp){
+            }
+            else if(c.getCategoria()!=catp){
+                CBcat.addItem(c.getCategoria());
+            }
         }
-        else if(c.getCategoria()!=catp){
-        CBcat.addItem(c.getCategoria());
-        }
-    }
     }
     
     public void fillcomboboxcatp(JComboBox CBcat){
@@ -600,10 +591,10 @@ jtable.setDefaultEditor(Object.class, null);
             CBcat.addItem(c.getCategoria());
         }
     }
-        //busca si el codigo del producto ya esta en la el arraylist si no lo encuentra devuelve -1
+    //busca si el codigo del producto ya esta en la el arraylist si no lo encuentra devuelve -1
     //si lo encuentra devuelve el codigo del producto   //formulario EntradaxProducto
     public int buscarProdEnArrayEP(ArrayList<Productos> lpn,int idprod){
-    int codigo=-1;
+        int codigo=-1;
         for (int i = 0; i < lpn.size(); i++) {
             if (lpn.get(i).getCodigo()==idprod) {
                 codigo=i;
@@ -611,8 +602,8 @@ jtable.setDefaultEditor(Object.class, null);
             else if(lpn.get(i).getCodigo()!=idprod){
                 codigo =-1;
             }
-        }  
-    return codigo;}
+        }
+        return codigo;}
     //llena el grid view con el arraylist de productos //formulario EntradaxProducto
     public void llenarJtablePE(ArrayList<Productos> lpn,JTable jtable,String []titulos){
         DateFormat formatoFecha = null;
@@ -638,7 +629,7 @@ jtable.setDefaultEditor(Object.class, null);
             else if(lpn.get(i).getCodigo()!=idprod){
                 
             }
-        }  
+        }
     }
     public int insertFechaVencimiento(String fecha){
         int codigo=-1;
@@ -691,6 +682,6 @@ jtable.setDefaultEditor(Object.class, null);
         }finally{
             
         }
-
-    return x;}
+        
+        return x;}
 }
