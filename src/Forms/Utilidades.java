@@ -389,7 +389,9 @@ public class Utilidades {
         }
     }
     public void fillJTable(JTable jtable, String tabla,String []titulos){
-        List<Producto> listado = manager.createQuery("SELECT p FROM "+tabla+" p").getResultList();
+        List<Producto> listado = manager.createQuery("SELECT p FROM "+tabla+" p")
+                .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
+                .getResultList();
         DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
         for (Producto p : listado) {
             Modelo.addRow(new Object[]{
