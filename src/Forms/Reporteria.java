@@ -23,6 +23,7 @@ public class Reporteria extends javax.swing.JFrame {
         utilidades = new Utilidades();
         dpDesde.setDate(new Date());
         dpHasta.setDate(new Date());
+        utilidades.setScreenCentered(this);
     }
     
     @SuppressWarnings("unchecked")
@@ -30,7 +31,6 @@ public class Reporteria extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenu1 = new javax.swing.JMenu();
-        lbVenta = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         btProductosMasVendidos = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -55,14 +55,11 @@ public class Reporteria extends javax.swing.JFrame {
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Reportes");
         setMaximumSize(new java.awt.Dimension(1920, 1080));
-        setPreferredSize(new java.awt.Dimension(1920, 1080));
+        setPreferredSize(new java.awt.Dimension(1366, 768));
         setResizable(false);
         setSize(new java.awt.Dimension(1366, 768));
-
-        lbVenta.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lbVenta.setText("REPORTES");
-        lbVenta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         btProductosMasVendidos.setText("Generar Reporte");
         btProductosMasVendidos.setActionCommand("");
@@ -238,25 +235,20 @@ public class Reporteria extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(358, 358, 358)
-                .addComponent(lbVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(412, 412, 412))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(lbVenta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -267,8 +259,6 @@ public class Reporteria extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 97, Short.MAX_VALUE))
         );
-
-        lbVenta.getAccessibleContext().setAccessibleName("Reopotes");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -383,6 +373,5 @@ public class Reporteria extends javax.swing.JFrame {
     private javax.swing.JLabel lbDesde1;
     private javax.swing.JLabel lbHasta;
     private javax.swing.JLabel lbHasta1;
-    private javax.swing.JLabel lbVenta;
     // End of variables declaration//GEN-END:variables
 }

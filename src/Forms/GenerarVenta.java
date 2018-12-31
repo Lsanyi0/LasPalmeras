@@ -2,7 +2,6 @@ package Forms;
 
 import Entities.Cliente;
 import Entities.Telefono;
-import Entities.Usuario;
 import java.awt.Color;
 import java.util.List;
 import java.text.DecimalFormat;
@@ -18,29 +17,13 @@ public class GenerarVenta extends javax.swing.JFrame {
     
     Utilidades utilidades = new Utilidades();
     DecimalFormat df = new DecimalFormat("$ 0.00");
-    public static Usuario usuario = null;
     public static Cliente cliente;
     private final String totalAPagar = "Total a pagar: ";
     
     public GenerarVenta() {
         initComponents();
         utilidades.setScreenCentered(this);
-        utilidades.fillJList(lsBuscar,"Producto");
-        lbFechaExpedicion.setText(utilidades.getDate());
-        llenarComboBox();
-        
-        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
-        dgvPedidos.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
-        dgvPedidos.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
-        
-        if (usuario == null) {
-            usuario = utilidades.getUsuarioByIdUsuario(1); //Solo para version de prueba
-        }
-        
-        if (usuario != null) {
-            lbEmpleado.setText("Empleado: "+usuario.getNombre()+" "+usuario.getApellido());
-        }
+              
     }
     
     @SuppressWarnings("unchecked")
@@ -99,6 +82,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         dgvPedidos = new javax.swing.JTable();
         lbPedidos = new javax.swing.JLabel();
+        btCerrarSesion = new javax.swing.JLabel();
 
         jScrollPane1.setViewportView(jTextPane1);
 
@@ -284,7 +268,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                     .addComponent(tbTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbFactura5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                .addComponent(jScrollPane4)
                 .addContainerGap())
         );
 
@@ -327,6 +311,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         cbCantidad.setEditable(true);
         cbCantidad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1" }));
         cbCantidad.setNextFocusableComponent(tbDescuento);
+        llenarComboBox();
 
         lsBuscar.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lsBuscar.setNextFocusableComponent(cbCantidad);
@@ -345,6 +330,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 lsBuscarValueChanged(evt);
             }
         });
+        utilidades.fillJList(lsBuscar,"Producto");
         jScrollPane3.setViewportView(lsBuscar);
 
         lbCantidad.setText("Cantidad:");
@@ -432,7 +418,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(feedbackCorrecto)
                     .addComponent(feedbackError))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addComponent(lbFeedback, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -444,10 +430,10 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbFecha.setText("Fecha De Expedicion");
 
         lbFechaExpedicion.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
-        lbFechaExpedicion.setText("12-12-12");
+        lbFechaExpedicion.setText(utilidades.getDate());
 
         lbFactura.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
-        lbFactura.setText("No. Factura");
+        lbFactura.setText("No. Venta");
 
         lbNumeroFactura.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         lbNumeroFactura.setText("000000");
@@ -464,10 +450,12 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addComponent(lbFechaExpedicion)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbFactura, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbRegistroLayout.createSequentialGroup()
                         .addComponent(lbNumeroFactura)
-                        .addGap(20, 20, 20))))
+                        .addGap(20, 20, 20))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbRegistroLayout.createSequentialGroup()
+                        .addComponent(lbFactura)
+                        .addContainerGap())))
         );
         lbRegistroLayout.setVerticalGroup(
             lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -503,7 +491,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbTotal.setText("Total a pagar: $ 0.00");
 
         lbEmpleado.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
-        lbEmpleado.setText("Empleado: N/A");
+        lbEmpleado.setText("Empleado: "+LogIn.usuario.getNombre()+" "+LogIn.usuario.getApellido());
         lbEmpleado.setToolTipText("Cambiar de usuario");
         lbEmpleado.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -537,11 +525,23 @@ public class GenerarVenta extends javax.swing.JFrame {
                 dgvPedidosMouseReleased(evt);
             }
         });
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+
+        dgvPedidos.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+        dgvPedidos.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
         jScrollPane2.setViewportView(dgvPedidos);
 
         lbPedidos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbPedidos.setText("Productos a vender:");
         lbPedidos.setToolTipText("");
+
+        btCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/logout.png"))); // NOI18N
+        btCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btCerrarSesionMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -559,7 +559,10 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbTotal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btVender, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btVender, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -570,20 +573,23 @@ public class GenerarVenta extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
-                        .addComponent(lbEmpleado)
-                        .addGap(167, 167, 167))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(lbRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(panelProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btCancelar)
@@ -595,7 +601,8 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE))
         );
 
-        lbEmpleado.getAccessibleContext().setAccessibleName("Empleado: ");
+        lbEmpleado.getAccessibleContext().setAccessibleName("");
+        lbEmpleado.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -664,7 +671,7 @@ public class GenerarVenta extends javax.swing.JFrame {
             }
             
             try {
-                utilidades.crearVenta(cliente, usuario.getIdUsuario());
+                utilidades.crearVenta(cliente, LogIn.usuario.getIdUsuario());
             } catch (Exception e) {
                 utilidades.mostrarAlerta(e + "", "Error");
             } finally {
@@ -801,7 +808,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 JOptionPane.OK_CANCEL_OPTION);
         if (opcion == 0) {
             new LogIn().setVisible(true);
-            GenerarVenta.usuario = null;
+            LogIn.usuario = null;
             this.dispose();
         }
     }//GEN-LAST:event_lbEmpleadoMouseClicked
@@ -842,6 +849,18 @@ public class GenerarVenta extends javax.swing.JFrame {
         }
         else ;
     }//GEN-LAST:event_tbBuscarClienteKeyTyped
+
+    private void btCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCerrarSesionMouseClicked
+        if (LogIn.usuario.getIdRol().getIdRol() == 1) {
+            new PrincipalAdmin().setVisible(true);
+        }
+        else
+        {
+            new LogIn().setVisible(true);
+        }
+        LogIn.usuario = null;
+        this.dispose();
+    }//GEN-LAST:event_btCerrarSesionMouseClicked
     private static int stringToInt(String string) {
         try {
             int var = Integer.parseInt(string);
@@ -936,6 +955,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JButton btAgregar;
     private javax.swing.JButton btAgregarNuevoCliente;
     private javax.swing.JButton btCancelar;
+    private javax.swing.JLabel btCerrarSesion;
     private javax.swing.JButton btVender;
     private javax.swing.JComboBox<String> cbBuscar;
     private javax.swing.JComboBox cbCantidad;

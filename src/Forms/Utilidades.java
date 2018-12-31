@@ -195,7 +195,7 @@ public class Utilidades {
                 .setParameter("usser", usuario)
                 .setParameter("pssword", clave)
                 .getSingleResult();
-        GenerarVenta.usuario = (Usuario) manager.createNamedQuery("Usuario.findByNUsuario")
+        LogIn.usuario = (Usuario) manager.createNamedQuery("Usuario.findByNUsuario")
                 .setParameter("nUsuario", usuario)
                 .getSingleResult();
         return bool;
@@ -233,7 +233,7 @@ public class Utilidades {
         Venta venta = new Venta();
         
         venta.setIdCliente(cli);
-        venta.setIdUsuario(GenerarVenta.usuario);
+        venta.setIdUsuario(LogIn.usuario);
         venta.setFecha(new Date());
         venta.setNula('0');
         
@@ -686,5 +686,6 @@ jtable.setDefaultEditor(Object.class, null);
             
         }
         
-        return x;}
+        return x;
+    }
 }

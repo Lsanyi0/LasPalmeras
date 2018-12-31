@@ -1,22 +1,22 @@
 package Forms;
 
-
+import Entities.Usuario;
 
 /**
  *
  * @author Tejada
  */
 public class LogIn extends javax.swing.JFrame {
-
-    /**
-     * Creates new form LogIn
-     */
+    
     private final Utilidades utilidades = new Utilidades();;
+    
+    public static Usuario usuario = null;
+    
     public LogIn() {
         initComponents();
         utilidades.setScreenCentered(this);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -127,11 +127,18 @@ public class LogIn extends javax.swing.JFrame {
         if (!noLog.isSelected()) {
             if (!tbUsuario.getText().trim().equals("") && !tbClave.getPassword().equals("")) {
                 if (utilidades.login(tbUsuario.getText(), tbClave.getPassword())) {
-                    new GenerarVenta().setVisible(true);
+                    if (usuario.getIdRol().getIdRol() == 1) {
+                        new PrincipalAdmin().setVisible(true);
+                    }
+                    else
+                    {
+                        new PrincipalEmpleado().setVisible(true);
+                        this.dispose();
+                    }
                     this.dispose();
                 } else {
                     utilidades.mostrarAlerta("Usuario o Clave incorrectos,"
-                            + " intente de nuevo porfavor.", 
+                            + " intente de nuevo porfavor.",
                             "Inicio de sesion fallido");
                 }
             } else {
@@ -139,7 +146,12 @@ public class LogIn extends javax.swing.JFrame {
                         "Inicio de sesion fallido");
             }
         }
-        else {new GenerarVenta().setVisible(true); this.dispose();}
+        else
+        {
+            usuario = utilidades.getUsuarioByIdUsuario(1);
+            new PrincipalAdmin().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_btAccederActionPerformed
 
     private void tbClaveKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbClaveKeyPressed
@@ -147,7 +159,7 @@ public class LogIn extends javax.swing.JFrame {
             btAccederActionPerformed(new java.awt.event.ActionEvent(this, 0,null));
         }
     }//GEN-LAST:event_tbClaveKeyPressed
-
+    
     /**
      * @param args the command line arguments
      */
@@ -155,8 +167,8 @@ public class LogIn extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+        */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -174,7 +186,7 @@ public class LogIn extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(LogIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
