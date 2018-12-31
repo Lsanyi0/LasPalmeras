@@ -64,7 +64,12 @@ public class Utilidades {
                 .getResultList();
         setJListModel(linv, lista);
     }
-    
+    public void fillJListC(JList lista, String busqueda) {
+        List<String> linv = manager.createQuery("SELECT c FROM Cliente WHERE c.Nombre + ' ' c.Apellido LIKE :nombre")
+                .setParameter("nombre", busqueda)
+                .getResultList();
+        setJListModel(linv, lista);
+    }
     public void fillJList(JList lista, String filtro, String busqueda, String tabla) {
         List<String> linv = manager.createQuery("SELECT p.producto FROM " + tabla
                 + " p WHERE p." + filtro + " LIKE '%" + busqueda + "%'")
@@ -353,7 +358,7 @@ public class Utilidades {
             GenerarVenta.cliente = null;
             clearJTable(GenerarVenta.dgvPedidos);
             transacionExitosa = true;
-          //mostrarAlerta("Venta satisfactoria", "Exito");
+            //mostrarAlerta("Venta satisfactoria", "Exito");
         } catch (Exception e) {
             manager.getTransaction().rollback();
             mostrarAlerta("Error: " +e, "Error");

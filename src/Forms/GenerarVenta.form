@@ -416,7 +416,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btAgregarNuevoCliente">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Agregar Nuevo Ciente"/>
+            <Property name="text" type="java.lang.String" value="Agregar Nuevo Cliente"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>

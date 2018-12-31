@@ -23,7 +23,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     public GenerarVenta() {
         initComponents();
         utilidades.setScreenCentered(this);
-              
+        
     }
     
     @SuppressWarnings("unchecked")
@@ -176,7 +176,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         tbTelefono.setEnabled(false);
         tbTelefono.setNextFocusableComponent(tbBuscarCliente);
 
-        btAgregarNuevoCliente.setText("Agregar Nuevo Ciente");
+        btAgregarNuevoCliente.setText("Agregar Nuevo Cliente");
         btAgregarNuevoCliente.setEnabled(false);
         btAgregarNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -844,10 +844,13 @@ public class GenerarVenta extends javax.swing.JFrame {
 
     private void tbBuscarClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBuscarClienteKeyTyped
         Integer cantidad = tbBuscarCliente.getText().length();
-        if (cantidad >=2) {
-            utilidades.fillJList(lsBuscar, "Nombre", tbBuscarCliente.getText(), "cliente");
+        try {
+            if (cantidad >=2) {
+                utilidades.fillJListC(lsBuscarCliente, tbBuscarCliente.getText().trim());
+            }
+        } catch (Exception e)
+        {
         }
-        else ;
     }//GEN-LAST:event_tbBuscarClienteKeyTyped
 
     private void btCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCerrarSesionMouseClicked
@@ -858,7 +861,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         {
             LogIn.usuario = null;
             new LogIn().setVisible(true);
-        }       
+        }
         this.dispose();
     }//GEN-LAST:event_btCerrarSesionMouseClicked
     private static int stringToInt(String string) {
