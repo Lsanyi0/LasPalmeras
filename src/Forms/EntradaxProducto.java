@@ -685,7 +685,7 @@ public class EntradaxProducto extends javax.swing.JFrame {
                 utilidades.llenarJtablePE(this.lpn, this.dgvEntradas, tituloss);
             }else if(existente!=-1){
                 int r= JOptionPane.showConfirmDialog(
-                        null,"AVISO!ya tiene un producto en lista de compra si continua se le aumentara el producto, se editara la caducidad y el precio. ¿desea continuar?","CONTINUAR!",JOptionPane.YES_NO_OPTION);
+                        null,"AVISO!ya tiene ese producto en lista de compra si continua se aumentara el producto, se editara la caducidad y el precio. ¿desea continuar?","CONTINUAR!",JOptionPane.YES_NO_OPTION);
                 if(r==JOptionPane.YES_OPTION){
                     lpn.get(existente).
                             setCantidad(lpn.get(existente).getCantidad()+
@@ -723,13 +723,16 @@ public class EntradaxProducto extends javax.swing.JFrame {
     private void TbBProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TbBProductMouseClicked
         habilitarPP();
         int fila = this.TbBProduct.getSelectedRow();
-        List<Producto> listado1=utilidades.obtenerproducto("Producto",fila+1,"idProducto");
-        LidProducto=listado1.get(0).getIdProducto();
-        this.tbNombre.setText(listado1.get(0).getProducto());
-        this.tbMarca.setText(listado1.get(0).getIdMarca().getMarca());
-        this.tbPrecioU.setText(Double.toString(listado1.get(0).getPrecio()));
-        this.tbDescripcion.setText(listado1.get(0).getDescripcion());
-        this.TBCategoria.setText(listado1.get(0).getIdCategoria().getCategoria());
+        if (fila != -1 && fila >= 0){
+            int cell = Integer.valueOf(TbBProduct.getModel().getValueAt(fila, 0).toString());
+            List<Producto> listado1=utilidades.obtenerproducto("Producto",cell,"idProducto");
+            LidProducto=listado1.get(0).getIdProducto();
+            this.tbNombre.setText(listado1.get(0).getProducto());
+            this.tbMarca.setText(listado1.get(0).getIdMarca().getMarca());
+            this.tbPrecioU.setText(Double.toString(listado1.get(0).getPrecio()));
+            this.tbDescripcion.setText(listado1.get(0).getDescripcion());
+            this.TBCategoria.setText(listado1.get(0).getIdCategoria().getCategoria());
+        }
     }//GEN-LAST:event_TbBProductMouseClicked
 
     private void tbPrecioUKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbPrecioUKeyTyped
@@ -788,21 +791,22 @@ public class EntradaxProducto extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBusquedaPKeyTyped
 
     private void btEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEliminarProductoActionPerformed
-        int r= JOptionPane.showConfirmDialog(null,"confirmar eliminacion de producto","CONTINUAR!",JOptionPane.YES_NO_OPTION);
-        if(r==JOptionPane.YES_OPTION){
-            String []tituloss = {"id","producto","marca","categoria","descripcion","precio","cantidad","caducidad"};
-            int fila = this.dgvEntradas.getSelectedRow();
-            int idproducto = Integer.parseInt(this.dgvEntradas.getValueAt(fila,0).toString());
-            utilidades.eliminarProdPE(this.lpn, idproducto);
-            utilidades.llenarJtablePE(this.lpn, this.dgvEntradas, tituloss);
+        if (dgvEntradas.getRowCount() > 0) {
+            int r= JOptionPane.showConfirmDialog(null,"confirmar eliminacion de producto","CONTINUAR!",JOptionPane.YES_NO_OPTION);
+            if(r==JOptionPane.YES_OPTION){
+                String []tituloss = {"id","producto","marca","categoria","descripcion","precio","cantidad","caducidad"};
+                int fila = this.dgvEntradas.getSelectedRow();
+                int idproducto = Integer.parseInt(this.dgvEntradas.getValueAt(fila,0).toString());
+                utilidades.eliminarProdPE(this.lpn, idproducto);
+                utilidades.llenarJtablePE(this.lpn, this.dgvEntradas, tituloss);
+            }
+            else if(r==JOptionPane.NO_OPTION){
+                
+            }
+            else if(r==JOptionPane.CLOSED_OPTION){
+                
+            }
         }
-        else if(r==JOptionPane.NO_OPTION){
-            
-        }
-        else if(r==JOptionPane.CLOSED_OPTION){
-            
-        }
-
     }//GEN-LAST:event_btEliminarProductoActionPerformed
 
     private void lbLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbLogOutMouseClicked

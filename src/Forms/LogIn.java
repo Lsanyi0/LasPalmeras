@@ -8,7 +8,7 @@ import Entities.Usuario;
  */
 public class LogIn extends javax.swing.JFrame {
     
-    private final Utilidades utilidades = new Utilidades();;
+    private final Utilidades utilidades = new Utilidades();
     
     public static Usuario usuario = null;
     

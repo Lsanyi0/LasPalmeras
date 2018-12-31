@@ -12,6 +12,7 @@ import Entities.Telefono;
 import Entities.Usuario;
 import Entities.Venta;
 import EntradaXProducto.Productos;
+import Model.Lote;
 import Model.jtableVentaModel;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -22,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 import javax.persistence.CacheStoreMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -301,58 +303,30 @@ public class Utilidades {
                 .getSingleResult();
         return id;
     }
-    private void saltarLote(jtableVentaModel j,Integer CantidadMaximaLote, Venta venta)
-    {
-        Detalleventa newLote = new Detalleventa();
-        try {
-            newLote.setIdProducto(new Producto(j.getIdProducto()));
-            newLote.setIdVenta(venta);
-            newLote.setIdFechaVencimiento(new Fechavencimiento(getIdFechaVencimiento(j.getIdProducto())));
-            newLote.setCantidad(CantidadMaximaLote);
-            newLote.setDescuento(j.getDescuento());
-            manager.persist(newLote);
-            
-            manager.flush();
-            
-            int cantidad = getCantidadPorFechaVencimientoById(findIdProductoByNombre(j.getNombre()));
-            j.setCantidad(j.getCantidad()-CantidadMaximaLote);
-            saltarLote(j, cantidad, venta, 0.00);
-            
-        } catch (Exception e) {
-            System.out.println("1"+e);
-        }
-    }
-    private void saltarLote(jtableVentaModel j,Integer CantidadMaximaLote, Venta venta,Double descuento)
-    {
-        Detalleventa newLote = new Detalleventa();
-        try {
-            newLote.setIdProducto(new Producto(j.getIdProducto()));
-            newLote.setIdVenta(venta);
-            newLote.setIdFechaVencimiento(new Fechavencimiento(getIdFechaVencimiento(j.getIdProducto())));
-            newLote.setCantidad(CantidadMaximaLote);
-            newLote.setDescuento(descuento);
-            manager.persist(newLote);
-            
-            manager.flush();
-            
-            int cantidad = getCantidadPorFechaVencimientoById(findIdProductoByNombre(j.getNombre()));
-            j.setCantidad(j.getCantidad()-CantidadMaximaLote);
-            if (loteSeAcaba(j, cantidad)){
-                saltarLote(j, cantidad, venta, 0.00);
-            }
-        } catch (Exception e) {
-        }
-    }
+    
     private void crearDetalleVenta(Venta venta) {
         try {
             for (jtableVentaModel j : temp) {
+                
                 Detalleventa det = new Detalleventa();
                 det.setIdProducto(new Producto(j.getIdProducto()));
                 det.setIdVenta(venta);
-                det.setIdFechaVencimiento(null);
-                det.setCantidad(j.getCantidad());
                 det.setDescuento(j.getDescuento());
-                manager.persist(det);
+                
+                Long canLotes;
+                canLotes=(Long)(manager.createQuery("SELECT COUNT(dc.idProducto) FROM Detallecompra dc JOIN DC.idFechaVencimiento f JOIN DC.idProducto pd WHERE pd.idProducto = :idprod")
+                        .setParameter("idprod", j.getIdProducto())
+                        .getSingleResult());
+                if (canLotes>1) {
+                    List<Inventario> listado = manager.createNativeQuery("SELECT * FROM inventario i where i.idproducto = ? ORDER BY i.fechavencimiento ASC",Inventario.class)
+                            .setParameter(1, j.getIdProducto())
+                            .getResultList();
+                    cambioLote(canLotes, listado, j.getCantidad(), det);
+                }else{
+                    det.setIdFechaVencimiento(new Fechavencimiento());
+                    
+                    manager.persist(det);
+                }
             }
             manager.getTransaction().commit();
             GenerarVenta.cliente = null;
@@ -364,9 +338,20 @@ public class Utilidades {
             mostrarAlerta("Error: " +e, "Error");
         }
     }
-    private boolean loteSeAcaba(jtableVentaModel j,int cantidadDisponible)
-    {
-        return cantidadDisponible < j.getCantidad();
+    public void cambioLote(Long cantidadLotes, List<Inventario> idLotes, int cantidadVenta, Detalleventa det){
+        int i=0;
+        do {
+            Integer idFechaV = idLotes.get(i).getIdFechavencimiento();
+            det.setIdFechaVencimiento((Fechavencimiento)manager.createNamedQuery("Fechavencimiento.findByIdFechavencimiento").setParameter("idFechavencimiento",idFechaV).getSingleResult());
+            det.setCantidad(cantidadVenta);
+            int a = cantidadVenta;
+            int b = idLotes.get(i).getExistencia();
+            cantidadVenta = (a-b);           
+            i++;           
+            manager.persist(det);
+            det.setIdDetalleVenta(null);
+        } while (cantidadVenta>=1);
+        
     }
     public void clearJTable(JTable jTable) {
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
@@ -407,15 +392,14 @@ public class Utilidades {
 //        jtable.setDefaultEditor(Object.class, null);
     }
     public void fillJTable(JTable jtable,String tabla,String filtro,String busqueda,String []titulos){
-//                                                SELECT p FROM Producto p where p.producto like "%a%"
-List<Producto> listado = manager.createQuery("SELECT p FROM "+tabla+" p where p."+filtro+" like \"%"+busqueda+"%\"").getResultList();
-DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
-for (Producto p : listado) {
-    Modelo.addRow(new Object[]{Integer.toString(p.getIdProducto()),p.getProducto(),p.getIdMarca().getMarca(),
-        p.getIdCategoria().getCategoria(),p.getDescripcion()});
-}
-jtable.setModel(Modelo);
-jtable.setDefaultEditor(Object.class, null);
+        List<Producto> listado = manager.createQuery("SELECT p FROM "+tabla+" p where p."+filtro+" like \"%"+busqueda+"%\"").getResultList();
+        DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
+        for (Producto p : listado) {
+            Modelo.addRow(new Object[]{Integer.toString(p.getIdProducto()),p.getProducto(),p.getIdMarca().getMarca(),
+                p.getIdCategoria().getCategoria(),p.getDescripcion()});
+        }
+        jtable.setModel(Modelo);
+        jtable.setDefaultEditor(Object.class, null);
     }
     public List<Producto> obtenerproducto(String tabla,int id,String filtro){
         List<Producto> listado2 = manager.createQuery("SELECT p FROM "+tabla+" p where p."+filtro+"="+id).getResultList();
