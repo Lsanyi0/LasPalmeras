@@ -808,7 +808,6 @@ public class EntradaxProducto extends javax.swing.JFrame {
     private void lbLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbLogOutMouseClicked
         if (LogIn.usuario.getIdRol().getIdRol() == 1) new PrincipalAdmin().setVisible(true);
         else new PrincipalEmpleado().setVisible(true);
-        LogIn.usuario = null;
         this.dispose();
     }//GEN-LAST:event_lbLogOutMouseClicked
     public void clearforNew(){
