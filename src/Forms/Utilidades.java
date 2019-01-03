@@ -12,8 +12,8 @@ import Entities.Telefono;
 import Entities.Usuario;
 import Entities.Venta;
 import EntradaXProducto.Productos;
-import Model.Lote;
 import Model.jtableVentaModel;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.text.DateFormat;
@@ -23,7 +23,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 import javax.persistence.CacheStoreMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -67,9 +66,16 @@ public class Utilidades {
         setJListModel(linv, lista);
     }
     public void fillJListC(JList lista, String busqueda) {
-        List<String> linv = manager.createQuery("SELECT c FROM Cliente WHERE c.Nombre + ' ' c.Apellido LIKE :nombre")
-                .setParameter("nombre", busqueda)
+        List<String> linv;
+        if (!busqueda.equals("*")) {
+            linv = manager.createQuery("SELECT CONCAT(c.nombre,' ',c.apellido) FROM Cliente c WHERE CONCAT(c.nombre,' ',c.apellido) LIKE '%"+busqueda+"%' AND c.nombre <> '"+GenerarVenta.rbAnonimo.getText()+"'")
                 .getResultList();
+        }
+        else 
+        {
+        linv = manager.createQuery("SELECT CONCAT(c.nombre,' ',c.apellido) FROM Cliente c WHERE c.nombre <> '"+GenerarVenta.rbAnonimo.getText()+"'")
+                .getResultList();
+        }
         setJListModel(linv, lista);
     }
     public void fillJList(JList lista, String filtro, String busqueda, String tabla) {
@@ -125,7 +131,7 @@ public class Utilidades {
         int ya = buscarProductoEnTabla(temp, venta.getNombre());
         
         if (ya != -1) {
-            if (temp.get(ya).getCantidad() + venta.getCantidad() < getExistenciaByNombre(nombreProducto)) {
+            if (temp.get(ya).getCantidad() + venta.getCantidad() <= getExistenciaByNombre(nombreProducto)) {
                 temp.get(ya).setCantidad(cantidad + temp.get(ya).getCantidad());
             } else {
                 temp.get(ya).setCantidad(getExistenciaByNombre(nombreProducto));
@@ -136,7 +142,7 @@ public class Utilidades {
                 model.addRow(j.toArray());
             });
         } else {
-            if (venta.getCantidad() < getExistenciaByNombre(nombreProducto)) {
+            if (venta.getCantidad() <= getExistenciaByNombre(nombreProducto)) {
                 temp.add(venta);
             }
             else
@@ -150,7 +156,7 @@ public class Utilidades {
     }
     private void cantidadMayorALaDisponible()
     {
-        mostrarAlerta("La Cantidad que intentó ingresar es mayor al inventario "
+        mostrarAlerta(null,"La Cantidad que intentó ingresar es mayor al inventario "
                 + "disponible, se colocará la cantidad máxima disponible "
                 + "como valor a vender.",
                 "Cantidad seleccionada mayor a la disponible");
@@ -180,20 +186,20 @@ public class Utilidades {
             String i = cbx.getSelectedItem().toString();
             Integer j = Integer.parseInt(i);
             if (j <= 0) {
-                mostrarAlerta("La cantidad a vender no puede ser menor a 1",
+                mostrarAlerta(cbx,"La cantidad a vender no puede ser menor a 1",
                         "Cantidad no válida");
                 return false;
             }
         } catch (NumberFormatException e) {
-            mostrarAlerta("El campo cantidad solo acepta números, intente de nuevo.\n \n"
+            mostrarAlerta(cbx ,"El campo cantidad solo acepta números, intente de nuevo.\n \n"
                     + "Error: " + e.toString(), "Ingrese solo numeros (Cantidad)");
             return false;
         }
         return true;
     }
     
-    public void mostrarAlerta(String mensaje, String titulo) {
-        JOptionPane.showMessageDialog(null, mensaje, titulo,
+    public void mostrarAlerta(Component parent,String mensaje, String titulo) {
+        JOptionPane.showMessageDialog(parent, mensaje, titulo,
                 JOptionPane.WARNING_MESSAGE);
     }
     
@@ -228,13 +234,13 @@ public class Utilidades {
         
         if (cli != null) {
             if (cli.getIdCliente() == null) {
-                mostrarAlerta("Cliente nuevo intente ingresarlo primero.",
+                mostrarAlerta(null,"Cliente nuevo intente ingresarlo primero.",
                         "Error: la venta no puede ser realizada");
                 return;
             }
         }
         else {
-            mostrarAlerta("Cliente no existente, intente de nuevo", "Error");
+            mostrarAlerta(null,"Cliente no existente, intente de nuevo", "Error");
             return;
         }
         Venta venta = new Venta();
@@ -251,7 +257,7 @@ public class Utilidades {
             crearDetalleVenta(venta);
         } catch (NumberFormatException e) {
             manager.getTransaction().rollback();
-            mostrarAlerta("Algo salio mal, intente de nuevo /n Error: "+e,
+            mostrarAlerta(null,"Algo salio mal, intente de nuevo /n Error: "+e,
                     "Error:");
         }
     }
@@ -274,10 +280,10 @@ public class Utilidades {
                 //Hacemos commit a los cambios realizados
                 manager.getTransaction().commit();
             }
-            else mostrarAlerta("Porfavor ingrese nombre, y apellido validos", "Error");
+            else mostrarAlerta(null,"Porfavor ingrese nombre, y apellido validos", "Error");
         } catch (Exception e) {
             //Si falla en alguno de los pasos anteriores hacemos rollback
-            mostrarAlerta("Algo salio mal al ingresar nuevo usuario, porfavor "
+            mostrarAlerta(null,"Algo salio mal al ingresar nuevo usuario, porfavor "
                     + "intente de nuevo /n Error: "+e, "Error");
             manager.getTransaction().rollback();
         }
@@ -307,26 +313,10 @@ public class Utilidades {
     private void crearDetalleVenta(Venta venta) {
         try {
             for (jtableVentaModel j : temp) {
-                
-                Detalleventa det = new Detalleventa();
-                det.setIdProducto(new Producto(j.getIdProducto()));
-                det.setIdVenta(venta);
-                det.setDescuento(j.getDescuento());
-                
-                Long canLotes;
-                canLotes=(Long)(manager.createQuery("SELECT COUNT(dc.idProducto) FROM Detallecompra dc JOIN DC.idFechaVencimiento f JOIN DC.idProducto pd WHERE pd.idProducto = :idprod")
-                        .setParameter("idprod", j.getIdProducto())
-                        .getSingleResult());
-                if (canLotes>1) {
-                    List<Inventario> listado = manager.createNativeQuery("SELECT * FROM inventario i where i.idproducto = ? ORDER BY i.fechavencimiento ASC",Inventario.class)
-                            .setParameter(1, j.getIdProducto())
-                            .getResultList();
-                    cambioLote(canLotes, listado, j.getCantidad(), det);
-                }else{
-                    det.setIdFechaVencimiento(new Fechavencimiento());
-                    
-                    manager.persist(det);
-                }
+                List<Inventario> listado = manager.createNativeQuery("SELECT * FROM inventario i where i.idproducto = ? ORDER BY i.fechavencimiento ASC",Inventario.class)
+                        .setParameter(1, j.getIdProducto())
+                        .getResultList();
+                cambioLote(listado, j, venta);
             }
             manager.getTransaction().commit();
             GenerarVenta.cliente = null;
@@ -335,23 +325,36 @@ public class Utilidades {
             //mostrarAlerta("Venta satisfactoria", "Exito");
         } catch (Exception e) {
             manager.getTransaction().rollback();
-            mostrarAlerta("Error: " +e, "Error");
+            mostrarAlerta(null,"Error: " +e, "Error");
         }
     }
-    public void cambioLote(Long cantidadLotes, List<Inventario> idLotes, int cantidadVenta, Detalleventa det){
+    public void cambioLote(List<Inventario> idLotes, jtableVentaModel j, Venta venta){
         int i=0;
-        do {
+        while (j.getCantidad()>=1){
             Integer idFechaV = idLotes.get(i).getIdFechavencimiento();
+            Detalleventa det = new Detalleventa();
+            
+            det.setIdProducto(new Producto(j.getIdProducto()));
+            det.setIdVenta(venta);
+            det.setDescuento(j.getDescuento());
             det.setIdFechaVencimiento((Fechavencimiento)manager.createNamedQuery("Fechavencimiento.findByIdFechavencimiento").setParameter("idFechavencimiento",idFechaV).getSingleResult());
-            det.setCantidad(cantidadVenta);
-            int a = cantidadVenta;
-            int b = idLotes.get(i).getExistencia();
-            cantidadVenta = (a-b);           
-            i++;           
-            manager.persist(det);
-            det.setIdDetalleVenta(null);
-        } while (cantidadVenta>=1);
-        
+            
+            int a = idLotes.get(i).getExistencia();
+            int b = j.getCantidad();
+            if ((b-a)>=0) {
+                det.setCantidad(a);
+            }
+            else
+            {
+                det.setCantidad(b);
+            }
+            j.setCantidad(b-a);
+            if (det.getCantidad()!=0)
+            {
+                manager.persist(det);
+            }
+            i++;
+        }
     }
     public void clearJTable(JTable jTable) {
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
@@ -366,7 +369,6 @@ public class Utilidades {
             manager.persist(object);
             manager.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
             manager.getTransaction().rollback();
         } finally {
             manager.close();
@@ -417,7 +419,7 @@ public class Utilidades {
                     .setParameter("pprecio",precio);
             np.execute();
             insert = Integer.valueOf(np.getOutputParameterValue("x").toString());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
         }
         return insert;
     }
@@ -430,7 +432,7 @@ public class Utilidades {
             np.execute();
             insert2 = Integer.valueOf(np.getOutputParameterValue("bandera").toString());
             insert = Integer.valueOf(np.getOutputParameterValue("codigo").toString());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
         }
         return insert;
     }
@@ -444,7 +446,7 @@ public class Utilidades {
             np.execute();
             bandera = Integer.valueOf(np.getOutputParameterValue("bandera").toString());
             codigo = Integer.valueOf(np.getOutputParameterValue("codigo").toString());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
         }
         inserttelefono(0,0,codigo,telefono);
         return codigo;
@@ -459,12 +461,12 @@ public class Utilidades {
                     .setParameter("ptel",telefono);
             np.execute();
             codigo = Integer.valueOf(np.getOutputParameterValue("bandera").toString());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
         }
         return codigo;
     }
     public int findProvbyname(String prov){
-        int codigo=-1;
+        int codigo;
         Proveedor p = (Proveedor) manager.createNamedQuery("Proveedor.findByProveedor")
                 .setParameter("proveedor",prov)
                 .getSingleResult();
@@ -480,7 +482,7 @@ public class Utilidades {
             np.execute();
             b = Integer.valueOf(np.getOutputParameterValue("bandera").toString());
             codigo = Integer.valueOf(np.getOutputParameterValue("codigo").toString());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
         }
         return codigo;}
     
@@ -495,7 +497,7 @@ public class Utilidades {
                     .setParameter("pprecio",precio);
             np.execute();
             insertp = Integer.valueOf(np.getOutputParameterValue("minsert").toString());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
         }
         return insertp;
     }
@@ -505,7 +507,7 @@ public class Utilidades {
     }
     
     public int getidcategoriabyn(String cat){
-        int inte=0;
+        int inte;
         Categoria c = (Categoria) manager.createNamedQuery("Categoria.findByCategoria")
                 .setParameter("categoria",cat)
                 .getSingleResult();
@@ -553,10 +555,10 @@ public class Utilidades {
         CBMarca.removeAllItems();
         CBMarca.addItem(Marca);
         for(Marca M : listado){
-            if(M.getMarca()==Marca){
+            if(M.getMarca() == null ? Marca == null : M.getMarca().equals(Marca)){
                 
             }
-            else if(M.getMarca()!=Marca){
+            else if(M.getMarca() == null ? Marca != null : !M.getMarca().equals(Marca)){
                 CBMarca.addItem(M.getMarca());
             }
         }
@@ -568,9 +570,9 @@ public class Utilidades {
         CBcat.removeAllItems();
         CBcat.addItem(catp);
         for(Categoria c : listado){
-            if(c.getCategoria()==catp){
+            if(c.getCategoria() == null ? catp == null : c.getCategoria().equals(catp)){
             }
-            else if(c.getCategoria()!=catp){
+            else if(c.getCategoria() == null ? catp != null : !c.getCategoria().equals(catp)){
                 CBcat.addItem(c.getCategoria());
             }
         }
@@ -598,8 +600,7 @@ public class Utilidades {
         return codigo;}
     //llena el grid view con el arraylist de productos //formulario EntradaxProducto
     public void llenarJtablePE(ArrayList<Productos> lpn,JTable jtable,String []titulos){
-        DateFormat formatoFecha = null;
-        formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat formatoFecha= new SimpleDateFormat("yyyy-MM-dd");
         DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
         for (Productos pn : lpn){
             
@@ -632,7 +633,7 @@ public class Utilidades {
             np.execute();
             b=Integer.valueOf(np.getOutputParameterValue("bandera").toString());
             codigo=Integer.valueOf(np.getOutputParameterValue("mfechavenc").toString());
-        }catch(Exception e){
+        }catch(NumberFormatException e){
             
         }
         return codigo;
@@ -647,15 +648,14 @@ public class Utilidades {
                     .setParameter("pdui",dui);
             np.execute();
             insertCompra=Integer.valueOf(np.getOutputParameterValue("midcompra").toString());
-        }catch(Exception e){
+        }catch(NumberFormatException e){
             
         }
         return insertCompra;
     }
     public int crearDetCompra(ArrayList<Productos>lpn,int idprov,Date fecha,String representante,String dui){
         int x=-2;
-        DateFormat f=null;
-        f =new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat f=new SimpleDateFormat("yyyy-MM-dd");
         
         int codigoCompra=crearCompra(idprov,fecha,representante,dui);
         try{
@@ -669,12 +669,17 @@ public class Utilidades {
                 np.execute();
                 x=Integer.valueOf(np.getOutputParameterValue("x").toString());
             }
-        }catch(Exception e){
+        }catch(NumberFormatException e){
             
         }finally{
             
         }
-        
         return x;
+    }
+    public Cliente buscarCliente(String aBuscar)
+    {
+        Cliente Cli = (Cliente) manager.createQuery("SELECT c FROM Cliente c WHERE CONCAT(c.nombre,' ',c.apellido) LIKE '%"+aBuscar+"%'")
+                .getSingleResult();
+        return Cli;
     }
 }

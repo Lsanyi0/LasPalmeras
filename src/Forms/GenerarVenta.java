@@ -3,6 +3,7 @@ package Forms;
 import Entities.Cliente;
 import Entities.Telefono;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.util.List;
 import java.text.DecimalFormat;
 import javax.swing.DefaultComboBoxModel;
@@ -11,7 +12,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.util.ArrayList;
-
 
 public class GenerarVenta extends javax.swing.JFrame {
     
@@ -22,8 +22,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     
     public GenerarVenta() {
         initComponents();
-        utilidades.setScreenCentered(this);
-        
+        utilidades.setScreenCentered(this);                 
     }
     
     @SuppressWarnings("unchecked")
@@ -55,6 +54,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbFactura6 = new javax.swing.JLabel();
         tbTelefono = new javax.swing.JTextField();
         btAgregarNuevoCliente = new javax.swing.JButton();
+        btLimpiar = new javax.swing.JButton();
         panelProducto = new javax.swing.JPanel();
         tbBuscar = new javax.swing.JTextField();
         btAgregar = new javax.swing.JButton();
@@ -105,6 +105,7 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ventas");
+        setResizable(false);
         setSize(new java.awt.Dimension(1360, 768));
 
         panelCliente.setBorder(javax.swing.BorderFactory.createTitledBorder("Cliente"));
@@ -112,7 +113,6 @@ public class GenerarVenta extends javax.swing.JFrame {
         tbNombreCliente.setNextFocusableComponent(tbApellidoCliente);
 
         rbGrupo1.add(rbAnonimo);
-        rbAnonimo.setSelected(true);
         rbAnonimo.setText("Anonimo");
         rbAnonimo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,6 +121,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         });
 
         rbGrupo1.add(rbExistente);
+        rbExistente.setSelected(true);
         rbExistente.setText("Existente");
         rbExistente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,7 +159,13 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         lsBuscarCliente.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lsBuscarCliente.setToolTipText("");
+        lsBuscarCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lsBuscarClienteMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(lsBuscarCliente);
+        utilidades.fillJListC(lsBuscarCliente, "*");
 
         tbBuscarCliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -176,11 +183,24 @@ public class GenerarVenta extends javax.swing.JFrame {
         tbTelefono.setEnabled(false);
         tbTelefono.setNextFocusableComponent(tbBuscarCliente);
 
+        btAgregarNuevoCliente.setBackground(new java.awt.Color(204, 255, 204));
+        btAgregarNuevoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/adduser.png"))); // NOI18N
         btAgregarNuevoCliente.setText("Agregar Nuevo Cliente");
+        btAgregarNuevoCliente.setToolTipText("");
         btAgregarNuevoCliente.setEnabled(false);
         btAgregarNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAgregarNuevoClienteActionPerformed(evt);
+            }
+        });
+
+        btLimpiar.setBackground(new java.awt.Color(204, 204, 255));
+        btLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/limpiar.png"))); // NOI18N
+        btLimpiar.setText("Limpiar");
+        btLimpiar.setToolTipText("Limpia el texto de todos los elementos de la seccion.");
+        btLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btLimpiarActionPerformed(evt);
             }
         });
 
@@ -194,47 +214,44 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane4))
                     .addGroup(panelClienteLayout.createSequentialGroup()
-                        .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap()
+                        .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(panelClienteLayout.createSequentialGroup()
-                                .addContainerGap()
+                                .addComponent(lbFactura5)
+                                .addGap(28, 28, 28)
+                                .addComponent(tbBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelClienteLayout.createSequentialGroup()
                                 .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(panelClienteLayout.createSequentialGroup()
-                                        .addComponent(lbFactura5)
-                                        .addGap(28, 28, 28)
-                                        .addComponent(tbBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(panelClienteLayout.createSequentialGroup()
-                                        .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(panelClienteLayout.createSequentialGroup()
-                                                .addComponent(lbFactura1)
-                                                .addGap(28, 28, 28))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelClienteLayout.createSequentialGroup()
-                                                .addComponent(lbFactura3)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                        .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(tbNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-                                            .addComponent(tbApellidoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)))))
-                            .addGroup(panelClienteLayout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(rbAnonimo)
-                                .addGap(31, 31, 31)
-                                .addComponent(rbExistente)
-                                .addGap(34, 34, 34)
-                                .addComponent(rbNuevo)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbFactura1)
+                                        .addGap(28, 28, 28))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelClienteLayout.createSequentialGroup()
+                                        .addComponent(lbFactura3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tbNombreCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                                    .addComponent(tbApellidoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                         .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelClienteLayout.createSequentialGroup()
-                                .addComponent(btAgregarNuevoCliente)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(panelClienteLayout.createSequentialGroup()
-                                .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbFactura6)
-                                    .addComponent(lbFactura2)
-                                    .addComponent(lbFactura4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tbTelefono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tbDUICliente, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(tbDireccion, javax.swing.GroupLayout.Alignment.TRAILING))))))
+                            .addComponent(lbFactura6)
+                            .addComponent(lbFactura2)
+                            .addComponent(lbFactura4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tbTelefono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tbDUICliente, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tbDireccion, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(panelClienteLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(rbAnonimo)
+                        .addGap(31, 31, 31)
+                        .addComponent(rbExistente)
+                        .addGap(34, 34, 34)
+                        .addComponent(rbNuevo)
+                        .addGap(35, 35, 35)
+                        .addComponent(btAgregarNuevoCliente)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelClienteLayout.setVerticalGroup(
@@ -244,7 +261,8 @@ public class GenerarVenta extends javax.swing.JFrame {
                     .addComponent(rbAnonimo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(rbExistente)
                     .addComponent(rbNuevo)
-                    .addComponent(btAgregarNuevoCliente))
+                    .addComponent(btAgregarNuevoCliente)
+                    .addComponent(btLimpiar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelClienteLayout.createSequentialGroup()
@@ -272,6 +290,9 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        rbAnonimo.setSelected(true);
+        rbAnonimoActionPerformed(new ActionEvent(this, 0, ""));
+
         panelProducto.setBorder(javax.swing.BorderFactory.createTitledBorder("Producto"));
         panelProducto.setToolTipText("");
 
@@ -288,6 +309,8 @@ public class GenerarVenta extends javax.swing.JFrame {
             }
         });
 
+        btAgregar.setBackground(new java.awt.Color(204, 204, 255));
+        btAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/agregaracarro.png"))); // NOI18N
         btAgregar.setText("Agregar");
         btAgregar.setName(""); // NOI18N
         btAgregar.setNextFocusableComponent(btVender);
@@ -415,7 +438,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(feedbackCorrecto)
                     .addComponent(feedbackError))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                 .addComponent(lbFeedback, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -466,7 +489,9 @@ public class GenerarVenta extends javax.swing.JFrame {
                     .addComponent(lbNumeroFactura)))
         );
 
+        btVender.setBackground(new java.awt.Color(204, 255, 204));
         btVender.setForeground(new java.awt.Color(0, 133, 99));
+        btVender.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/vendercarro.png"))); // NOI18N
         btVender.setText("Vender");
         btVender.setNextFocusableComponent(btCancelar);
         btVender.addActionListener(new java.awt.event.ActionListener() {
@@ -475,7 +500,9 @@ public class GenerarVenta extends javax.swing.JFrame {
             }
         });
 
+        btCancelar.setBackground(new java.awt.Color(255, 204, 204));
         btCancelar.setForeground(new java.awt.Color(204, 0, 0));
+        btCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/carromenos.png"))); // NOI18N
         btCancelar.setText("Cancelar venta");
         btCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -668,14 +695,14 @@ public class GenerarVenta extends javax.swing.JFrame {
             try {
                 utilidades.crearVenta(cliente, LogIn.usuario.getIdUsuario());
             } catch (Exception e) {
-                utilidades.mostrarAlerta(e + "", "Error");
+                utilidades.mostrarAlerta(btVender,e + "", "Error");
             } finally {
                 actualizarCantidadInventario(lsBuscar);
                 focusRb();
                 imgExito();
             }
         } else {
-            utilidades.mostrarAlerta("No puede vender si no se han agregado productos",
+            utilidades.mostrarAlerta(btVender,"No puede vender si no se han agregado productos",
                     "Error");
         }
     }//GEN-LAST:event_btVenderActionPerformed
@@ -763,7 +790,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                             .getValueAt(dgvPedidos.getSelectedRow(), 1)))
             {
                 num = -1;
-                utilidades.mostrarAlerta("La cantidad ingresada exede la cantidad"
+                utilidades.mostrarAlerta(null,"La cantidad ingresada exede la cantidad"
                         + " disponible, intente de nuevo.", "Cantidad no válida!");
             }
         }
@@ -797,14 +824,13 @@ public class GenerarVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_btAgregarKeyPressed
 
     private void lbEmpleadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbEmpleadoMouseClicked
-        int opcion = JOptionPane.showConfirmDialog(panelCliente,
+        int opcion = JOptionPane.showConfirmDialog(lbEmpleado,
                 "¿Estas seguro que deseas cambiar de usuario?",
                 "Cambiar usuario",
                 JOptionPane.OK_CANCEL_OPTION);
         if (opcion == 0) {
             new LogIn().setVisible(true);
-            LogIn.usuario = null;
-            this.dispose();
+            LogIn.cambiarUsuario = true;
         }
     }//GEN-LAST:event_lbEmpleadoMouseClicked
 
@@ -835,16 +861,17 @@ public class GenerarVenta extends javax.swing.JFrame {
             cliente.setTelefonoList(telefonos);
         }
         utilidades.AgregarCliente(cliente);
+        rbExistenteActionPerformed(new ActionEvent(this, 0, ""));
     }//GEN-LAST:event_btAgregarNuevoClienteActionPerformed
 
     private void tbBuscarClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBuscarClienteKeyTyped
-        Integer cantidad = tbBuscarCliente.getText().length();
-        try {
-            if (cantidad >=2) {
-                utilidades.fillJListC(lsBuscarCliente, tbBuscarCliente.getText().trim());
-            }
-        } catch (Exception e)
+        Integer cantidad = tbBuscarCliente.getText().length();       
+        if (cantidad >=2) {
+            utilidades.fillJListC(lsBuscarCliente, tbBuscarCliente.getText().trim());
+        }
+        else
         {
+            utilidades.fillJListC(lsBuscarCliente, "*");
         }
     }//GEN-LAST:event_tbBuscarClienteKeyTyped
 
@@ -859,6 +886,30 @@ public class GenerarVenta extends javax.swing.JFrame {
         }
         this.dispose();
     }//GEN-LAST:event_btCerrarSesionMouseClicked
+
+    private void lsBuscarClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lsBuscarClienteMouseClicked
+        if (lsBuscarCliente.getModel().getSize()>0 && lsBuscarCliente.getSelectedIndex() > -1) {
+            Cliente Cliente = utilidades.buscarCliente(lsBuscarCliente.getModel().getElementAt(lsBuscarCliente.getSelectedIndex()));
+            if (Cliente!= null) {
+                tbNombreCliente.setText(Cliente.getNombre());
+                tbApellidoCliente.setText(Cliente.getApellido());
+                tbDireccion.setText(Cliente.getDireccion());
+                tbDUICliente.setText(Cliente.getDui());
+                List<Telefono> telefonos = Cliente.getTelefonoList();
+                for (Telefono telefono : telefonos) {
+                    tbTelefono.setText(telefono.getTelefono()+", ");
+                }
+           }
+        }
+    }//GEN-LAST:event_lsBuscarClienteMouseClicked
+
+    private void btLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimpiarActionPerformed
+        tbNombreCliente.setText("");
+        tbApellidoCliente.setText("");
+        tbDireccion.setText("");
+        tbDUICliente.setText("");
+        tbTelefono.setText("");
+    }//GEN-LAST:event_btLimpiarActionPerformed
     private static int stringToInt(String string) {
         try {
             int var = Integer.parseInt(string);
@@ -917,6 +968,10 @@ public class GenerarVenta extends javax.swing.JFrame {
         java.awt.event.ActionEvent evt =  new java.awt.event.ActionEvent(this, 0, "");
         rbExistenteActionPerformed(evt);
     }
+    
+    public static void actualizarUsuario() {
+        lbEmpleado.setText("Empleado: "+LogIn.usuario.getNombre()+" "+LogIn.usuario.getApellido());
+    }
     public static void main(String args[]) {
         
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -954,6 +1009,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JButton btAgregarNuevoCliente;
     private javax.swing.JButton btCancelar;
     private javax.swing.JLabel btCerrarSesion;
+    private javax.swing.JButton btLimpiar;
     private javax.swing.JButton btVender;
     private javax.swing.JComboBox<String> cbBuscar;
     private javax.swing.JComboBox cbCantidad;
@@ -967,7 +1023,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel lbCantidad;
     private javax.swing.JLabel lbDescuento;
-    private javax.swing.JLabel lbEmpleado;
+    public static javax.swing.JLabel lbEmpleado;
     private javax.swing.JLabel lbExistencia;
     private javax.swing.JLabel lbFactura;
     private javax.swing.JLabel lbFactura1;

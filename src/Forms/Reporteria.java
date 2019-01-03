@@ -195,7 +195,7 @@ public class Reporteria extends javax.swing.JFrame {
             viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             viewer.setVisible(true);
         } catch (JRException e) {
-            utilidades.mostrarAlerta("Algo salio mal /nError:" + e, "Error");
+            utilidades.mostrarAlerta(btProductosMasVendidos ,"Algo salio mal /nError:" + e, "Error");
         }
     }//GEN-LAST:event_btProductosMasVendidosActionPerformed
 
@@ -213,7 +213,7 @@ public class Reporteria extends javax.swing.JFrame {
                 viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                 viewer.setVisible(true);
             } catch (JRException e) {
-                utilidades.mostrarAlerta("Algo salio mal /nError:" + e, "Error");
+                utilidades.mostrarAlerta(btVentasMayoreo ,"Algo salio mal /nError:" + e, "Error");
             }
         }
     }//GEN-LAST:event_btVentasMayoreoActionPerformed
@@ -233,7 +233,7 @@ public class Reporteria extends javax.swing.JFrame {
             viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             viewer.setVisible(true);
         } catch (JRException e) {
-            utilidades.mostrarAlerta("Algo salio mal /nError:" + e, "Error");
+            utilidades.mostrarAlerta(btReporteDiario,"Algo salio mal /nError:" + e, "Error");
         }
     }//GEN-LAST:event_btReporteDiarioActionPerformed
 

@@ -42,16 +42,12 @@ public class PrincipalEmpleado extends javax.swing.JFrame {
 
         btReportes.setText("Reportes");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/100x100.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/100x100.png"))); // NOI18N
         jLabel5.setText("jLabel1");
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/100x100.png"))); // NOI18N
         jLabel6.setText("jLabel1");
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/100x100.png"))); // NOI18N
         jLabel7.setText("jLabel1");
 
         btCerrarSesion.setText("Cerrar sesion");

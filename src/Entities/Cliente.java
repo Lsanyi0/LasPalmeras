@@ -173,4 +173,8 @@ public class Cliente implements Serializable {
         }
         return isValid;
     }
+    public boolean Equals(Cliente cliente)
+    {
+        return this.equals(cliente);
+    }
 }

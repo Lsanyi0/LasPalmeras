@@ -12,6 +12,8 @@ public class LogIn extends javax.swing.JFrame {
     
     public static Usuario usuario = null;
     
+    public static boolean cambiarUsuario = false;
+    
     public LogIn() {
         initComponents();
         utilidades.setScreenCentered(this);
@@ -35,11 +37,14 @@ public class LogIn extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inicio de Sesion");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setResizable(false);
+        setSize(new java.awt.Dimension(315, 395));
 
         lbInicioSesion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lbInicioSesion.setText("INICIO DE SESIÓN");
 
-        btAcceder.setText("Acceder");
+        btAcceder.setBackground(new java.awt.Color(204, 204, 255));
+        btAcceder.setText("Entrar");
         btAcceder.setMaximumSize(new java.awt.Dimension(85, 25));
         btAcceder.setMinimumSize(new java.awt.Dimension(85, 25));
         btAcceder.setPreferredSize(new java.awt.Dimension(85, 25));
@@ -49,9 +54,10 @@ public class LogIn extends javax.swing.JFrame {
             }
         });
 
+        btRegistrar.setBackground(new java.awt.Color(204, 255, 204));
         btRegistrar.setText("Registrar");
 
-        jLabel2.setText("¿Olvido su contraseña?");
+        jLabel2.setText("¿Olvidó su contraseña?");
 
         tbUsuario.setNextFocusableComponent(tbClave);
 
@@ -124,25 +130,30 @@ public class LogIn extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btAccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAccederActionPerformed
-        if (!noLog.isSelected()) {
+        if (!noLog.isSelected()) { //La variable usuario es setada en el metodo login
             if (!tbUsuario.getText().trim().equals("") && !tbClave.getPassword().equals("")) {
                 if (utilidades.login(tbUsuario.getText(), tbClave.getPassword())) {
-                    if (usuario.getIdRol().getIdRol() == 1) {
+                    if (cambiarUsuario){
+                        cambiarUsuario = false;
+                        GenerarVenta.actualizarUsuario();
+                        this.dispose();
+                    }
+                    else if(usuario.getIdRol().getIdRol() == 1)
+                    {
                         new PrincipalAdmin().setVisible(true);
                     }
                     else
                     {
                         new PrincipalEmpleado().setVisible(true);
-                        this.dispose();
                     }
                     this.dispose();
                 } else {
-                    utilidades.mostrarAlerta("Usuario o Clave incorrectos,"
+                    utilidades.mostrarAlerta(btAcceder,"Usuario o Clave incorrectos,"
                             + " intente de nuevo porfavor.",
                             "Inicio de sesion fallido");
                 }
             } else {
-                utilidades.mostrarAlerta("Porfavor ingrese datos válidos",
+                utilidades.mostrarAlerta(btAcceder,"Porfavor ingrese datos válidos",
                         "Inicio de sesion fallido");
             }
         }
