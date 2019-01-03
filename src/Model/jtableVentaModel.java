@@ -27,9 +27,10 @@ public class jtableVentaModel {
     public void setPreciounitario(Double preciounitario) {
         this.preciounitario = preciounitario;
     }
-
+    
     public void setDescuento(Double descuento) {
-        this.descuento = descuento;
+        if(descuento<=0) this.descuento = (-1)*descuento;
+        else this.descuento = descuento;
     }
     
     public void setSubtotal(Double subtotal) {
@@ -47,7 +48,7 @@ public class jtableVentaModel {
     public Double getPreciounitario() {
         return preciounitario;
     }
-
+    
     public Double getDescuento() {
         return descuento;
     }
@@ -86,7 +87,8 @@ public class jtableVentaModel {
         this.cantidad = cantidad;
         this.nombre = nombre;
         this.preciounitario = preciounitario;
-        this.descuento = descuento;
+        if(descuento<=-1) this.descuento = (-1)*descuento;
+        else this.descuento = descuento;
         acutalizarSubtotal();
     }
     

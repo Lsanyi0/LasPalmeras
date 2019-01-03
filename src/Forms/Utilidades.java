@@ -69,12 +69,12 @@ public class Utilidades {
         List<String> linv;
         if (!busqueda.equals("*")) {
             linv = manager.createQuery("SELECT CONCAT(c.nombre,' ',c.apellido) FROM Cliente c WHERE CONCAT(c.nombre,' ',c.apellido) LIKE '%"+busqueda+"%' AND c.nombre <> '"+GenerarVenta.rbAnonimo.getText()+"'")
-                .getResultList();
+                    .getResultList();
         }
-        else 
+        else
         {
-        linv = manager.createQuery("SELECT CONCAT(c.nombre,' ',c.apellido) FROM Cliente c WHERE c.nombre <> '"+GenerarVenta.rbAnonimo.getText()+"'")
-                .getResultList();
+            linv = manager.createQuery("SELECT CONCAT(c.nombre,' ',c.apellido) FROM Cliente c WHERE c.nombre <> '"+GenerarVenta.rbAnonimo.getText()+"'")
+                    .getResultList();
         }
         setJListModel(linv, lista);
     }
@@ -536,6 +536,15 @@ public class Utilidades {
             model.addRow(j.toArray());
         });
     }
+    public void setDescuentoJtable(JTable jtable,int index, double descuento)
+    {
+        temp.get(index).setDescuento(descuento);
+        DefaultTableModel model = (DefaultTableModel) jtable.getModel();
+        model.setRowCount(0);
+        temp.forEach((jtableVentaModel j) -> { //no se como pero java sabe que hacer ¯\_(ツ)_/¯
+            model.addRow(j.toArray());
+        });
+    }
     public Usuario getUsuarioByIdUsuario(int idUsuario)
     {
         Usuario usuario = (Usuario) manager.createNamedQuery("Usuario.findByIdUsuario")
@@ -681,5 +690,18 @@ public class Utilidades {
         Cliente Cli = (Cliente) manager.createQuery("SELECT c FROM Cliente c WHERE CONCAT(c.nombre,' ',c.apellido) LIKE '%"+aBuscar+"%'")
                 .getSingleResult();
         return Cli;
+    }
+    public boolean buscarCliente(Cliente cli)
+    {
+        List<Cliente> clientes = manager.createNamedQuery("Cliente.findAll")
+                .getResultList();
+        for (Cliente cliente : clientes) {
+            boolean equals = true;
+            if (!cli.getNombre().equals(cliente.getNombre())) equals = false;
+            if (!cli.getApellido().equals(cliente.getApellido())) equals = false;
+            if (!cli.getDui().equals(cliente.getDui())) equals = false;
+            if (equals) return true;
+        }
+        return false;
     }
 }

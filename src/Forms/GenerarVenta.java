@@ -22,7 +22,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     
     public GenerarVenta() {
         initComponents();
-        utilidades.setScreenCentered(this);                 
+        utilidades.setScreenCentered(this);
     }
     
     @SuppressWarnings("unchecked")
@@ -35,6 +35,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         ppmDataGrid = new javax.swing.JPopupMenu();
         miEliminarElemento = new javax.swing.JMenuItem();
         miModificarCantidad = new javax.swing.JMenuItem();
+        miModificarDescuento = new javax.swing.JMenuItem();
         panelCliente = new javax.swing.JPanel();
         tbNombreCliente = new javax.swing.JTextField();
         rbAnonimo = new javax.swing.JRadioButton();
@@ -102,6 +103,14 @@ public class GenerarVenta extends javax.swing.JFrame {
             }
         });
         ppmDataGrid.add(miModificarCantidad);
+
+        miModificarDescuento.setText("Cambiar Descuento");
+        miModificarDescuento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miModificarDescuentoActionPerformed(evt);
+            }
+        });
+        ppmDataGrid.add(miModificarDescuento);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ventas");
@@ -659,7 +668,12 @@ public class GenerarVenta extends javax.swing.JFrame {
         JList list = (JList)evt.getSource();
         if (utilidades.validarComboBox(cbCantidad)) {
             int cbx = Integer.valueOf(cbCantidad.getSelectedItem().toString());
-            Double desc = Double.valueOf(tbDescuento.getText());
+            Double desc;
+            try {
+                desc = Double.valueOf(tbDescuento.getText());
+            } catch (NumberFormatException numberFormatException) {
+                desc = 0.00;
+            }
             if (evt.getClickCount() == 2 && list.getModel().getSize() > 0 &&
                     utilidades.getExistenciaByNombre(lsBuscar.getSelectedValue())>0)
             {
@@ -668,6 +682,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 dgvPedidos.setRowSelectionAllowed(true);
                 lbTotal.setText(totalAPagar + df.format(utilidades.getTotal()));
                 tbDescuento.setText("0.00");
+                tbBuscar.setText("");
             }
         }
     }//GEN-LAST:event_lsBuscarMouseClicked
@@ -760,7 +775,7 @@ public class GenerarVenta extends javax.swing.JFrame {
             
             miEliminarElemento.setText("Quitar producto "+concat);
             miModificarCantidad.setText("Cambiar cantidad "+concat);
-            
+            miModificarDescuento.setText("Cambiar descuento "+concat);
             ppmDataGrid.show(dgvPedidos, evt.getX(), evt.getY());
         }     
     }//GEN-LAST:event_dgvPedidosMouseReleased
@@ -860,12 +875,18 @@ public class GenerarVenta extends javax.swing.JFrame {
         if (!telefonos.isEmpty()) {
             cliente.setTelefonoList(telefonos);
         }
-        utilidades.AgregarCliente(cliente);
-        rbExistenteActionPerformed(new ActionEvent(this, 0, ""));
+        if (utilidades.buscarCliente(cliente)) {
+            imgError("El cliente ya existe");
+        }
+        else
+        {
+            utilidades.AgregarCliente(cliente);
+            rbExistenteActionPerformed(new ActionEvent(this, 0, ""));
+        }
     }//GEN-LAST:event_btAgregarNuevoClienteActionPerformed
 
     private void tbBuscarClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbBuscarClienteKeyTyped
-        Integer cantidad = tbBuscarCliente.getText().length();       
+        Integer cantidad = tbBuscarCliente.getText().length();
         if (cantidad >=2) {
             utilidades.fillJListC(lsBuscarCliente, tbBuscarCliente.getText().trim());
         }
@@ -899,7 +920,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 for (Telefono telefono : telefonos) {
                     tbTelefono.setText(telefono.getTelefono()+", ");
                 }
-           }
+            }
         }
     }//GEN-LAST:event_lsBuscarClienteMouseClicked
 
@@ -910,6 +931,29 @@ public class GenerarVenta extends javax.swing.JFrame {
         tbDUICliente.setText("");
         tbTelefono.setText("");
     }//GEN-LAST:event_btLimpiarActionPerformed
+
+    private void miModificarDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miModificarDescuentoActionPerformed
+        String valor;
+        double num = -9999;
+        while (num == -9999) {
+            valor = JOptionPane.showInputDialog("Cantidad:",
+                    dgvPedidos
+                            .getModel()
+                            .getValueAt(dgvPedidos
+                                    .getSelectedRow(), 3).toString().substring(3));
+            if (valor == null)
+            {
+                return;
+            }
+            try {
+                num = Double.valueOf(valor);
+            } catch (NumberFormatException numberFormatException) {
+                num = -9999;
+            }
+        }
+        utilidades.setDescuentoJtable(dgvPedidos, dgvPedidos.getSelectedRow(), num);
+        lbTotal.setText("Total a pagar: " + df.format(utilidades.getTotal()));
+    }//GEN-LAST:event_miModificarDescuentoActionPerformed
     private static int stringToInt(String string) {
         try {
             int var = Integer.parseInt(string);
@@ -926,7 +970,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     }
     public void toggleExistencia(int existencia)
     {
-        if (existencia == 0)
+        if (existencia <= 0)
         {
             lbExistencia.setForeground(Color.RED);
             imgError("Sin exitencia");
@@ -965,8 +1009,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     public void focusRb()
     {
         rbAnonimo.setSelected(true);
-        java.awt.event.ActionEvent evt =  new java.awt.event.ActionEvent(this, 0, "");
-        rbExistenteActionPerformed(evt);
+        rbAnonimoActionPerformed(new ActionEvent(this, 0, ""));
     }
     
     public static void actualizarUsuario() {
@@ -985,15 +1028,11 @@ public class GenerarVenta extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GenerarVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GenerarVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GenerarVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GenerarVenta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
         
         /* Create and display the form */
@@ -1044,6 +1083,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JList<String> lsBuscarCliente;
     private javax.swing.JMenuItem miEliminarElemento;
     private javax.swing.JMenuItem miModificarCantidad;
+    private javax.swing.JMenuItem miModificarDescuento;
     private javax.swing.JPanel panelCliente;
     private javax.swing.JPanel panelProducto;
     private javax.swing.JPopupMenu ppmDataGrid;
