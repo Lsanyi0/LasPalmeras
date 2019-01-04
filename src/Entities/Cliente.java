@@ -88,12 +88,6 @@ public class Cliente implements Serializable {
     }
     
     public String getDireccion() {
-        if (this.direccion != null)
-        {
-            if (!this.direccion.isEmpty()) {
-                setDireccion("");
-            }
-        }
         return direccion;
     }
     
@@ -163,14 +157,29 @@ public class Cliente implements Serializable {
     public String toString() {
         return nombre+" "+apellido+", "+dui;
     }
-    public boolean Validar()
+    public String Validar()
     {
-        boolean isValid = true;
-        if (this.getNombre().trim().isEmpty()) isValid = false;
+
+        if (!this.getNombre().trim().isEmpty())
+        {
+//            if(!this.getNombre().matches("^([\\u00c0-\\u01ffa-zA-Z'\\-])+$")) error = "Nombre no válido";
+            if (this.getApellido().length()>25) return "Apellido muy largo Max{25}";
+        }    
+        else return "Nombre vacío";
         if (!this.getNombre().equals(Forms.GenerarVenta.rbAnonimo.getText()))
         {
-            if (this.getApellido().trim().isEmpty()) isValid = false;
+            if (this.getApellido().trim().isEmpty()) return "Apellido vacío";
+//            if(!this.getApellido().matches("^([\\u00c0-\\u01ffa-zA-Z'\\-])+$")) error = "Apellido no válido";
+            if (this.getApellido().length()>25) return "Apellido muy largo Max{25}";
         }
-        return isValid;
+        if (!this.getDui().trim().isEmpty())
+        {
+            if (!this.getDui().matches("\\d{8}[-]\\d{1}")) return "Formato de dui incorrecto";
+        }
+        if(!this.getDireccion().trim().isEmpty())
+        {
+            if (this.getDireccion().length() > 75) return "Direccion muy larga Max{75}";
+        }
+        return "OK";
     }
 }

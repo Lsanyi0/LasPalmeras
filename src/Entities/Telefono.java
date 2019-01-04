@@ -146,7 +146,9 @@ public class Telefono implements Serializable {
     public static boolean isPhoneNumber(String nTelefono)
     {
         //Cualquier string que vaya con #-# agregar {#} si se quiere limitar la cantidad de digitos
-        String regexStr = "^[0-9\\-]*$";
-        return nTelefono.matches(regexStr);
+        boolean valido = true;
+        if (!nTelefono.matches("^[0-9\\-]*$")) valido = false;
+        if (nTelefono.trim().length()>9) valido = false;
+        return valido;
     }
 }

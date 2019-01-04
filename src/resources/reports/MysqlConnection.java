@@ -1,4 +1,4 @@
-package jReports;
+package resources.reports;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

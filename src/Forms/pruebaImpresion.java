@@ -1,6 +1,6 @@
 package Forms;
 
-import jReports.MysqlConnection;
+import resources.reports.MysqlConnection;
 import Entities.Cliente;
 import Model.jtableVentaModel;
 import java.util.ArrayList;
@@ -188,7 +188,7 @@ public class pruebaImpresion extends javax.swing.JFrame {
             viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             viewer.setVisible(true);
         } catch (JRException e) {
-            utilidades.mostrarAlerta("Nel prro :V /n Error:" + e, "Error");
+            utilidades.mostrarAlerta(btJasperR,"Nel prro :V /n Error:" + e, "Error");
         }
     }//GEN-LAST:event_btJasperRActionPerformed
 
