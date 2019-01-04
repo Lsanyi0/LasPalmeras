@@ -1,6 +1,6 @@
 package Forms;
 
-import jReports.MysqlConnection;
+import resources.reports.MysqlConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public class Reporteria extends javax.swing.JFrame {
         setTitle("Reportes");
         setSize(new java.awt.Dimension(830, 320));
 
-        btProductosMasVendidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/masvendidos.png"))); // NOI18N
+        btProductosMasVendidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/masvendidos.png"))); // NOI18N
         btProductosMasVendidos.setText("Mas Vendidos");
         btProductosMasVendidos.setActionCommand("");
         btProductosMasVendidos.addActionListener(new java.awt.event.ActionListener() {
@@ -75,7 +75,7 @@ public class Reporteria extends javax.swing.JFrame {
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
-        btVentasMayoreo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/mayoreo.png"))); // NOI18N
+        btVentasMayoreo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/mayoreo.png"))); // NOI18N
         btVentasMayoreo.setText("Ventas Mayoreo");
         btVentasMayoreo.setActionCommand("");
         btVentasMayoreo.addActionListener(new java.awt.event.ActionListener() {
@@ -121,7 +121,7 @@ public class Reporteria extends javax.swing.JFrame {
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
-        btReporteDiario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/diario.png"))); // NOI18N
+        btReporteDiario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/diario.png"))); // NOI18N
         btReporteDiario.setText("Generar Reporte");
         btReporteDiario.setActionCommand("");
         btReporteDiario.addActionListener(new java.awt.event.ActionListener() {
@@ -147,7 +147,7 @@ public class Reporteria extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/logout.png"))); // NOI18N
+        btCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/logout.png"))); // NOI18N
         btCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btCerrarSesionMouseClicked(evt);
@@ -187,9 +187,8 @@ public class Reporteria extends javax.swing.JFrame {
 
     private void btProductosMasVendidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btProductosMasVendidosActionPerformed
         JasperReport reporte;
-        String path = ".\\src\\jReports\\ProductosMasVendidos.jasper";
         try {
-            reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
+            reporte = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResource("resources/reports/ProductosMasVendidos.jasper"));
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, MysqlConnection.MysqlConnection());//WIP
             JasperViewer viewer = new JasperViewer(jasperPrint, false);
             viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -202,12 +201,11 @@ public class Reporteria extends javax.swing.JFrame {
     private void btVentasMayoreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btVentasMayoreoActionPerformed
         if (dpDesde.getDate()!=null && dpHasta.getDate()!=null) {
             JasperReport reporte;
-            String path = ".\\src\\jReports\\VentasEnMayoreo.jasper";
             Map params = new HashMap();
             params.put("Fecha1",frm.format(dpDesde.getDate()));
             params.put("Fecha2",frm.format(dpHasta.getDate()));
             try {
-                reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
+                reporte = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResource("resources/reports/VentasEnMayoreo.jasper"));
                 JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, params, MysqlConnection.MysqlConnection());//WIP
                 JasperViewer viewer = new JasperViewer(jasperPrint, false);
                 viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -220,14 +218,13 @@ public class Reporteria extends javax.swing.JFrame {
 
     private void btReporteDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btReporteDiarioActionPerformed
         JasperReport reporte;
-        String path = ".\\src\\jReports\\ReporteDiario.jasper";
         Map params = new HashMap();
         Date hoy = new Date();
-
+        
         params.put("Fecha1", frm.format(hoy.getTime()-86400000));
         params.put("Fecha2", frm.format(new Date()));
         try {
-            reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
+            reporte = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResource("resources/reports/ReporteDiario.jasper"));
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, MysqlConnection.MysqlConnection());//WIP
             JasperViewer viewer = new JasperViewer(jasperPrint, false);
             viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -241,13 +238,13 @@ public class Reporteria extends javax.swing.JFrame {
         new PrincipalAdmin().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btCerrarSesionMouseClicked
-
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+        */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -265,7 +262,7 @@ public class Reporteria extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Reporteria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

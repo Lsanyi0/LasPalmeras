@@ -218,7 +218,7 @@ public class Utilidades {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         jFrame.setLocation(dim.width / 2 - jFrame.getSize().width / 2,
                 dim.height / 2 - jFrame.getSize().height / 2);
-        jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Imagenes/palmera.png")));
+        jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/imagenes/palmera.png")));
     }
     
     public void crearVenta(Cliente cliente, int idEmpleado) {
@@ -262,30 +262,50 @@ public class Utilidades {
         }
     }
     
-    public void AgregarCliente(Cliente cliente)
+    public boolean AgregarCliente(Cliente cliente)
     {
         try {
-            if (cliente.Validar()) {
+            if (cliente.Validar().equals("OK")) {
                 List<Telefono> tels = cliente.getTelefonoList();
                 manager.getTransaction().begin(); //Iniciamos la transaccion
                 //"Insertamos" los telefonos a la DB, pero antes validandolos
-                for (Telefono tel : tels) if (tel.Validar()) manager.persist(tel);
-                //flush sirve por ejemplo para que vaya a la BD y le busque ID a la entidad que deseamos ingresar
+                if(tels != null){
+                    for (Telefono tel : tels)
+                    {
+                        if (tel.Validar())
+                        {
+                            manager.persist(tel);
+                        }
+                    }
+                    //flush sirve por ejemplo para que vaya a la BD y le busque ID a la entidad que deseamos ingresar
+                }
                 manager.flush();
                 //Busca id para el cliente
                 manager.persist(cliente);
                 manager.flush();
                 //Asignamos los telefonos previamente agregados a el cliente correspondiente
-                for (Telefono tel : tels) tel.setIdCliente(cliente);
+                if (tels != null) {
+                    for (Telefono tel : tels)
+                    {
+                        tel.setIdCliente(cliente);
+                    }
+                }
                 //Hacemos commit a los cambios realizados
                 manager.getTransaction().commit();
+                GenerarVenta.imgExito(cliente.Validar());
+                return true;
             }
-            else mostrarAlerta(null,"Porfavor ingrese nombre, y apellido validos", "Error");
+            else
+            {
+                GenerarVenta.imgError(cliente.Validar());
+                return false;
+            }
         } catch (Exception e) {
             //Si falla en alguno de los pasos anteriores hacemos rollback
             mostrarAlerta(null,"Algo salio mal al ingresar nuevo usuario, porfavor "
                     + "intente de nuevo /n Error: "+e, "Error");
             manager.getTransaction().rollback();
+            return false;
         }
     }
     
@@ -695,11 +715,15 @@ public class Utilidades {
     {
         List<Cliente> clientes = manager.createNamedQuery("Cliente.findAll")
                 .getResultList();
-        for (Cliente cliente : clientes) {
+        for (Cliente cliente : clientes)
+        {
             boolean equals = true;
             if (!cli.getNombre().equals(cliente.getNombre())) equals = false;
             if (!cli.getApellido().equals(cliente.getApellido())) equals = false;
-            if (!cli.getDui().equals(cliente.getDui())) equals = false;
+            if (!cli.getDui().trim().isEmpty()) 
+            {
+                if (!cli.getDui().equals(cliente.getDui())) equals = false;
+            }
             if (equals) return true;
         }
         return false;

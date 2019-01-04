@@ -65,7 +65,7 @@ public class LogIn extends javax.swing.JFrame {
 
         lbUsuario.setText("Usuario");
 
-        lbImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/User.png"))); // NOI18N
+        lbImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/User.png"))); // NOI18N
 
         noLog.setSelected(true);
         noLog.setText("Nolog");

@@ -97,7 +97,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lbRegistro" max="32767" attributes="0"/>
+                          <Component id="panelRegistro" max="32767" attributes="0"/>
                           <Component id="panelCliente" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
@@ -119,7 +119,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lbRegistro" min="-2" max="-2" attributes="0"/>
+                      <Component id="panelRegistro" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="panelCliente" max="32767" attributes="0"/>
                   </Group>
@@ -327,7 +327,7 @@
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="tbDUICliente"/>
+              <ComponentRef name="tbTelefono"/>
             </Property>
           </Properties>
         </Component>
@@ -376,7 +376,6 @@
                   <StringArray count="0"/>
                 </Property>
                 <Property name="selectionMode" type="int" value="0"/>
-                <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lsBuscarClienteMouseClicked"/>
@@ -414,7 +413,7 @@
             <Property name="toolTipText" type="java.lang.String" value="Si son multiples telefonos coloque una coma para separarlos"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-              <ComponentRef name="tbBuscarCliente"/>
+              <ComponentRef name="tbNombreCliente"/>
             </Property>
           </Properties>
         </Component>
@@ -424,10 +423,9 @@
               <Color blue="cc" green="ff" red="cc" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/adduser.png"/>
+              <Image iconType="3" name="/resources/imagenes/adduser.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Agregar Nuevo Cliente"/>
-            <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
@@ -440,7 +438,7 @@
               <Color blue="ff" green="cc" red="cc" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/limpiar.png"/>
+              <Image iconType="3" name="/resources/imagenes/limpiar.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Limpiar"/>
             <Property name="toolTipText" type="java.lang.String" value="Limpia el texto de todos los elementos de la seccion."/>
@@ -458,7 +456,6 @@
             <TitledBorder title="Producto"/>
           </Border>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
 
       <Layout>
@@ -565,7 +562,7 @@
               <Color blue="ff" green="cc" red="cc" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/agregaracarro.png"/>
+              <Image iconType="3" name="/resources/imagenes/agregaracarro.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Agregar"/>
             <Property name="name" type="java.lang.String" value="" noResource="true"/>
@@ -677,21 +674,24 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/gr_chk.png"/>
-            </Property>
-            <Property name="disabledIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/error.png"/>
+              <Image iconType="3" name="/resources/imagenes/gr_chk.png"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="feedbackError">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/error.png"/>
+              <Image iconType="3" name="/resources/imagenes/error.png"/>
             </Property>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="lbFeedback">
           <Properties>
@@ -704,18 +704,18 @@
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lbFeedback.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="lbRegistro">
+    <Container class="javax.swing.JPanel" name="panelRegistro">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Registro"/>
           </Border>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
 
       <Layout>
@@ -805,7 +805,7 @@
           <Color blue="63" green="85" red="0" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/vendercarro.png"/>
+          <Image iconType="3" name="/resources/imagenes/vendercarro.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Vender"/>
         <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -825,7 +825,7 @@
           <Color blue="0" green="0" red="cc" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/carromenos.png"/>
+          <Image iconType="3" name="/resources/imagenes/carromenos.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Cancelar venta"/>
       </Properties>
@@ -909,13 +909,12 @@
           <Font name="Tahoma" size="11" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Productos a vender:"/>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="btCerrarSesion">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/logout.png"/>
+          <Image iconType="3" name="/resources/imagenes/logout.png"/>
         </Property>
       </Properties>
       <Events>

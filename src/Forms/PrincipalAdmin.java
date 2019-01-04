@@ -49,16 +49,16 @@ public class PrincipalAdmin extends javax.swing.JFrame {
             }
         });
 
-        imgVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ventas.png"))); // NOI18N
+        imgVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/ventas.png"))); // NOI18N
         imgVentas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 3));
 
-        imgCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/compras.png"))); // NOI18N
+        imgCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/compras.png"))); // NOI18N
         imgCompras.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 3));
 
-        imgReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/reportes.png"))); // NOI18N
+        imgReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/reportes.png"))); // NOI18N
         imgReportes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 3));
 
-        btCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/logout.png"))); // NOI18N
+        btCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/logout.png"))); // NOI18N
         btCerrarSesion.setToolTipText("Cerrar Sesion");
         btCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

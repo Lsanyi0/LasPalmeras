@@ -1,6 +1,6 @@
 package Forms;
 
-import jReports.MysqlConnection;
+import resources.reports.MysqlConnection;
 import Entities.Cliente;
 import Model.jtableVentaModel;
 import java.util.ArrayList;

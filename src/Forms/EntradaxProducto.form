@@ -354,7 +354,7 @@
               <Font name="Tahoma" size="12" style="1"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/agregaracarro.png"/>
+              <Image iconType="3" name="/resources/imagenes/agregaracarro.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Agregar A la compra"/>
           </Properties>
@@ -565,7 +565,7 @@
           <Font name="Tahoma" size="11" style="1"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/guardar.png"/>
+          <Image iconType="3" name="/resources/imagenes/guardar.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Guardar Entradas"/>
       </Properties>
@@ -582,7 +582,7 @@
           <Font name="Tahoma" size="11" style="1"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/eliminar.png"/>
+          <Image iconType="3" name="/resources/imagenes/eliminar.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Eliminar Producto"/>
       </Properties>
@@ -717,10 +717,9 @@
               <Font name="Tahoma" size="11" style="1"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/buscar.png"/>
+              <Image iconType="3" name="/resources/imagenes/buscar.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Buscar"/>
-            <Property name="actionCommand" type="java.lang.String" value="Buscar"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarPActionPerformed"/>
@@ -750,7 +749,7 @@
           <Color blue="ff" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/agregarproducto.png"/>
+          <Image iconType="3" name="/resources/imagenes/agregarproducto.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Agregar producto"/>
       </Properties>
@@ -839,7 +838,7 @@
     <Component class="javax.swing.JLabel" name="lbLogOut">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/logout.png"/>
+          <Image iconType="3" name="/resources/imagenes/logout.png"/>
         </Property>
       </Properties>
       <Events>

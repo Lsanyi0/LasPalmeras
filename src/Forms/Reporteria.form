@@ -96,7 +96,7 @@
         <Component class="javax.swing.JButton" name="btProductosMasVendidos">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/masvendidos.png"/>
+              <Image iconType="3" name="/resources/imagenes/masvendidos.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Mas Vendidos"/>
             <Property name="actionCommand" type="java.lang.String" value=""/>
@@ -151,7 +151,7 @@
         <Component class="javax.swing.JButton" name="btVentasMayoreo">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/mayoreo.png"/>
+              <Image iconType="3" name="/resources/imagenes/mayoreo.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Ventas Mayoreo"/>
             <Property name="actionCommand" type="java.lang.String" value=""/>
@@ -202,7 +202,7 @@
         <Component class="javax.swing.JButton" name="btReporteDiario">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/diario.png"/>
+              <Image iconType="3" name="/resources/imagenes/diario.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Generar Reporte"/>
             <Property name="actionCommand" type="java.lang.String" value=""/>
@@ -216,7 +216,7 @@
     <Component class="javax.swing.JLabel" name="btCerrarSesion">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/logout.png"/>
+          <Image iconType="3" name="/resources/imagenes/logout.png"/>
         </Property>
       </Properties>
       <Events>

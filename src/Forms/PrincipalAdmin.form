@@ -100,7 +100,7 @@
     <Component class="javax.swing.JLabel" name="imgVentas">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/ventas.png"/>
+          <Image iconType="3" name="/resources/imagenes/ventas.png"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -114,7 +114,7 @@
     <Component class="javax.swing.JLabel" name="imgCompras">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/compras.png"/>
+          <Image iconType="3" name="/resources/imagenes/compras.png"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -128,7 +128,7 @@
     <Component class="javax.swing.JLabel" name="imgReportes">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/reportes.png"/>
+          <Image iconType="3" name="/resources/imagenes/reportes.png"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -142,7 +142,7 @@
     <Component class="javax.swing.JLabel" name="btCerrarSesion">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/logout.png"/>
+          <Image iconType="3" name="/resources/imagenes/logout.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value="Cerrar Sesion"/>
       </Properties>

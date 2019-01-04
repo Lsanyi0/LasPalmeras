@@ -4,6 +4,7 @@ import Entities.Cliente;
 import Entities.Telefono;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.text.DecimalFormat;
 import javax.swing.DefaultComboBoxModel;
@@ -71,7 +72,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         feedbackCorrecto = new javax.swing.JLabel();
         feedbackError = new javax.swing.JLabel();
         lbFeedback = new javax.swing.JLabel();
-        lbRegistro = new javax.swing.JPanel();
+        panelRegistro = new javax.swing.JPanel();
         lbFecha = new javax.swing.JLabel();
         lbFechaExpedicion = new javax.swing.JLabel();
         lbFactura = new javax.swing.JLabel();
@@ -152,7 +153,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         tbDireccion.setNextFocusableComponent(tbDUICliente);
 
         tbDUICliente.setEnabled(false);
-        tbDUICliente.setNextFocusableComponent(tbDUICliente);
+        tbDUICliente.setNextFocusableComponent(tbTelefono);
 
         lbFactura1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         lbFactura1.setText("Nombre:");
@@ -167,7 +168,6 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbFactura4.setText("DUI:");
 
         lsBuscarCliente.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        lsBuscarCliente.setToolTipText("");
         lsBuscarCliente.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lsBuscarClienteMouseClicked(evt);
@@ -190,12 +190,11 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         tbTelefono.setToolTipText("Si son multiples telefonos coloque una coma para separarlos");
         tbTelefono.setEnabled(false);
-        tbTelefono.setNextFocusableComponent(tbBuscarCliente);
+        tbTelefono.setNextFocusableComponent(tbNombreCliente);
 
         btAgregarNuevoCliente.setBackground(new java.awt.Color(204, 255, 204));
-        btAgregarNuevoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/adduser.png"))); // NOI18N
+        btAgregarNuevoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/adduser.png"))); // NOI18N
         btAgregarNuevoCliente.setText("Agregar Nuevo Cliente");
-        btAgregarNuevoCliente.setToolTipText("");
         btAgregarNuevoCliente.setEnabled(false);
         btAgregarNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,7 +203,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         });
 
         btLimpiar.setBackground(new java.awt.Color(204, 204, 255));
-        btLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/limpiar.png"))); // NOI18N
+        btLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/limpiar.png"))); // NOI18N
         btLimpiar.setText("Limpiar");
         btLimpiar.setToolTipText("Limpia el texto de todos los elementos de la seccion.");
         btLimpiar.addActionListener(new java.awt.event.ActionListener() {
@@ -303,7 +302,6 @@ public class GenerarVenta extends javax.swing.JFrame {
         rbAnonimoActionPerformed(new ActionEvent(this, 0, ""));
 
         panelProducto.setBorder(javax.swing.BorderFactory.createTitledBorder("Producto"));
-        panelProducto.setToolTipText("");
 
         tbBuscar.setText("Buscar Producto");
         tbBuscar.setNextFocusableComponent(lsBuscar);
@@ -319,7 +317,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         });
 
         btAgregar.setBackground(new java.awt.Color(204, 204, 255));
-        btAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/agregaracarro.png"))); // NOI18N
+        btAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/agregaracarro.png"))); // NOI18N
         btAgregar.setText("Agregar");
         btAgregar.setName(""); // NOI18N
         btAgregar.setNextFocusableComponent(btVender);
@@ -376,11 +374,10 @@ public class GenerarVenta extends javax.swing.JFrame {
         tbDescuento.setToolTipText("Dejar en blanco si no se aplicara desuento");
 
         feedbackCorrecto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        feedbackCorrecto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/gr_chk.png"))); // NOI18N
-        feedbackCorrecto.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/error.png"))); // NOI18N
+        feedbackCorrecto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/gr_chk.png"))); // NOI18N
 
         feedbackError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        feedbackError.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/error.png"))); // NOI18N
+        feedbackError.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/error.png"))); // NOI18N
         feedbackError.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         lbFeedback.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -452,8 +449,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        lbRegistro.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro"));
-        lbRegistro.setToolTipText("");
+        panelRegistro.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro"));
 
         lbFecha.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         lbFecha.setText("Fecha De Expedicion");
@@ -467,40 +463,40 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbNumeroFactura.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         lbNumeroFactura.setText("000000");
 
-        javax.swing.GroupLayout lbRegistroLayout = new javax.swing.GroupLayout(lbRegistro);
-        lbRegistro.setLayout(lbRegistroLayout);
-        lbRegistroLayout.setHorizontalGroup(
-            lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(lbRegistroLayout.createSequentialGroup()
-                .addGroup(lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelRegistroLayout = new javax.swing.GroupLayout(panelRegistro);
+        panelRegistro.setLayout(panelRegistroLayout);
+        panelRegistroLayout.setHorizontalGroup(
+            panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRegistroLayout.createSequentialGroup()
+                .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbFecha)
-                    .addGroup(lbRegistroLayout.createSequentialGroup()
+                    .addGroup(panelRegistroLayout.createSequentialGroup()
                         .addGap(41, 41, 41)
                         .addComponent(lbFechaExpedicion)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbRegistroLayout.createSequentialGroup()
+                .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistroLayout.createSequentialGroup()
                         .addComponent(lbNumeroFactura)
                         .addGap(20, 20, 20))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbRegistroLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistroLayout.createSequentialGroup()
                         .addComponent(lbFactura)
                         .addContainerGap())))
         );
-        lbRegistroLayout.setVerticalGroup(
-            lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(lbRegistroLayout.createSequentialGroup()
-                .addGroup(lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        panelRegistroLayout.setVerticalGroup(
+            panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRegistroLayout.createSequentialGroup()
+                .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbFecha)
                     .addComponent(lbFactura))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(lbRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbFechaExpedicion)
                     .addComponent(lbNumeroFactura)))
         );
 
         btVender.setBackground(new java.awt.Color(204, 255, 204));
         btVender.setForeground(new java.awt.Color(0, 133, 99));
-        btVender.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/vendercarro.png"))); // NOI18N
+        btVender.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/vendercarro.png"))); // NOI18N
         btVender.setText("Vender");
         btVender.setNextFocusableComponent(btCancelar);
         btVender.addActionListener(new java.awt.event.ActionListener() {
@@ -511,7 +507,7 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         btCancelar.setBackground(new java.awt.Color(255, 204, 204));
         btCancelar.setForeground(new java.awt.Color(204, 0, 0));
-        btCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/carromenos.png"))); // NOI18N
+        btCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/carromenos.png"))); // NOI18N
         btCancelar.setText("Cancelar venta");
         btCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -567,9 +563,8 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         lbPedidos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbPedidos.setText("Productos a vender:");
-        lbPedidos.setToolTipText("");
 
-        btCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/logout.png"))); // NOI18N
+        btCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/logout.png"))); // NOI18N
         btCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btCerrarSesionMouseClicked(evt);
@@ -598,7 +593,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panelRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(panelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(6, 6, 6))
                     .addGroup(layout.createSequentialGroup()
@@ -614,7 +609,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lbRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(panelRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -744,6 +739,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         tbBuscarCliente.setVisible(true);
         lbFactura5.setVisible(true);
         btAgregarNuevoCliente.setEnabled(false);
+        tbBuscarClienteKeyTyped(new KeyEvent(this, 0, 0, 0, 0, '*'));
     }//GEN-LAST:event_rbExistenteActionPerformed
 
     private void rbAnonimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAnonimoActionPerformed
@@ -872,7 +868,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         cliente.setApellido(tbApellidoCliente.getText());
         cliente.setDui(tbDUICliente.getText());
         cliente.setDireccion(tbDireccion.getText());
-        if (!telefonos.isEmpty()) {
+        if (telefonos.size()>0) {
             cliente.setTelefonoList(telefonos);
         }
         if (utilidades.buscarCliente(cliente)) {
@@ -880,8 +876,11 @@ public class GenerarVenta extends javax.swing.JFrame {
         }
         else
         {
-            utilidades.AgregarCliente(cliente);
-            rbExistenteActionPerformed(new ActionEvent(this, 0, ""));
+            if(utilidades.AgregarCliente(cliente))
+            {
+                rbExistente.setSelected(true);
+                rbExistenteActionPerformed(new ActionEvent(this, 0, ""));
+            }
         }
     }//GEN-LAST:event_btAgregarNuevoClienteActionPerformed
 
@@ -912,6 +911,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         if (lsBuscarCliente.getModel().getSize()>0 && lsBuscarCliente.getSelectedIndex() > -1) {
             Cliente Cliente = utilidades.buscarCliente(lsBuscarCliente.getModel().getElementAt(lsBuscarCliente.getSelectedIndex()));
             if (Cliente!= null) {
+                btLimpiarActionPerformed(new ActionEvent(this, 0, ""));
                 tbNombreCliente.setText(Cliente.getNombre());
                 tbApellidoCliente.setText(Cliente.getApellido());
                 tbDireccion.setText(Cliente.getDireccion());
@@ -987,7 +987,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         feedbackCorrecto.setVisible(false);
         lbFeedback.setText("");
     }
-    public void imgError(String txt)
+    public static void imgError(String txt)
     {
         feedbackCorrecto.setVisible(false);
         feedbackError.setVisible(true);
@@ -1005,6 +1005,13 @@ public class GenerarVenta extends javax.swing.JFrame {
             Utilidades.transacionExitosa = false;
             lbTotal.setText(totalAPagar + "$ 0.00");
         }
+    }
+    public static void imgExito(String txt)
+    {
+        feedbackError.setVisible(false);
+        feedbackCorrecto.setVisible(true);
+        lbFeedback.setText(txt);
+        lbFeedback.setForeground(Color.GREEN);
     }
     public void focusRb()
     {
@@ -1053,8 +1060,8 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbBuscar;
     private javax.swing.JComboBox cbCantidad;
     public static javax.swing.JTable dgvPedidos;
-    private javax.swing.JLabel feedbackCorrecto;
-    private javax.swing.JLabel feedbackError;
+    public static javax.swing.JLabel feedbackCorrecto;
+    public static javax.swing.JLabel feedbackError;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -1073,11 +1080,10 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JLabel lbFactura6;
     private javax.swing.JLabel lbFecha;
     private javax.swing.JLabel lbFechaExpedicion;
-    private javax.swing.JLabel lbFeedback;
+    public static javax.swing.JLabel lbFeedback;
     private javax.swing.JLabel lbNumeroFactura;
     private javax.swing.JLabel lbPedidos;
     private javax.swing.JLabel lbPrecio;
-    private javax.swing.JPanel lbRegistro;
     private javax.swing.JLabel lbTotal;
     private javax.swing.JList<String> lsBuscar;
     private javax.swing.JList<String> lsBuscarCliente;
@@ -1086,6 +1092,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JMenuItem miModificarDescuento;
     private javax.swing.JPanel panelCliente;
     private javax.swing.JPanel panelProducto;
+    private javax.swing.JPanel panelRegistro;
     private javax.swing.JPopupMenu ppmDataGrid;
     public static javax.swing.JRadioButton rbAnonimo;
     private javax.swing.JRadioButton rbExistente;
