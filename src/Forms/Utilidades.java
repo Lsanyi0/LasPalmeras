@@ -4,6 +4,7 @@ import Entities.Categoria;
 import Entities.Cliente;
 import Entities.Detalleventa;
 import Entities.Fechavencimiento;
+import Entities.Historialprecioventa;
 import Entities.Inventario;
 import Entities.Marca;
 import Entities.Producto;
@@ -23,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CacheStoreMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -350,6 +352,7 @@ public class Utilidades {
     }
     public void cambioLote(List<Inventario> idLotes, jtableVentaModel j, Venta venta){
         int i=0;
+        Historialprecioventa hpv = buscarHistorialPrecioVenta(j.getIdProducto());
         while (j.getCantidad()>=1){
             Integer idFechaV = idLotes.get(i).getIdFechavencimiento();
             Detalleventa det = new Detalleventa();
@@ -358,6 +361,7 @@ public class Utilidades {
             det.setIdVenta(venta);
             det.setDescuento(j.getDescuento());
             det.setIdFechaVencimiento((Fechavencimiento)manager.createNamedQuery("Fechavencimiento.findByIdFechavencimiento").setParameter("idFechavencimiento",idFechaV).getSingleResult());
+            det.setIdHistorialPrecioVenta(hpv);
             
             int a = idLotes.get(i).getExistencia();
             int b = j.getCantidad();
@@ -376,6 +380,28 @@ public class Utilidades {
             i++;
         }
     }
+    
+    private Historialprecioventa buscarHistorialPrecioVenta(Integer idProd)
+    {
+        List<Historialprecioventa> hvpl;
+        Producto prod = manager.createNamedQuery("Producto.findByIdProducto",Producto.class)
+                .setParameter("idProducto", idProd)
+                .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
+                .getSingleResult();
+        Historialprecioventa hvp;
+        try {
+            hvpl = prod.getHistorialprecioventaList();
+            for (Historialprecioventa historial : hvpl) {
+                if(Objects.equals(historial.getPrecio(), prod.getPrecio())) return historial;
+            }
+        } catch (Exception e) {
+        }
+        hvp = new Historialprecioventa(prod);
+        manager.persist(hvp);
+        manager.flush();
+        return hvp;
+    }
+    
     public void clearJTable(JTable jTable) {
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
         model.setRowCount(0);
@@ -720,7 +746,7 @@ public class Utilidades {
             boolean equals = true;
             if (!cli.getNombre().equals(cliente.getNombre())) equals = false;
             if (!cli.getApellido().equals(cliente.getApellido())) equals = false;
-            if (!cli.getDui().trim().isEmpty()) 
+            if (!cli.getDui().trim().isEmpty())
             {
                 if (!cli.getDui().equals(cliente.getDui())) equals = false;
             }

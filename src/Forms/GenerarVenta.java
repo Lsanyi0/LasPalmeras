@@ -666,7 +666,7 @@ public class GenerarVenta extends javax.swing.JFrame {
             Double desc;
             try {
                 desc = Double.valueOf(tbDescuento.getText());
-            } catch (NumberFormatException numberFormatException) {
+            } catch (NumberFormatException e) {
                 desc = 0.00;
             }
             if (evt.getClickCount() == 2 && list.getModel().getSize() > 0 &&

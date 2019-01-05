@@ -33,6 +33,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Detalleventa.findByDescuento", query = "SELECT d FROM Detalleventa d WHERE d.descuento = :descuento")})
 public class Detalleventa implements Serializable {
 
+    @JoinColumn(name = "idHistorialPrecioVenta", referencedColumnName = "idHistorialPrecioVenta")
+    @ManyToOne
+    private Historialprecioventa idHistorialPrecioVenta;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -132,6 +136,14 @@ public class Detalleventa implements Serializable {
     @Override
     public String toString() {
         return "Entities.Detalleventa[ idDetalleVenta=" + idDetalleVenta + " ]";
+    }
+
+    public Historialprecioventa getIdHistorialPrecioVenta() {
+        return idHistorialPrecioVenta;
+    }
+
+    public void setIdHistorialPrecioVenta(Historialprecioventa idHistorialPrecioVenta) {
+        this.idHistorialPrecioVenta = idHistorialPrecioVenta;
     }
     
 }

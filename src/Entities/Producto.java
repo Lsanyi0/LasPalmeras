@@ -65,6 +65,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 public class Producto implements Serializable {
 
+    @OneToMany(mappedBy = "idProducto")
+    private List<Historialprecioventa> historialprecioventaList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -191,6 +194,15 @@ public class Producto implements Serializable {
     @Override
     public String toString() {
         return "Entities.Producto[ idProducto=" + idProducto + " ]";
+    }
+
+    @XmlTransient
+    public List<Historialprecioventa> getHistorialprecioventaList() {
+        return historialprecioventaList;
+    }
+
+    public void setHistorialprecioventaList(List<Historialprecioventa> historialprecioventaList) {
+        this.historialprecioventaList = historialprecioventaList;
     }
     
 }

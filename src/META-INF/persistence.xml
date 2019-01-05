@@ -19,6 +19,7 @@
     <class>Entities.Venta</class>
     <class>Entities.Detalleventa</class>
     <class>Entities.Detallecompra</class>
+    <class>Entities.Historialprecioventa</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/laspalmeras"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

@@ -32,15 +32,6 @@ CREATE TABLE `cargo` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cargo`
---
-
-LOCK TABLES `cargo` WRITE;
-/*!40000 ALTER TABLE `cargo` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cargo` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `categoria`
 --
 
@@ -51,18 +42,8 @@ CREATE TABLE `categoria` (
   `idCategoria` int(3) NOT NULL AUTO_INCREMENT,
   `Categoria` varchar(16) NOT NULL,
   PRIMARY KEY (`idCategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `categoria`
---
-
-LOCK TABLES `categoria` WRITE;
-/*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (1,'Sin Categoria'),(2,'Spray');
-/*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cliente`
@@ -75,21 +56,11 @@ CREATE TABLE `cliente` (
   `idCliente` int(10) NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(25) DEFAULT NULL,
   `Apellido` varchar(25) DEFAULT NULL,
-  `Direccion` varchar(50) DEFAULT NULL,
+  `Direccion` varchar(75) DEFAULT NULL,
   `DUI` varchar(11) DEFAULT NULL,
   PRIMARY KEY (`idCliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cliente`
---
-
-LOCK TABLES `cliente` WRITE;
-/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'Anonimo','','','000000000'),(3,'Mario','Cabrera','El trebol','4546464');
-/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `compra`
@@ -107,18 +78,8 @@ CREATE TABLE `compra` (
   PRIMARY KEY (`idCompra`),
   KEY `idProveedor` (`idProveedor`),
   CONSTRAINT `compra_ibfk_1` FOREIGN KEY (`idProveedor`) REFERENCES `proveedor` (`idProveedor`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `compra`
---
-
-LOCK TABLES `compra` WRITE;
-/*!40000 ALTER TABLE `compra` DISABLE KEYS */;
-INSERT INTO `compra` VALUES (1,1,'2018-12-29','Juan',' 564564');
-/*!40000 ALTER TABLE `compra` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `detallecompra`
@@ -141,18 +102,8 @@ CREATE TABLE `detallecompra` (
   CONSTRAINT `detallecompra_ibfk_1` FOREIGN KEY (`idCompra`) REFERENCES `compra` (`idCompra`),
   CONSTRAINT `detallecompra_ibfk_2` FOREIGN KEY (`idProducto`) REFERENCES `producto` (`idProducto`),
   CONSTRAINT `detallecompra_ibfk_3` FOREIGN KEY (`idFechaVencimiento`) REFERENCES `fechavencimiento` (`idFechavencimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `detallecompra`
---
-
-LOCK TABLES `detallecompra` WRITE;
-/*!40000 ALTER TABLE `detallecompra` DISABLE KEYS */;
-INSERT INTO `detallecompra` VALUES (7,NULL,3,NULL,60,25.25),(8,NULL,4,NULL,50,5.25),(9,1,4,1,16,5.25);
-/*!40000 ALTER TABLE `detallecompra` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `detalleventa`
@@ -175,18 +126,8 @@ CREATE TABLE `detalleventa` (
   CONSTRAINT `detalleventa_ibfk_1` FOREIGN KEY (`idProducto`) REFERENCES `producto` (`idProducto`),
   CONSTRAINT `detalleventa_ibfk_2` FOREIGN KEY (`idVenta`) REFERENCES `venta` (`idVenta`),
   CONSTRAINT `detalleventa_ibfk_3` FOREIGN KEY (`idFechaVencimiento`) REFERENCES `fechavencimiento` (`idFechavencimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `detalleventa`
---
-
-LOCK TABLES `detalleventa` WRITE;
-/*!40000 ALTER TABLE `detalleventa` DISABLE KEYS */;
-INSERT INTO `detalleventa` VALUES (51,3,71,NULL,1,0.00),(52,4,72,NULL,1,0.00),(53,3,73,NULL,1,0.00),(54,3,74,NULL,1,0.00),(55,3,75,NULL,1,0.00);
-/*!40000 ALTER TABLE `detalleventa` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `estadousuario`
@@ -208,15 +149,6 @@ CREATE TABLE `estadousuario` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `estadousuario`
---
-
-LOCK TABLES `estadousuario` WRITE;
-/*!40000 ALTER TABLE `estadousuario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `estadousuario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `fechavencimiento`
 --
 
@@ -227,18 +159,8 @@ CREATE TABLE `fechavencimiento` (
   `idFechavencimiento` int(11) NOT NULL AUTO_INCREMENT,
   `fechavencimiento` date NOT NULL,
   PRIMARY KEY (`idFechavencimiento`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `fechavencimiento`
---
-
-LOCK TABLES `fechavencimiento` WRITE;
-/*!40000 ALTER TABLE `fechavencimiento` DISABLE KEYS */;
-INSERT INTO `fechavencimiento` VALUES (1,'2019-02-13');
-/*!40000 ALTER TABLE `fechavencimiento` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `historialsalario`
@@ -258,15 +180,6 @@ CREATE TABLE `historialsalario` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `historialsalario`
---
-
-LOCK TABLES `historialsalario` WRITE;
-/*!40000 ALTER TABLE `historialsalario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `historialsalario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Temporary view structure for view `inventario`
 --
 
@@ -277,6 +190,8 @@ SET character_set_client = utf8;
 /*!50001 CREATE VIEW `inventario` AS SELECT 
  1 AS `idDetalleCompra`,
  1 AS `idProducto`,
+ 1 AS `idFechavencimiento`,
+ 1 AS `fechavencimiento`,
  1 AS `Compra`,
  1 AS `Venta`,
  1 AS `Existencia`*/;
@@ -293,18 +208,8 @@ CREATE TABLE `marca` (
   `idMarca` int(4) NOT NULL AUTO_INCREMENT,
   `Marca` varchar(16) NOT NULL,
   PRIMARY KEY (`idMarca`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `marca`
---
-
-LOCK TABLES `marca` WRITE;
-/*!40000 ALTER TABLE `marca` DISABLE KEYS */;
-INSERT INTO `marca` VALUES (1,'Sin Marca'),(2,'Bayer');
-/*!40000 ALTER TABLE `marca` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `producto`
@@ -325,18 +230,8 @@ CREATE TABLE `producto` (
   KEY `idMarca` (`idMarca`),
   CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`idCategoria`) REFERENCES `categoria` (`idCategoria`),
   CONSTRAINT `producto_ibfk_2` FOREIGN KEY (`idMarca`) REFERENCES `marca` (`idMarca`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `producto`
---
-
-LOCK TABLES `producto` WRITE;
-/*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (3,1,1,'Dectomax 500ml','Desparasitante',25.25),(4,1,1,'Jabon Asuntol','Jabon antipulgas',5.25),(5,1,1,'Raid Azul','Raid',3.50),(6,1,1,'Baygon','Baygon Azul',2.50);
-/*!40000 ALTER TABLE `producto` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `proveedor`
@@ -350,18 +245,8 @@ CREATE TABLE `proveedor` (
   `Proveedor` varchar(50) DEFAULT NULL,
   `Direccion` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`idProveedor`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `proveedor`
---
-
-LOCK TABLES `proveedor` WRITE;
-/*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
-INSERT INTO `proveedor` VALUES (1,'Mor','123123');
-/*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `rol`
@@ -376,16 +261,6 @@ CREATE TABLE `rol` (
   PRIMARY KEY (`idRol`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `rol`
---
-
-LOCK TABLES `rol` WRITE;
-/*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` VALUES (1,'Administrador'),(2,'Empleado');
-/*!40000 ALTER TABLE `rol` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `telefono`
@@ -407,18 +282,8 @@ CREATE TABLE `telefono` (
   CONSTRAINT `telefono_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`),
   CONSTRAINT `telefono_ibfk_2` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`),
   CONSTRAINT `telefono_ibfk_3` FOREIGN KEY (`idProveedor`) REFERENCES `proveedor` (`idProveedor`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `telefono`
---
-
-LOCK TABLES `telefono` WRITE;
-/*!40000 ALTER TABLE `telefono` DISABLE KEYS */;
-INSERT INTO `telefono` VALUES (1,NULL,3,NULL,'0000000');
-/*!40000 ALTER TABLE `telefono` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `usuario`
@@ -446,16 +311,6 @@ CREATE TABLE `usuario` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `usuario`
---
-
-LOCK TABLES `usuario` WRITE;
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Luis','Albanes','255525-3',1,NULL,350.00,'Luis','1234'),(2,'Mario','Cabrera','555466-2',2,NULL,350.00,'MaritoCx','1234');
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `venta`
 --
 
@@ -473,25 +328,15 @@ CREATE TABLE `venta` (
   KEY `idCliente` (`idCliente`),
   CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`),
   CONSTRAINT `venta_ibfk_2` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `venta`
---
-
-LOCK TABLES `venta` WRITE;
-/*!40000 ALTER TABLE `venta` DISABLE KEYS */;
-INSERT INTO `venta` VALUES (43,1,1,'2018-12-28 16:24:19','0'),(44,1,1,'2018-12-28 16:33:37','0'),(45,1,1,'2018-12-28 16:40:57','0'),(46,1,1,'2018-12-28 16:49:20','0'),(47,1,1,'2018-12-28 16:52:29','0'),(48,1,1,'2018-12-28 17:02:32','0'),(49,1,1,'2018-12-28 17:03:10','0'),(50,1,1,'2018-12-28 17:04:01','0'),(51,1,1,'2018-12-28 17:24:49','0'),(53,1,1,'2018-12-28 17:42:56','0'),(55,1,1,'2018-12-28 17:47:38','0'),(56,1,1,'2018-12-28 17:51:04','0'),(57,1,1,'2018-12-28 17:52:01','0'),(58,1,1,'2018-12-28 17:56:25','0'),(59,1,1,'2018-12-28 17:56:36','0'),(60,1,1,'2018-12-28 18:01:29','0'),(61,1,1,'2018-12-28 18:07:34','0'),(62,1,1,'2018-12-28 18:07:59','0'),(63,1,1,'2018-12-28 18:12:19','0'),(64,1,1,'2018-12-28 18:20:51','0'),(65,1,1,'2018-12-28 18:22:44','0'),(66,1,1,'2018-12-28 18:33:03','0'),(67,1,1,'2018-12-28 18:34:44','0'),(68,1,1,'2018-12-29 09:04:17','0'),(69,1,1,'2018-12-29 09:04:31','0'),(70,1,1,'2018-12-29 10:42:54','0'),(71,1,1,'2018-12-29 10:56:08','0'),(72,1,1,'2018-12-29 11:15:09','0'),(73,1,1,'2018-12-29 11:18:43','0'),(74,1,1,'2018-12-29 11:19:49','0'),(75,1,1,'2018-12-29 11:29:18','0');
-/*!40000 ALTER TABLE `venta` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping events for database 'laspalmeras1'
+-- Dumping events for database 'laspalmeras'
 --
 
 --
--- Dumping routines for database 'laspalmeras1'
+-- Dumping routines for database 'laspalmeras'
 --
 /*!50003 DROP FUNCTION IF EXISTS `login` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -982,7 +827,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `inventario` AS select `cc`.`idDetalleCompra` AS `idDetalleCompra`,`cc`.`idProducto` AS `idProducto`,`cc`.`Cantidad` AS `Compra`,(case when (sum(`vv`.`Cantidad`) is not null) then sum(`vv`.`Cantidad`) else 0 end) AS `Venta`,(`cc`.`Cantidad` - (case when (sum(`vv`.`Cantidad`) is not null) then sum(`vv`.`Cantidad`) else 0 end)) AS `Existencia` from (`detallecompra` `cc` left join `detalleventa` `vv` on((`cc`.`idProducto` = `vv`.`idProducto`))) group by `cc`.`idDetalleCompra` order by `cc`.`idProducto` */;
+/*!50001 VIEW `inventario` AS select `cc`.`idDetalleCompra` AS `idDetalleCompra`,`cc`.`idProducto` AS `idProducto`,`cc`.`idFechaVencimiento` AS `idFechavencimiento`,`ff`.`fechavencimiento` AS `fechavencimiento`,`cc`.`Cantidad` AS `Compra`,(case when (sum(`vv`.`Cantidad`) is not null) then sum(`vv`.`Cantidad`) else 0 end) AS `Venta`,(`cc`.`Cantidad` - (case when (sum(`vv`.`Cantidad`) is not null) then sum(`vv`.`Cantidad`) else 0 end)) AS `Existencia` from ((`detallecompra` `cc` left join `detalleventa` `vv` on((`cc`.`idFechaVencimiento` = `vv`.`idFechaVencimiento`))) left join `fechavencimiento` `ff` on((`cc`.`idFechaVencimiento` = `ff`.`idFechavencimiento`))) group by `cc`.`idDetalleCompra` order by `ff`.`fechavencimiento` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -996,4 +841,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-30 19:46:26
+-- Dump completed on 2019-01-04 23:08:02
