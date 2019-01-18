@@ -3,15 +3,14 @@ package Forms;
 import Entities.Producto;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Tejada
  */
 public class IProducto extends javax.swing.JFrame {
-        public int LidProducto=0;
-
+    public int LidProducto=-1;
+    
     Utilidades utilidades = new Utilidades();
     public IProducto() {
         initComponents();
@@ -19,13 +18,11 @@ public class IProducto extends javax.swing.JFrame {
         utilidades.fillcomboboxMarca(this.CBMarca);
         this.TBNuevaMarca.setEnabled(false);
         this.TBNuevaCategoria.setEnabled(false);
-         String []titulos = {"codigo","producto","marca","categoria","descripcion"};
-            DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
-        utilidades.fillJTable(this.tablaProd,"Producto",titulos);
+        utilidades.fillJTable(this.tablaProd,"Producto");
         this.tablaProd.setDefaultEditor(Object.class,null);
         utilidades.setScreenCentered(this);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -59,6 +56,9 @@ public class IProducto extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1920, 1080));
+        setPreferredSize(new java.awt.Dimension(1366, 768));
+        setSize(new java.awt.Dimension(1366, 768));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -70,15 +70,21 @@ public class IProducto extends javax.swing.JFrame {
 
         tablaProd.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Codigo", "Nombre del Producto", "Marca", "Categoria", "Descripcion"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaProd.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         tablaProd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaProdMouseClicked(evt);
@@ -142,7 +148,7 @@ public class IProducto extends javax.swing.JFrame {
         BtnEditar.setText("Editar Producto");
         BtnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnEditarActionPerformed(evt);
+                BTNAgregarPActionPerformed(evt);
             }
         });
 
@@ -295,21 +301,22 @@ public class IProducto extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(223, 223, 223)
                         .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(34, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 654, Short.MAX_VALUE)
+                                .addContainerGap())))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(TBBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(244, 244, 244))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addGap(307, 307, 307))))))
+                            .addComponent(jLabel9)
+                            .addComponent(TBBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,10 +333,10 @@ public class IProducto extends javax.swing.JFrame {
                             .addComponent(TBBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -341,43 +348,42 @@ public class IProducto extends javax.swing.JFrame {
 
     private void RBNuevaMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RBNuevaMarcaActionPerformed
         if(this.RBNuevaMarca.isSelected()){
-        this.TBNuevaMarca.setEnabled(true);
-        this.CBMarca.setEnabled(false);
+            this.TBNuevaMarca.setEnabled(true);
+            this.CBMarca.setEnabled(false);
         }
         else if(this.RBNuevaMarca.isSelected()==false){
-        this.TBNuevaMarca.setEnabled(false);
-        this.CBMarca.setEnabled(true);
+            this.TBNuevaMarca.setEnabled(false);
+            this.CBMarca.setEnabled(true);
         }
     }//GEN-LAST:event_RBNuevaMarcaActionPerformed
 
     private void BTNAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNAgregarPActionPerformed
         if(validar()==true){
-        String Categoria="";
-        String Marca="";
-        int x=0;
-        if(this.rbNuevaCategoria.isSelected()){
-            Categoria=this.TBNuevaCategoria.getText();
-        }else if(this.rbNuevaCategoria.isSelected()==false){
-            Categoria =this.CBCategoria.getSelectedItem().toString();
-        }
-        if(this.RBNuevaMarca.isSelected()){
-            Marca=this.TBNuevaMarca.getText();
-        }else if(this.RBNuevaMarca.isSelected()==false){
-            Marca=this.CBMarca.getSelectedItem().toString();
-        }
-        
-            x=utilidades.crearProducto(Categoria,
-                Marca,this.TBnombreP.getText(),
-                this.TADescricpionP.getText(),Double.parseDouble(this.TBPrecioP.getText()));
+            String Categoria="";
+            String Marca="";
+            int x=0;
+            if(this.rbNuevaCategoria.isSelected()){
+                Categoria=this.TBNuevaCategoria.getText();
+            }else if(this.rbNuevaCategoria.isSelected()==false){
+                Categoria =this.CBCategoria.getSelectedItem().toString();
+            }
+            if(this.RBNuevaMarca.isSelected()){
+                Marca=this.TBNuevaMarca.getText();
+            }else if(this.RBNuevaMarca.isSelected()==false){
+                Marca=this.CBMarca.getSelectedItem().toString();
+            }
+            
+            x=utilidades.crearProducto(LidProducto,Categoria,
+                    Marca,this.TBnombreP.getText(),
+                    this.TADescricpionP.getText(),
+                    Double.parseDouble(this.TBPrecioP.getText()));
             if(x!=-1){
-            JOptionPane.showMessageDialog(null, "Registro exitoso","Registro",JOptionPane.INFORMATION_MESSAGE);
-                    String []titulos = {"codigo","producto","marca","categoria","descripcion"};
-            DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
-            utilidades.fillJTable(this.tablaProd,"Producto",titulos);
-            clear();
+                JOptionPane.showMessageDialog(null, "Registro exitoso","Registro",JOptionPane.INFORMATION_MESSAGE);      
+                utilidades.fillJTable(this.tablaProd,"Producto");
+                clear();
             }
         }else if(validar()==false){
-        JOptionPane.showMessageDialog(null, "Algun campo esta vacio","Registro",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Algun campo esta vacio","Registro",JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_BTNAgregarPActionPerformed
 
@@ -396,30 +402,35 @@ public class IProducto extends javax.swing.JFrame {
 
     private void rbNuevaCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNuevaCategoriaActionPerformed
         if(this.rbNuevaCategoria.isSelected()==true){
-        this.CBCategoria.setEnabled(false);
-        this.TBNuevaCategoria.setEnabled(true);
+            this.CBCategoria.setEnabled(false);
+            this.TBNuevaCategoria.setEnabled(true);
         }
         else if(this.rbNuevaCategoria.isSelected()==false){
-        this.CBCategoria.setEnabled(true);
-        this.TBNuevaCategoria.setEnabled(false);        
+            this.CBCategoria.setEnabled(true);
+            this.TBNuevaCategoria.setEnabled(false);
         }
     }//GEN-LAST:event_rbNuevaCategoriaActionPerformed
 
     private void TBBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TBBusquedaKeyTyped
-
+        if (TBBusqueda.getText().trim().length()>=1) {
+            utilidades.fillJTable(tablaProd, "Producto", "producto", TBBusqueda.getText());
+        }
+        else
+        {
+            utilidades.fillJTable(tablaProd, "Producto");
+        }
     }//GEN-LAST:event_TBBusquedaKeyTyped
 
     private void TBBusquedaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TBBusquedaMouseClicked
-        String []titulos = {"codigo","producto","marca","categoria","descripcion"};
-        utilidades.fillJTable(this.tablaProd,"Producto","producto",this.TBBusqueda.getText(), titulos);
+        utilidades.fillJTable(tablaProd,"Producto","producto",TBBusqueda.getText());
         this.tablaProd.setDefaultEditor(Object.class,null);
     }//GEN-LAST:event_TBBusquedaMouseClicked
 
     private void tablaProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProdMouseClicked
         this.BtnEditar.setEnabled(true);
         this.BTNAgregarP.setEnabled(false);
-        int fila = this.tablaProd.getSelectedRow();
-        int id=Integer.parseInt(this.tablaProd.getValueAt(fila,0).toString());
+        int fila = tablaProd.getSelectedRow();
+        int id=Integer.parseInt(tablaProd.getValueAt(fila,0).toString());
         List<Producto> listado1=utilidades.obtenerproducto("Producto",id,"idProducto");
         LidProducto=listado1.get(0).getIdProducto();
         this.TBnombreP.setText(listado1.get(0).getProducto());
@@ -429,99 +440,72 @@ public class IProducto extends javax.swing.JFrame {
         utilidades.fillcomboboxM(CBMarca,listado1.get(0).getIdMarca().getMarca());
     }//GEN-LAST:event_tablaProdMouseClicked
 
-    private void BtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditarActionPerformed
-        if(validar()==true){
-            String Categoria="";
-            String Marca="";
-            int x=0;
-            if(this.rbNuevaCategoria.isSelected()){
-                Categoria=this.TBNuevaCategoria.getText();
-            }else if(this.rbNuevaCategoria.isSelected()==false){
-                Categoria =this.CBCategoria.getSelectedItem().toString();
-            }
-            if(this.RBNuevaMarca.isSelected()){
-                Marca=this.TBNuevaMarca.getText();
-            }else if(this.RBNuevaMarca.isSelected()==false){
-                Marca=this.CBMarca.getSelectedItem().toString();
-            }
-            utilidades.UpdateProd(LidProducto,Categoria,Marca,this.TBnombreP.getText(),this.TADescricpionP.getText(),Double.parseDouble(this.TBPrecioP.getText()));
-            String []titulos = {"codigo","producto","marca","categoria","descripcion"};
-            DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
-            utilidades.fillJTable(this.tablaProd,"Producto",titulos);
-            this.tablaProd.setDefaultEditor(Object.class,null);
-        }else if(validar()==false){
-            JOptionPane.showMessageDialog(null, "Algun campo esta vacio","Registro",JOptionPane.INFORMATION_MESSAGE);
-        }
-    }//GEN-LAST:event_BtnEditarActionPerformed
-
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        LidProducto=-1;
         this.BtnEditar.setEnabled(false);
         this.BTNAgregarP.setEnabled(true);
         clear();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        String []titulos = {"codigo","producto","marca","categoria","descripcion"};
-        utilidades.fillJTable(this.tablaProd,"Producto", titulos);
+        utilidades.fillJTable(this.tablaProd,"Producto");
         this.tablaProd.setDefaultEditor(Object.class,null);
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         
     }//GEN-LAST:event_formWindowClosing
-public void ShowTable(){
- String []titulos = {"codigo","producto","marca","categoria","descripcion"};
-            DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
-        utilidades.fillJTable(this.tablaProd,"Producto",titulos);
-}
-public boolean validar(){
-    boolean validado=false;
-            if((validarcomboboxCateg()==true)&&(validarcomboboxMarca()==true)&&(this.TBnombreP.getText().length()!=0)&&
-                    (this.TADescricpionP.getText().length()!=0)&&
-                    (this.TBPrecioP.getText().length()!=0)){
-                validado=true;
-            }
-            if((validarcomboboxCateg()==false)||(validarcomboboxMarca()==false)||(this.TBnombreP.getText().length()==0)||
+    public void ShowTable(){
+        utilidades.fillJTable(this.tablaProd,"Producto");
+    }
+    public boolean validar(){
+        boolean validado=false;
+        if((validarcomboboxCateg()==true)&&(validarcomboboxMarca()==true)&&(this.TBnombreP.getText().length()!=0)&&
+                (this.TADescricpionP.getText().length()!=0)&&
+                (this.TBPrecioP.getText().length()!=0)){
+            validado=true;
+        }
+        if((validarcomboboxCateg()==false)||(validarcomboboxMarca()==false)||(this.TBnombreP.getText().length()==0)||
                 (this.TADescricpionP.getText().length()==0)||
                 (this.TBPrecioP.getText().length()==0)){
             validado=false;
+        }
+        return validado;
+    }
+    public boolean validarcomboboxCateg(){
+        boolean validar=false;
+        if(this.rbNuevaCategoria.isSelected()){
+            if(this.rbNuevaCategoria.getText().length()!=0){
+                validar=true;
             }
-return validado;
-}
-public boolean validarcomboboxCateg(){
-    boolean validar=false;
-    if(this.rbNuevaCategoria.isSelected()){
-        if(this.rbNuevaCategoria.getText().length()!=0){
+        }
+        else if(this.rbNuevaCategoria.isSelected()==false){
             validar=true;
         }
-    }
-    else if(this.rbNuevaCategoria.isSelected()==false){
-        validar=true;
-    }
-    else {validar=false;}
-return validar;}
-public boolean validarcomboboxMarca(){
-    boolean validar=false;
-    if(this.RBNuevaMarca.isSelected()){
-        if(this.TBNuevaMarca.getText().length()!=0){
+        else {validar=false;}
+        return validar;}
+    public boolean validarcomboboxMarca(){
+        boolean validar=false;
+        if(this.RBNuevaMarca.isSelected()){
+            if(this.TBNuevaMarca.getText().length()!=0){
+                validar=true;
+            }
+        }
+        else if(this.RBNuevaMarca.isSelected()==false){
             validar=true;
         }
+        else {validar=false;}
+        return validar;
     }
-    else if(this.RBNuevaMarca.isSelected()==false){
-        validar=true;
+    public void clear(){
+        this.TBNuevaCategoria.setText("");
+        this.TBNuevaMarca.setText("");
+        this.TBPrecioP.setText("");
+        this.TBnombreP.setText("");
+        this.TADescricpionP.setText("");
+        utilidades.fillcomboboxcatp(this.CBCategoria);
+        utilidades.fillcomboboxMarca(this.CBMarca);
     }
-    else {validar=false;}
-return validar;
-}
-public void clear(){
-    this.TBNuevaCategoria.setText("");
-    this.TBNuevaMarca.setText("");
-    this.TBPrecioP.setText("");
-    this.TBnombreP.setText("");
-    this.TADescricpionP.setText("");
-    utilidades.fillcomboboxcatp(this.CBCategoria);
-    utilidades.fillcomboboxMarca(this.CBMarca);
-}
     /**
      * @param args the command line arguments
      */
@@ -529,8 +513,8 @@ public void clear(){
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+        */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -549,7 +533,7 @@ public void clear(){
         }
         //</editor-fold>
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

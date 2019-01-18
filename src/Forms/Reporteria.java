@@ -1,6 +1,6 @@
 package Forms;
 
-import resources.reports.MysqlConnection;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -189,7 +189,7 @@ public class Reporteria extends javax.swing.JFrame {
         JasperReport reporte;
         try {
             reporte = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResource("resources/reports/ProductosMasVendidos.jasper"));
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, MysqlConnection.MysqlConnection());//WIP
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, utilidades.getConnection());//WIP
             JasperViewer viewer = new JasperViewer(jasperPrint, false);
             viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             viewer.setVisible(true);
@@ -206,7 +206,7 @@ public class Reporteria extends javax.swing.JFrame {
             params.put("Fecha2",frm.format(dpHasta.getDate()));
             try {
                 reporte = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResource("resources/reports/VentasEnMayoreo.jasper"));
-                JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, params, MysqlConnection.MysqlConnection());//WIP
+                JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, params, utilidades.getConnection());//WIP
                 JasperViewer viewer = new JasperViewer(jasperPrint, false);
                 viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                 viewer.setVisible(true);
@@ -225,7 +225,7 @@ public class Reporteria extends javax.swing.JFrame {
         params.put("Fecha2", frm.format(new Date()));
         try {
             reporte = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResource("resources/reports/ReporteDiario.jasper"));
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, MysqlConnection.MysqlConnection());//WIP
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, utilidades.getConnection());//WIP
             JasperViewer viewer = new JasperViewer(jasperPrint, false);
             viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             viewer.setVisible(true);

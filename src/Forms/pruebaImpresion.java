@@ -1,6 +1,5 @@
 package Forms;
 
-import resources.reports.MysqlConnection;
 import Entities.Cliente;
 import Model.jtableVentaModel;
 import java.util.ArrayList;
@@ -18,14 +17,12 @@ public class pruebaImpresion extends javax.swing.JFrame {
     ArrayList<jtableVentaModel> jventafake;
     ReportesEimpresion re;
     Utilidades utilidades ;
-    MysqlConnection con = null;
     public pruebaImpresion() {
         initComponents();
         this.btImprimir.requestFocus();
         jventafake = new ArrayList<>();
         re = new ReportesEimpresion();
         utilidades = new Utilidades();
-        con = new MysqlConnection();
     }
     
     @SuppressWarnings("unchecked")
@@ -183,7 +180,7 @@ public class pruebaImpresion extends javax.swing.JFrame {
         params.put("Fecha2", "2018-12-31");
         try {
             reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, params, MysqlConnection.MysqlConnection());//WIP
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, params, utilidades.getConnection());//WIP
             JasperViewer viewer = new JasperViewer(jasperPrint,false);
             viewer.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             viewer.setVisible(true);

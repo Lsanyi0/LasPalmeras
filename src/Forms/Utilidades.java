@@ -45,15 +45,12 @@ public class Utilidades {
     
     private static ArrayList<jtableVentaModel> temp;
     
-    private final ReportesEimpresion reportes;
-    
     public static boolean transacionExitosa = false;
     
     public Utilidades() {
         emf = Persistence.createEntityManagerFactory("AgroServPU");
         manager = emf.createEntityManager();
         temp = new ArrayList<>();
-        reportes = new ReportesEimpresion();
     }
     
     //getDate devuelve un String que representa la fecha con formato dia,mes,año
@@ -426,22 +423,23 @@ public class Utilidades {
             CBcat.addItem(c.getCategoria());
         }
     }
-    public void fillJTable(JTable jtable, String tabla,String []titulos){
+    public void fillJTable(JTable jtable, String tabla){
         List<Producto> listado = manager.createQuery("SELECT p FROM "+tabla+" p")
                 .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
                 .getResultList();
-        DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
+        DefaultTableModel Modelo = (DefaultTableModel) jtable.getModel();
+        Modelo.setRowCount(0);
         for (Producto p : listado) {
             Modelo.addRow(new Object[]{
                 Integer.toString(p.getIdProducto()),p.getProducto(),p.getIdMarca().getMarca(),
                 p.getIdCategoria().getCategoria(),p.getDescripcion()});
         }
         jtable.setModel(Modelo);
-//        jtable.setDefaultEditor(Object.class, null);
     }
-    public void fillJTable(JTable jtable,String tabla,String filtro,String busqueda,String []titulos){
+    public void fillJTable(JTable jtable,String tabla,String filtro,String busqueda){
         List<Producto> listado = manager.createQuery("SELECT p FROM "+tabla+" p where p."+filtro+" like \"%"+busqueda+"%\"").getResultList();
-        DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
+        DefaultTableModel Modelo = (DefaultTableModel) jtable.getModel();
+        Modelo.setRowCount(0);
         for (Producto p : listado) {
             Modelo.addRow(new Object[]{Integer.toString(p.getIdProducto()),p.getProducto(),p.getIdMarca().getMarca(),
                 p.getIdCategoria().getCategoria(),p.getDescripcion()});
@@ -453,34 +451,27 @@ public class Utilidades {
         List<Producto> listado2 = manager.createQuery("SELECT p FROM "+tabla+" p where p."+filtro+"="+id).getResultList();
         return listado2;
     }
-    public int UpdateProd(int idproducto,String categoria,String marca,String producto,String descripcion,Double precio){
-        int insert=0;
+
+    public Marca insertMarca(String marca){
+        Marca mrc = null;
         try {
-            StoredProcedureQuery np=manager.createNamedStoredProcedureQuery("Producto.UpdateProd")
-                    .setParameter("pidProducto",idproducto)
-                    .setParameter("pidCategoria",insertarcategoria(categoria))
-                    .setParameter("pidMarca",insertmarca(marca))
-                    .setParameter("pproducto",producto)
-                    .setParameter("pdescripcion",descripcion)
-                    .setParameter("pprecio",precio);
-            np.execute();
-            insert = Integer.valueOf(np.getOutputParameterValue("x").toString());
+            List<Marca> lmrc = manager.createNamedQuery("Marca.findByMarca",Marca.class)
+                    .setParameter("marca", marca)
+                    .getResultList();
+            if (lmrc.size()>0) {
+                mrc = lmrc.get(0);
+            }
+            else
+            {
+                mrc = new Marca();
+                mrc.setMarca(marca);
+                manager.getTransaction().begin();
+                manager.persist(mrc);
+                manager.getTransaction().commit();
+            }
         } catch (NumberFormatException e) {
         }
-        return insert;
-    }
-    public int insertmarca(String marca){
-        int insert=0;
-        int insert2=0;
-        try {
-            StoredProcedureQuery np=manager.createNamedStoredProcedureQuery("Marca.insertarmarca")
-                    .setParameter("pmarca",marca);
-            np.execute();
-            insert2 = Integer.valueOf(np.getOutputParameterValue("bandera").toString());
-            insert = Integer.valueOf(np.getOutputParameterValue("codigo").toString());
-        } catch (NumberFormatException e) {
-        }
-        return insert;
+        return mrc;
     }
     public int insertProveedor(String prov,String dir,String telefono){
         int codigo=0;
@@ -519,34 +510,54 @@ public class Utilidades {
         codigo=p.getIdProveedor();
         return codigo;
     }
-    public int insertarcategoria(String categ){
-        int codigo=0;
-        int b=-1;
+    public Categoria insertarCategoria(String categ){
+        Categoria cat = null;
         try {
-            StoredProcedureQuery np=manager.createNamedStoredProcedureQuery("Categoria.insertarcategoria")
-                    .setParameter("pcat",categ);
-            np.execute();
-            b = Integer.valueOf(np.getOutputParameterValue("bandera").toString());
-            codigo = Integer.valueOf(np.getOutputParameterValue("codigo").toString());
+            List<Categoria> lcat =  manager.createNamedQuery("Categoria.findByCategoria")
+                    .setParameter("categoria", categ)
+                    .getResultList();
+            if (lcat.size()>0) {
+                cat = lcat.get(0);
+            }
+            else
+            {
+                cat = new Categoria();
+                cat.setCategoria(categ);
+                manager.getTransaction().begin();
+                manager.persist(cat);
+                manager.getTransaction().commit();
+            }
         } catch (NumberFormatException e) {
         }
-        return codigo;}
-    
-    public int crearProducto(String cat,String marc,String prod,String desc,double precio){
-        int insertp=-1;
-        try {
-            StoredProcedureQuery np = manager.createNamedStoredProcedureQuery("Producto.insertprod")
-                    .setParameter("pidcat",insertarcategoria(cat))
-                    .setParameter("pidmarca",insertmarca(marc))
-                    .setParameter("pproducto",prod)
-                    .setParameter("pdescripcion",desc)
-                    .setParameter("pprecio",precio);
-            np.execute();
-            insertp = Integer.valueOf(np.getOutputParameterValue("minsert").toString());
-        } catch (NumberFormatException e) {
-        }
-        return insertp;
+        return cat;
     }
+    
+    public int crearProducto(int idProd,String cat,String marc,String prod,String desc,double precio){
+        Producto prd;
+        if (idProd <=-1) {
+            prd  = new Producto();
+        }
+        else
+        {
+            prd = manager.find(Producto.class, idProd);
+        }
+        
+        prd.setProducto(prod);
+        prd.setDescripcion(desc);
+        prd.setIdCategoria(insertarCategoria(cat));
+        prd.setIdMarca(insertMarca(marc));
+        prd.setPrecio(precio);
+        try {
+            manager.getTransaction().begin();
+            manager.persist(prd);
+            manager.getTransaction().commit();
+            return 10;
+        } catch (NumberFormatException e) {
+            manager.getTransaction().rollback();
+            return -1;
+        }
+    }
+    
     public List<Proveedor> fillcomboboxp(){
         List<Proveedor> listado = manager.createNamedQuery("Proveedor.findAll").getResultList();
         return listado;
@@ -569,7 +580,7 @@ public class Utilidades {
         DefaultTableModel model = (DefaultTableModel) jtable.getModel();
         temp.remove(index);
         model.setRowCount(0);
-        temp.forEach((jtableVentaModel j) -> { //no se como pero java sabe que hacer ¯\_(ツ)_/¯
+        temp.forEach((jtableVentaModel j) -> {
             model.addRow(j.toArray());
         });
     }
@@ -578,7 +589,7 @@ public class Utilidades {
         temp.get(index).setCantidad(cantidad);
         DefaultTableModel model = (DefaultTableModel) jtable.getModel();
         model.setRowCount(0);
-        temp.forEach((jtableVentaModel j) -> { //no se como pero java sabe que hacer ¯\_(ツ)_/¯
+        temp.forEach((jtableVentaModel j) -> {
             model.addRow(j.toArray());
         });
     }
@@ -587,7 +598,7 @@ public class Utilidades {
         temp.get(index).setDescuento(descuento);
         DefaultTableModel model = (DefaultTableModel) jtable.getModel();
         model.setRowCount(0);
-        temp.forEach((jtableVentaModel j) -> { //no se como pero java sabe que hacer ¯\_(ツ)_/¯
+        temp.forEach((jtableVentaModel j) -> { 
             model.addRow(j.toArray());
         });
     }
@@ -654,16 +665,15 @@ public class Utilidades {
         }
         return codigo;}
     //llena el grid view con el arraylist de productos //formulario EntradaxProducto
-    public void llenarJtablePE(ArrayList<Productos> lpn,JTable jtable,String []titulos){
+    public void llenarJtablePE(ArrayList<Productos> lpn,JTable jtable){
         DateFormat formatoFecha= new SimpleDateFormat("yyyy-MM-dd");
-        DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
+        DefaultTableModel Modelo =(DefaultTableModel) jtable.getModel();
+        Modelo.setRowCount(0);
         for (Productos pn : lpn){
-            
             String[] registrop =
             {Integer.toString(pn.getCodigo()),pn.getProducto(),pn.getMarca(),pn.getCategoria(),
                 pn.getDescripcion(),Double.toString(pn.getPrecio()),Integer.toString(pn.getCantidad()),
                 formatoFecha.format(pn.getFechavencimiento())};
-            
             Modelo.addRow(registrop);
         }
         jtable.setModel(Modelo);
@@ -724,10 +734,8 @@ public class Utilidades {
                 np.execute();
                 x=Integer.valueOf(np.getOutputParameterValue("x").toString());
             }
-        }catch(NumberFormatException e){
-            
-        }finally{
-            
+        }catch(NumberFormatException e){        
+        }finally{            
         }
         return x;
     }
@@ -753,5 +761,12 @@ public class Utilidades {
             if (equals) return true;
         }
         return false;
+    }
+    public java.sql.Connection getConnection()
+    {
+        manager.getTransaction().begin();
+        java.sql.Connection con = manager.unwrap(java.sql.Connection.class);
+        manager.getTransaction().commit();
+        return con;
     }
 }

@@ -32,22 +32,21 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Compra.findAll", query = "SELECT c FROM Compra c")
-    , @NamedQuery(name = "Compra.findByIdCompra", query = "SELECT c FROM Compra c WHERE c.idCompra = :idCompra")
-    , @NamedQuery(name = "Compra.findByFecha", query = "SELECT c FROM Compra c WHERE c.fecha = :fecha")
-    , @NamedQuery(name = "Compra.findByRepresentante", query = "SELECT c FROM Compra c WHERE c.representante = :representante")
-    , @NamedQuery(name = "Compra.findByDui", query = "SELECT c FROM Compra c WHERE c.dui = :dui")})
+        , @NamedQuery(name = "Compra.findByIdCompra", query = "SELECT c FROM Compra c WHERE c.idCompra = :idCompra")
+        , @NamedQuery(name = "Compra.findByFecha", query = "SELECT c FROM Compra c WHERE c.fecha = :fecha")
+        , @NamedQuery(name = "Compra.findByRepresentante", query = "SELECT c FROM Compra c WHERE c.representante = :representante")
+        , @NamedQuery(name = "Compra.findByDui", query = "SELECT c FROM Compra c WHERE c.dui = :dui")})
 @NamedStoredProcedureQuery(
-    name = "Compra.comprar",
-    procedureName = "GenerarCompra",
-    parameters = {
-        @StoredProcedureParameter(name = "pidprov",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "pfecha",mode = ParameterMode.IN,type = Date.class),
-        @StoredProcedureParameter(name = "prepresentante",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "pdui",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "midcompra",mode = ParameterMode.OUT,type = Integer.class),
-    })
+        name = "Compra.comprar",
+        procedureName = "GenerarCompra",
+        parameters = {
+            @StoredProcedureParameter(name = "pidprov",mode = ParameterMode.IN,type = Integer.class),
+            @StoredProcedureParameter(name = "pfecha",mode = ParameterMode.IN,type = Date.class),
+            @StoredProcedureParameter(name = "prepresentante",mode = ParameterMode.IN,type = String.class),
+            @StoredProcedureParameter(name = "pdui",mode = ParameterMode.IN,type = String.class),
+            @StoredProcedureParameter(name = "midcompra",mode = ParameterMode.OUT,type = Integer.class)})
 public class Compra implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,70 +65,70 @@ public class Compra implements Serializable {
     private Proveedor idProveedor;
     @OneToMany(mappedBy = "idCompra")
     private List<Detallecompra> detallecompraList;
-
+    
     public Compra() {
     }
-
+    
     public Compra(Integer idCompra) {
         this.idCompra = idCompra;
     }
-
+    
     public Integer getIdCompra() {
         return idCompra;
     }
-
+    
     public void setIdCompra(Integer idCompra) {
         this.idCompra = idCompra;
     }
-
+    
     public Date getFecha() {
         return fecha;
     }
-
+    
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-
+    
     public String getRepresentante() {
         return representante;
     }
-
+    
     public void setRepresentante(String representante) {
         this.representante = representante;
     }
-
+    
     public String getDui() {
         return dui;
     }
-
+    
     public void setDui(String dui) {
         this.dui = dui;
     }
-
+    
     public Proveedor getIdProveedor() {
         return idProveedor;
     }
-
+    
     public void setIdProveedor(Proveedor idProveedor) {
         this.idProveedor = idProveedor;
     }
-
+    
     @XmlTransient
     public List<Detallecompra> getDetallecompraList() {
         return detallecompraList;
     }
-
+    
     public void setDetallecompraList(List<Detallecompra> detallecompraList) {
         this.detallecompraList = detallecompraList;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (idCompra != null ? idCompra.hashCode() : 0);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -137,12 +136,9 @@ public class Compra implements Serializable {
             return false;
         }
         Compra other = (Compra) object;
-        if ((this.idCompra == null && other.idCompra != null) || (this.idCompra != null && !this.idCompra.equals(other.idCompra))) {
-            return false;
-        }
-        return true;
+        return !((this.idCompra == null && other.idCompra != null) || (this.idCompra != null && !this.idCompra.equals(other.idCompra)));
     }
-
+    
     @Override
     public String toString() {
         return "Entities.Compra[ idCompra=" + idCompra + " ]";
