@@ -35,6 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
 //in pidProducto int,in pidCategoria int,in pidMarca int, in pproducto varchar(60),in pdescripcion varchar(60),in pprecio double(5,2),out x int
 
 public class Producto implements Serializable {
+
+    @OneToMany(mappedBy = "idProducto")
+    private List<Porunidad> porunidadList;
     
     @OneToMany(mappedBy = "idProducto")
     private List<Historialprecioventa> historialprecioventaList;
@@ -174,6 +177,15 @@ public class Producto implements Serializable {
     
     public void setHistorialprecioventaList(List<Historialprecioventa> historialprecioventaList) {
         this.historialprecioventaList = historialprecioventaList;
+    }
+
+    @XmlTransient
+    public List<Porunidad> getPorunidadList() {
+        return porunidadList;
+    }
+
+    public void setPorunidadList(List<Porunidad> porunidadList) {
+        this.porunidadList = porunidadList;
     }
     
 }

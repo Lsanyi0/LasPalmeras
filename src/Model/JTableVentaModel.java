@@ -2,7 +2,7 @@ package Model;
 
 import java.text.DecimalFormat;
 
-public class jtableVentaModel {
+public class JTableVentaModel {
     private int idProducto;
     private int cantidad;
     private String nombre;
@@ -76,7 +76,7 @@ public class jtableVentaModel {
         return arr;
     }
     
-    public jtableVentaModel() {
+    public JTableVentaModel() {
         this.cantidad = 0;
         this.nombre = "";
         this.preciounitario = 0.00;
@@ -84,7 +84,7 @@ public class jtableVentaModel {
         this.descuento = 0.00;
     }
     
-    public jtableVentaModel(int idProducto,int cantidad, String nombre, Double preciounitario, Double descuento) {
+    public JTableVentaModel(int idProducto,int cantidad, String nombre, Double preciounitario, Double descuento) {
         this.idProducto = idProducto;
         this.cantidad = cantidad;
         this.nombre = nombre;

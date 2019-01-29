@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package EntradaXProducto;
+package Model;
 
 import java.util.Date;
 
@@ -20,6 +15,7 @@ public class Productos {
     Double precio;
     int cantidad;
     Date fechavencimiento;
+    
     public Productos(int codigo, String categoria, String marca, String producto, String descripcion, Double precio, int cantidad, Date fechavencimiento) {
         this.codigo=codigo;
         this.categoria = categoria;
@@ -30,6 +26,7 @@ public class Productos {
         this.cantidad = cantidad;
         this.fechavencimiento = fechavencimiento;
     }
+    
     public int getCodigo() {
         return codigo;
     }
@@ -91,6 +88,5 @@ public class Productos {
 
     public void setFechavencimiento(Date fechavencimiento) {
         this.fechavencimiento = fechavencimiento;
-    }
-    
+    }   
 }

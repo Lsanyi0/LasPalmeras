@@ -84,7 +84,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lbPedidos" max="32767" attributes="0"/>
+                      <Component id="lbPedidos" pref="160" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lbTotal" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -187,7 +187,7 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace pref="7" max="32767" attributes="0"/>
+                          <EmptySpace pref="13" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lbFactura6" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lbFactura2" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -196,7 +196,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="tbTelefono" alignment="1" min="-2" pref="259" max="-2" attributes="0"/>
-                              <Component id="tbDUICliente" alignment="1" max="32767" attributes="0"/>
+                              <Component id="tbDUICliente" alignment="1" pref="266" max="32767" attributes="0"/>
                               <Component id="tbDireccion" alignment="1" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -256,7 +256,7 @@
                       <Component id="lbFactura5" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane4" max="32767" attributes="0"/>
+                  <Component id="jScrollPane4" pref="241" max="32767" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -282,7 +282,7 @@
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
-            <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="rbAnonimo.setSelected(true);&#xa;rbAnonimoActionPerformed(new ActionEvent(this, 0, &quot;&quot;));"/>
+            <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="rbAnonimo.setSelected(true);&#xa;rbAnonimoActionPerformed(new java.awt.event.ActionEvent(this, 0, &quot;&quot;));"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JRadioButton" name="rbExistente">
@@ -462,43 +462,45 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="feedbackError" max="32767" attributes="0"/>
-                              <Component id="feedbackCorrecto" pref="159" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                      </Group>
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
+                              <Component id="lbFeedback" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="lbExistencia" min="-2" max="-2" attributes="0"/>
                                       <Component id="cbBuscar" alignment="0" min="-2" pref="82" max="-2" attributes="0"/>
                                       <Component id="lbCantidad" min="-2" max="-2" attributes="0"/>
                                       <Component id="lbDescuento" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lbPrecio" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="tbBuscar" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="cbCantidad" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="lbPrecio" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cbCantidad" alignment="0" pref="171" max="32767" attributes="0"/>
                                       <Component id="tbDescuento" max="32767" attributes="0"/>
+                                      <Component id="tbPrecio" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="btAgregar" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="lbExistencia" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="btAgregar" pref="264" max="32767" attributes="0"/>
+                                  </Group>
                                   <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="lbFeedback" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="feedbackError" pref="271" max="32767" attributes="0"/>
+                              <Component id="feedbackCorrecto" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <Component id="jScrollPane3" pref="360" max="32767" attributes="0"/>
+                  <Component id="jScrollPane3" pref="301" max="32767" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -523,17 +525,19 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbExistencia" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbPrecio" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tbPrecio" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="lbExistencia" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btAgregar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="feedbackCorrecto" min="-2" max="-2" attributes="0"/>
                       <Component id="feedbackError" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="76" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="lbFeedback" min="-2" pref="37" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -638,7 +642,7 @@
                 <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="lsBuscarValueChanged"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="utilidades.fillJList(lsBuscar,&quot;Producto&quot;);"/>
+                <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="utilidades.fillJList(lsBuscar);"/>
                 <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="GenerarVenta_lsBuscar"/>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
@@ -652,7 +656,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbPrecio">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Precio: $ 0.00"/>
+            <Property name="text" type="java.lang.String" value="Precio venta: $"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbDescuento">
@@ -666,6 +670,9 @@
             <Property name="text" type="java.lang.String" value="0.00"/>
             <Property name="toolTipText" type="java.lang.String" value="Dejar en blanco si no se aplicara desuento"/>
           </Properties>
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tbPrecioKeyTyped"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
           </AuxValues>
@@ -706,6 +713,17 @@
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lbFeedback.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JTextField" name="tbPrecio">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Doble clic para editar el precio de venta"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="tbPrecioFocusLost"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbPrecioMouseClicked"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tbPrecioKeyTyped"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -897,7 +915,7 @@
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="dgvPedidosMouseReleased"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();&#xa;        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);&#xa;        &#xa;        dgvPedidos.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);&#xa;        dgvPedidos.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);"/>
+            <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="javax.swing.table.DefaultTableCellRenderer rightRenderer = new javax.swing.table.DefaultTableCellRenderer();&#xa;        rightRenderer.setHorizontalAlignment(javax.swing.JLabel.RIGHT);&#xa;        &#xa;        dgvPedidos.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);&#xa;        dgvPedidos.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>
         </Component>

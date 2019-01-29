@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package Entities;
 
 import java.io.Serializable;
@@ -16,9 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.NamedStoredProcedureQuery;
-import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,20 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Telefono.findAll", query = "SELECT t FROM Telefono t")
-    , @NamedQuery(name = "Telefono.findByIdTelefono", query = "SELECT t FROM Telefono t WHERE t.idTelefono = :idTelefono")
-    , @NamedQuery(name = "Telefono.findByTelefono", query = "SELECT t FROM Telefono t WHERE t.telefono = :telefono")})
-@NamedStoredProcedureQuery(
-    name = "Telefono.insertartelefono",
-    procedureName = "inserttelefono",
-    parameters = {
-        @StoredProcedureParameter(name = "pidU",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "pidcli",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "idprov",mode = ParameterMode.IN,type = Integer.class),
-        @StoredProcedureParameter(name = "ptel",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "bandera",mode = ParameterMode.OUT,type = Integer.class),
-    })
+        , @NamedQuery(name = "Telefono.findByIdTelefono", query = "SELECT t FROM Telefono t WHERE t.idTelefono = :idTelefono")
+        , @NamedQuery(name = "Telefono.findByTelefono", query = "SELECT t FROM Telefono t WHERE t.telefono = :telefono")})
 public class Telefono implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,61 +49,61 @@ public class Telefono implements Serializable {
     @JoinColumn(name = "idProveedor", referencedColumnName = "idProveedor")
     @ManyToOne
     private Proveedor idProveedor;
-
+    
     public Telefono() {
     }
-
+    
     public Telefono(Integer idTelefono) {
         this.idTelefono = idTelefono;
     }
-
+    
     public Integer getIdTelefono() {
         return idTelefono;
     }
-
+    
     public void setIdTelefono(Integer idTelefono) {
         this.idTelefono = idTelefono;
     }
-
+    
     public String getTelefono() {
         return telefono;
     }
-
+    
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-
+    
     public Usuario getIdUsuario() {
         return idUsuario;
     }
-
+    
     public void setIdUsuario(Usuario idUsuario) {
         this.idUsuario = idUsuario;
     }
-
+    
     public Cliente getIdCliente() {
         return idCliente;
     }
-
+    
     public void setIdCliente(Cliente idCliente) {
         this.idCliente = idCliente;
     }
-
+    
     public Proveedor getIdProveedor() {
         return idProveedor;
     }
-
+    
     public void setIdProveedor(Proveedor idProveedor) {
         this.idProveedor = idProveedor;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (idTelefono != null ? idTelefono.hashCode() : 0);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -129,7 +116,7 @@ public class Telefono implements Serializable {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
         return "Entities.Telefono[ idTelefono=" + idTelefono + " ]";

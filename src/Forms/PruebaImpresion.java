@@ -1,7 +1,7 @@
 package Forms;
 
 import Entities.Cliente;
-import Model.jtableVentaModel;
+import Model.JTableVentaModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +12,12 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
-public class pruebaImpresion extends javax.swing.JFrame {
+public class PruebaImpresion extends javax.swing.JFrame {
     int id=0;
-    ArrayList<jtableVentaModel> jventafake;
+    ArrayList<JTableVentaModel> jventafake;
     ReportesEimpresion re;
     Utilidades utilidades ;
-    public pruebaImpresion() {
+    public PruebaImpresion() {
         initComponents();
         this.btImprimir.requestFocus();
         jventafake = new ArrayList<>();
@@ -161,7 +161,7 @@ public class pruebaImpresion extends javax.swing.JFrame {
 
     private void btAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAgregarProductoActionPerformed
         id+=1;
-        jtableVentaModel jvf = new jtableVentaModel(id,Integer.parseInt(tbCantidad.getText())
+        JTableVentaModel jvf = new JTableVentaModel(id,Integer.parseInt(tbCantidad.getText())
                 ,tbNombreProd.getText(),Double.parseDouble(tbPrecioUnitario.getText()),Double.parseDouble(tbDescuento.getText()));
         jventafake.add(jvf);
         System.out.println(jventafake.size());
@@ -210,20 +210,21 @@ public class pruebaImpresion extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(pruebaImpresion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PruebaImpresion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(pruebaImpresion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PruebaImpresion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(pruebaImpresion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PruebaImpresion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(pruebaImpresion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PruebaImpresion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
         
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new pruebaImpresion().setVisible(true);
+                new PruebaImpresion().setVisible(true);
             }
         });
     }

@@ -1,6 +1,6 @@
 package Forms;
 
-import Model.jtableVentaModel;
+import Model.JTableVentaModel;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class ReportesEimpresion {
     public ReportesEimpresion() {
     }
     
-    public void crearFactura(ArrayList<jtableVentaModel> venta,Integer IdVenta,String NombreCliente,String ... Direccion) {
+    public void crearFactura(ArrayList<JTableVentaModel> venta,Integer IdVenta,String NombreCliente,String ... Direccion) {
         String filename = "factura.pdf";
         Float ty = 660f;
         Double total = 0.0;
@@ -60,7 +60,7 @@ public class ReportesEimpresion {
                 
                 ty-=80;
                 
-                for (jtableVentaModel v : venta) {
+                for (JTableVentaModel v : venta) {
                     
                     contents.beginText();
                     contents.setFont(PDType1Font.TIMES_ROMAN, 12);
