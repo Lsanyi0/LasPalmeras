@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e1e3562-c585-4006-b47b-9b6443ab418b">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Fecha1" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2000-01-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Fecha2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2019-01-01"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select v.idventa,CONCAT(c.Nombre ," ", c.Apellido) AS 'Nombre del Cliente ', TIME(v.Fecha) AS Hora, SUM(p.Precio * dv.Cantidad) AS Total from cliente c 
+	inner join venta v on c.idcliente=v.idcliente 
+	inner join detalleventa dv on v.idventa=dv.idventa 
+	inner join producto p on dv.idproducto=p.idproducto 
+    join detallecompra dc on p.idProducto = dc.idProducto 
+    where v.fecha between $P{Fecha1} and $P{Fecha2}
+group by v.idventa, p.idProducto, v.Fecha;]]>
+	</queryString>
+	<field name="idventa" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Nombre del Cliente " class="java.lang.String"/>
+	<field name="Hora" class="java.sql.Time"/>
+	<field name="Total" class="java.lang.Double"/>
+	<variable name="Total_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{Total}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="26" uuid="603027d9-8ebd-4732-a5d3-373c0eb4a9d6"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Agroservicio Las Palmeras]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="26" width="555" height="20" uuid="63ca5a48-27b2-4605-8d8b-5ae81e6b3045"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Reporte diario]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="100" y="0" width="297" height="20" uuid="f793fdb9-a2ce-4b8e-80b2-28a2ece7a533"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre del Cliente ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="0" width="100" height="20" uuid="dd512f17-349a-4cec-9580-3c7d9b3a2bac"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="497" y="0" width="58" height="20" uuid="beaec813-19c1-4d48-aa76-190425bed8bd"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="2cb6483f-252f-40f2-9d2e-ffb158f8a23a"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[# de Factura]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="100" y="0" width="297" height="20" uuid="dfc8e45d-9e91-43c3-9d0e-e42e1e690dc8"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Nombre del Cliente }]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="397" y="0" width="100" height="20" uuid="e2dbfb52-3829-4dbe-9465-288e6977f4db"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(new SimpleDateFormat("HH:mm a").format($F{Hora}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="497" y="0" width="58" height="20" uuid="a81dc7ee-75ad-4aa9-a1f8-af0c693f2591"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="a4c0491e-cf9e-478f-a9ee-6240d59c37a4"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(new DecimalFormat("00000000").format($F{idventa}))]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="21">
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="485" y="0" width="70" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f064bd0e-b678-430f-961e-697356cda272"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Arial" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(new DecimalFormat("000.00").format($V{Total_1}))]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement x="433" y="0" width="80" height="20" uuid="8f610c07-b8a9-4e5c-bd89-e2c6b5f7cc75"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="513" y="0" width="42" height="20" uuid="6f6410d8-6410-4c1a-9b63-1b777866d959"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="2ab8ebc4-eb31-4041-849f-35bb647ad7ad"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Reporte Del Dia:]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="100" y="0" width="333" height="20" uuid="2fc667be-106a-4f5f-98b7-556517f05ab8"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d2bc5252-ff0f-4c8a-9f60-fa7a3298ee1a">
+	<property name="ireport.zoom" value="2.1435888100000016"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Fecha1" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2017-01-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Fecha2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-12-31"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select v.idVenta, p.Producto, dv.Cantidad,v.fecha from venta v 
+	inner join detalleventa dv on v.idventa=dv.idventa 
+	inner join producto p on p.idproducto=dv.idproducto 
+where dv.cantidad>1 and fecha BETWEEN $P{Fecha1} AND $P{Fecha2} group by v.idventa, p.idProducto order by dv.Cantidad DESC;]]>
+	</queryString>
+	<field name="idVenta" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Producto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Cantidad" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<title>
+		<band height="62" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="18" uuid="b19b2a32-56be-4034-b987-182d2240f587"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Agroservicio Las Palmeras]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="18" width="555" height="20" uuid="89decdf9-6491-40c0-8848-fe1296b0a935"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Reporte Ventas por "Mayoreo"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="42" width="106" height="20" uuid="d647ba99-2c44-48ec-8e54-c775de84ff45"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha del reporte:]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="106" y="42" width="449" height="20" uuid="4286ff3e-2696-4a83-a273-cc8891538b19"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="9ae85130-2b90-4469-a607-50af3cb78d08"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[# de Factura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="233" height="20" uuid="3d171192-379c-4901-955d-37ef5e4926cc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="0" width="71" height="20" uuid="fe59870c-b131-4db8-a421-9b3a4ef2a234"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="0" width="135" height="20" uuid="cc6c39c5-f690-4c96-92f3-f0fec59c8a54"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="07cc0753-1d9d-4c8e-b40e-e9af99c653a1"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(new DecimalFormat("00000000").format($F{idVenta}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="233" height="20" uuid="b52be47c-1b5c-4594-896c-e26bfba3a039"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="0" width="135" height="20" uuid="402c76b5-10f3-442a-927f-81e3360f2d07"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(new SimpleDateFormat("dd/MM/YYYY HH:mm a").format($F{fecha}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="333" y="0" width="71" height="20" uuid="f381fb69-03c3-4446-997b-74f45a11bbad"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement x="435" y="0" width="78" height="20" uuid="e670b0c6-4481-4223-be24-a513cce2a366"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página  "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="513" y="0" width="42" height="20" uuid="a31b9366-aadd-4242-b976-543821515f38"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="73" height="20" uuid="e8296680-a64b-4d05-9bf6-8985612f979e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="0" width="36" height="20" uuid="65c3d413-6410-4d0d-b9b6-3d49ce92a8e4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[hasta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="73" y="0" width="76" height="20" uuid="6059f0aa-b56d-4bf0-a6f0-c3f8ec5a11b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/YYYY").format(new SimpleDateFormat("yyyy-MM-dd").parse($P{Fecha1}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="185" y="0" width="84" height="20" uuid="4946432a-2927-4c7c-9caa-06b3ff134c1d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/YYYY").format(new SimpleDateFormat("yyyy-MM-dd").parse($P{Fecha2}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="0" width="78" height="20" uuid="1be02017-1fe4-4dbc-b3ed-dac7428b2131"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página  "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="513" y="0" width="42" height="20" uuid="ee27b359-3c60-4baf-8fbb-ec0ea54a6710"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>
