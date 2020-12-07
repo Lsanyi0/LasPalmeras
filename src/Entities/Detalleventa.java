@@ -32,6 +32,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Detalleventa.findByCantidad", query = "SELECT d FROM Detalleventa d WHERE d.cantidad = :cantidad")
     , @NamedQuery(name = "Detalleventa.findByDescuento", query = "SELECT d FROM Detalleventa d WHERE d.descuento = :descuento")})
 public class Detalleventa implements Serializable {
+    @Column(name = "Ventaproductofracc")
+    private Integer ventaproductofracc;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "Cantidad")
+    private Double cantidad;
+    @JoinColumn(name = "idHistorialPrecioVenta", referencedColumnName = "idHistorialPrecioVenta")
+    @ManyToOne
+    private Historialprecioventa idHistorialPrecioVenta;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,8 +47,6 @@ public class Detalleventa implements Serializable {
     @Basic(optional = false)
     @Column(name = "idDetalleVenta")
     private Integer idDetalleVenta;
-    @Column(name = "Cantidad")
-    private Integer cantidad;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "Descuento")
     private Double descuento;
@@ -69,13 +75,6 @@ public class Detalleventa implements Serializable {
         this.idDetalleVenta = idDetalleVenta;
     }
 
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
 
     public Double getDescuento() {
         return descuento;
@@ -132,6 +131,30 @@ public class Detalleventa implements Serializable {
     @Override
     public String toString() {
         return "Entities.Detalleventa[ idDetalleVenta=" + idDetalleVenta + " ]";
+    }
+
+    public Double getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Double cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public Historialprecioventa getIdHistorialPrecioVenta() {
+        return idHistorialPrecioVenta;
+    }
+
+    public void setIdHistorialPrecioVenta(Historialprecioventa idHistorialPrecioVenta) {
+        this.idHistorialPrecioVenta = idHistorialPrecioVenta;
+    }
+
+    public Integer getVentaproductofracc() {
+        return ventaproductofracc;
+    }
+
+    public void setVentaproductofracc(Integer ventaproductofracc) {
+        this.ventaproductofracc = ventaproductofracc;
     }
     
 }

@@ -36,14 +36,17 @@ import javax.xml.bind.annotation.XmlRootElement;
         , @NamedQuery(name = "Inventario.findByExistencia", query = "SELECT i FROM Inventario i WHERE i.existencia = :existencia")
         , @NamedQuery(name = "Inventario.findIdFechaVencimiento",query = "SELECT i.idFechavencimiento FROM Inventario i JOIN Fechavencimiento f WHERE i.existencia >= 1 AND i.idFechavencimiento = F.idFechavencimiento AND i.idProducto = :idProd ORDER BY f.fechavencimiento ASC")})
 public class Inventario implements Serializable {
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "compra")
+    private Double compra;
+    @Column(name = "Venta")
+    private Double venta;
+    @Column(name = "Existencia")
+    private Double existencia;
     
     @Column(name = "fechavencimiento")
     @Temporal(TemporalType.DATE)
     private Date fechavencimiento;
-    @Column(name = "Venta")
-    private Integer venta;
-    @Column(name = "Existencia")
-    private Integer existencia;
     
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,8 +57,6 @@ public class Inventario implements Serializable {
     private Integer idProducto;
     @Column(name = "idFechavencimiento")
     private Integer idFechavencimiento;
-    @Column(name = "Compra")
-    private Integer compra;
     
     public Inventario() {
     }
@@ -84,14 +85,6 @@ public class Inventario implements Serializable {
         this.idFechavencimiento = idFechavencimiento;
     }
     
-    public Integer getCompra() {
-        return compra;
-    }
-    
-    public void setCompra(Integer compra) {
-        this.compra = compra;
-    }
-    
     public Date getFechavencimiento() {
         return fechavencimiento;
     }
@@ -100,19 +93,27 @@ public class Inventario implements Serializable {
         this.fechavencimiento = fechavencimiento;
     }
     
-    public Integer getVenta() {
+    public Double getCompra() {
+        return compra;
+    }
+    
+    public void setCompra(Double compra) {
+        this.compra = compra;
+    }
+    
+    public Double getVenta() {
         return venta;
     }
     
-    public void setVenta(Integer venta) {
+    public void setVenta(Double venta) {
         this.venta = venta;
     }
-    
-    public Integer getExistencia() {
+
+    public Double getExistencia() {
         return existencia;
     }
-    
-    public void setExistencia(Integer existencia) {
+
+    public void setExistencia(Double existencia) {
         this.existencia = existencia;
     }
     

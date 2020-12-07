@@ -3,6 +3,7 @@ package Entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -64,6 +65,10 @@ import javax.xml.bind.annotation.XmlTransient;
 //in pidProducto int,in pidCategoria int,in pidMarca int, in pproducto varchar(60),in pdescripcion varchar(60),in pprecio double(5,2),out x int
 
 public class Producto implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idproducto")
+    private List<Medidaproducto> medidaproductoList;
+    @OneToMany(mappedBy = "idProducto")
+    private List<Historialprecioventa> historialprecioventaList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -191,6 +196,24 @@ public class Producto implements Serializable {
     @Override
     public String toString() {
         return "Entities.Producto[ idProducto=" + idProducto + " ]";
+    }
+
+    @XmlTransient
+    public List<Medidaproducto> getMedidaproductoList() {
+        return medidaproductoList;
+    }
+
+    public void setMedidaproductoList(List<Medidaproducto> medidaproductoList) {
+        this.medidaproductoList = medidaproductoList;
+    }
+
+    @XmlTransient
+    public List<Historialprecioventa> getHistorialprecioventaList() {
+        return historialprecioventaList;
+    }
+
+    public void setHistorialprecioventaList(List<Historialprecioventa> historialprecioventaList) {
+        this.historialprecioventaList = historialprecioventaList;
     }
     
 }

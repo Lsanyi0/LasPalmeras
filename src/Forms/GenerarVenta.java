@@ -50,7 +50,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbFactura3 = new javax.swing.JLabel();
         lbFactura4 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        lsBuscarCliente = new javax.swing.JList<>();
+        lsBuscarCliente = new javax.swing.JList<String>();
         tbBuscarCliente = new javax.swing.JTextField();
         lbFactura5 = new javax.swing.JLabel();
         lbFactura6 = new javax.swing.JLabel();
@@ -61,10 +61,10 @@ public class GenerarVenta extends javax.swing.JFrame {
         tbBuscar = new javax.swing.JTextField();
         btAgregar = new javax.swing.JButton();
         lbExistencia = new javax.swing.JLabel();
-        cbBuscar = new javax.swing.JComboBox<>();
+        cbBuscar = new javax.swing.JComboBox<String>();
         cbCantidad = new javax.swing.JComboBox();
         jScrollPane3 = new javax.swing.JScrollPane();
-        lsBuscar = new javax.swing.JList<>();
+        lsBuscar = new javax.swing.JList<String>();
         lbCantidad = new javax.swing.JLabel();
         lbPrecio = new javax.swing.JLabel();
         lbDescuento = new javax.swing.JLabel();
@@ -72,6 +72,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         feedbackCorrecto = new javax.swing.JLabel();
         feedbackError = new javax.swing.JLabel();
         lbFeedback = new javax.swing.JLabel();
+        btDescontarInventario = new javax.swing.JButton();
         panelRegistro = new javax.swing.JPanel();
         lbFecha = new javax.swing.JLabel();
         lbFechaExpedicion = new javax.swing.JLabel();
@@ -334,7 +335,7 @@ public class GenerarVenta extends javax.swing.JFrame {
 
         lbExistencia.setText("Existencia: 0");
 
-        cbBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Producto", "Marca", "Categoria" }));
+        cbBuscar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Producto", "Marca", "Categoria" }));
         cbBuscar.setEnabled(false);
         cbBuscar.setNextFocusableComponent(cbBuscar);
 
@@ -384,6 +385,13 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbFeedback.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lbFeedback.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        btDescontarInventario.setText("Abrir frcc.");
+        btDescontarInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDescontarInventarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelProductoLayout = new javax.swing.GroupLayout(panelProducto);
         panelProducto.setLayout(panelProductoLayout);
         panelProductoLayout.setHorizontalGroup(
@@ -416,12 +424,15 @@ public class GenerarVenta extends javax.swing.JFrame {
                                 .addGap(5, 5, 5))
                             .addComponent(lbFeedback, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(7, 7, 7)))
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                    .addGroup(panelProductoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btDescontarInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelProductoLayout.setVerticalGroup(
             panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProductoLayout.createSequentialGroup()
                 .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -444,9 +455,15 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(feedbackCorrecto)
                     .addComponent(feedbackError))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbFeedback, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(panelProductoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btDescontarInventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(2, 2, 2))
         );
 
         panelRegistro.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro"));
@@ -653,7 +670,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cbCantidad.getModel();
         model.removeAllElements();
-        for (int i = 1; i <= 25 ; i++) {
+        for (Double i = 1.0; i <= 25.0 ; i++) {
             model.addElement(i);
         }
         cbCantidad.setModel(model);
@@ -662,7 +679,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private void lsBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lsBuscarMouseClicked
         JList list = (JList)evt.getSource();
         if (utilidades.validarComboBox(cbCantidad)) {
-            int cbx = Integer.valueOf(cbCantidad.getSelectedItem().toString());
+            Double cbx = Double.valueOf(cbCantidad.getSelectedItem().toString());
             Double desc;
             try {
                 desc = Double.valueOf(tbDescuento.getText());
@@ -687,7 +704,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 list.getSelectedValue().toString()));
         String precio = String.valueOf(df.format(utilidades.getPrecioByNombre(
                 list.getSelectedValue().toString())));
-        toggleExistencia(Integer.valueOf(existencia));
+        toggleExistencia(Double.valueOf(existencia));
         lbExistencia.setText("Existencia: " + existencia);
         lbPrecio.setText("Precio: " + precio);
     }
@@ -783,7 +800,7 @@ public class GenerarVenta extends javax.swing.JFrame {
 
     private void miModificarCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miModificarCantidadActionPerformed
         String valor;
-        int num = -1;
+        Double num = -1.0;
         while (num == -1) {
             valor = JOptionPane.showInputDialog("Cantidad:",
                     dgvPedidos
@@ -794,13 +811,13 @@ public class GenerarVenta extends javax.swing.JFrame {
             {
                 return;
             }
-            num = stringToInt(valor);
+            num = stringToDouble(valor);
             if (num > utilidades
                     .getExistenciaByNombre((String) dgvPedidos
                             .getModel()
                             .getValueAt(dgvPedidos.getSelectedRow(), 1)))
             {
-                num = -1;
+                num = -1.0;
                 utilidades.mostrarAlerta(null,"La cantidad ingresada exede la cantidad"
                         + " disponible, intente de nuevo.", "Cantidad no válida!");
             }
@@ -815,7 +832,7 @@ public class GenerarVenta extends javax.swing.JFrame {
             actualizarCantidadInventario(lsBuscar);
         }
         else if (lsBuscar.getModel().getSize() <= 0) {
-            lbExistencia.setText("Existencia: 0");
+            lbExistencia.setText("Existencia: 0.0");
             lbPrecio.setText("Precio: $ 0.00");
         }
     }//GEN-LAST:event_lsBuscarValueChanged
@@ -954,21 +971,40 @@ public class GenerarVenta extends javax.swing.JFrame {
         utilidades.setDescuentoJtable(dgvPedidos, dgvPedidos.getSelectedRow(), num);
         lbTotal.setText("Total a pagar: " + df.format(utilidades.getTotal()));
     }//GEN-LAST:event_miModificarDescuentoActionPerformed
-    private static int stringToInt(String string) {
+
+    private void btDescontarInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDescontarInventarioActionPerformed
+        if (cliente == null) cliente = new Cliente();
+        
+        cliente.setNombre("Anonimo");
+        cliente.setApellido("");
+        
+        utilidades.addToJTableVenta(dgvPedidos, lsBuscar.getSelectedValue().replaceAll("\\s\\(\\w*\\)", ""),1.0,0.0);
+        dgvPedidos.setDefaultEditor(Object.class, null);
+        dgvPedidos.setRowSelectionAllowed(true);
+        lbTotal.setText(totalAPagar + df.format(utilidades.getTotal()));
+        tbDescuento.setText("0.00");
+        tbBuscar.setText("");
         try {
-            int var = Integer.parseInt(string);
+                utilidades.crearVentaFracc(cliente, LogIn.usuario.getIdUsuario(), true);
+            } catch (Exception e) {
+                utilidades.mostrarAlerta(btDescontarInventario,e + "", "Error");
+            }
+    }//GEN-LAST:event_btDescontarInventarioActionPerformed
+    private static Double stringToDouble(String string) {
+        try {
+            Double var = Double.parseDouble(string);
             if (var >= 1) return var;
-            else return -1;
+            else return -1.0;
         }
         catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null,
                     "El numero que ingresó no es válido, porfavor intente de nuevo",
                     "Ingrese un numero valido",
                     JOptionPane.WARNING_MESSAGE);
-            return -1;
+            return -1.0;
         }
     }
-    public void toggleExistencia(int existencia)
+    public void toggleExistencia(Double existencia)
     {
         if (existencia <= 0)
         {
@@ -1055,6 +1091,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JButton btAgregarNuevoCliente;
     private javax.swing.JButton btCancelar;
     private javax.swing.JLabel btCerrarSesion;
+    private javax.swing.JButton btDescontarInventario;
     private javax.swing.JButton btLimpiar;
     private javax.swing.JButton btVender;
     private javax.swing.JComboBox<String> cbBuscar;

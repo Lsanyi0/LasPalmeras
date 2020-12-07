@@ -51,6 +51,8 @@ import javax.xml.bind.annotation.XmlTransient;
         @StoredProcedureParameter(name = "idventx",mode = ParameterMode.OUT,type = String.class),
     })
 public class Venta implements Serializable {
+    @Column(name = "Numeroserial")
+    private String numeroserial;
 
     @OneToMany(mappedBy = "idVenta")
     private List<Detalleventa> detalleventaList;
@@ -158,6 +160,14 @@ public class Venta implements Serializable {
 
     public void setDetalleventaList(List<Detalleventa> detalleventaList) {
         this.detalleventaList = detalleventaList;
+    }
+
+    public String getNumeroserial() {
+        return numeroserial;
+    }
+
+    public void setNumeroserial(String numeroserial) {
+        this.numeroserial = numeroserial;
     }
     
 }

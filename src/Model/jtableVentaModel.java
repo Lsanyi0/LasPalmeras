@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 public class jtableVentaModel {
     private int idProducto;
-    private int cantidad;
+    private Double cantidad;
     private String nombre;
     private Double preciounitario;
     private Double descuento;
@@ -12,7 +12,7 @@ public class jtableVentaModel {
     private final DecimalFormat df = new DecimalFormat("$ 0.00");
     private final DecimalFormat dfd = new DecimalFormat("-$ 0.00");
     
-    public void setCantidad(int cantidad) {
+    public void setCantidad(Double cantidad) {
         this.cantidad = cantidad;
     }
     
@@ -36,10 +36,10 @@ public class jtableVentaModel {
     }
     
     public void setSubtotal(Double subtotal) {
-        this.subtotal = subtotal;
+        this.subtotal = (double) (Math.round(subtotal * 100.0)/100.0);
     }
     
-    public int getCantidad() {
+    public Double getCantidad() {
         return cantidad;
     }
     
@@ -77,14 +77,14 @@ public class jtableVentaModel {
     }
     
     public jtableVentaModel() {
-        this.cantidad = 0;
+        this.cantidad = 0.0;
         this.nombre = "";
         this.preciounitario = 0.00;
         this.subtotal = 0.00;
         this.descuento = 0.00;
     }
     
-    public jtableVentaModel(int idProducto,int cantidad, String nombre, Double preciounitario, Double descuento) {
+    public jtableVentaModel(int idProducto,Double cantidad, String nombre, Double preciounitario, Double descuento) {
         this.idProducto = idProducto;
         this.cantidad = cantidad;
         this.nombre = nombre;

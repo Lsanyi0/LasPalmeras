@@ -1,16 +1,6 @@
 package Forms;
 
-import Entities.Categoria;
-import Entities.Cliente;
-import Entities.Detalleventa;
-import Entities.Fechavencimiento;
-import Entities.Inventario;
-import Entities.Marca;
-import Entities.Producto;
-import Entities.Proveedor;
-import Entities.Telefono;
-import Entities.Usuario;
-import Entities.Venta;
+import Entities.*;
 import EntradaXProducto.Productos;
 import Model.jtableVentaModel;
 import java.awt.Component;
@@ -23,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CacheStoreMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -95,23 +86,30 @@ public class Utilidades {
     
     public Producto getProductoByNombre(String nombreProducto) {
         Producto prod = (Producto) manager.createNamedQuery("Producto.findByProducto")
-                .setParameter("producto", "%" + nombreProducto + "%")
+                .setParameter("producto", nombreProducto)
                 .getSingleResult();
         return prod;
     }
     
     //Metodo getInventarioByNombre obtenemos un entero que representa la cantidad actual de
     //producto mediante su nombre
-    public int getExistenciaByNombre(String nombreProducto) {
+    public Double getExistenciaByNombre(String nombreProducto) {
         Producto prod = getProductoByNombre(nombreProducto);
         List<Inventario> inv =  manager.createNamedQuery("Inventario.findByIdProducto")
                 .setParameter("idProducto", prod.getIdProducto())
                 .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
                 .getResultList();
-        Integer existencia = 0;
-        for (Inventario inve : inv) {
-            existencia += inve.getExistencia();
+        Double existencia = 0.0;
+        if(prod.getProducto().matches("\\b[\\w\\s]*\\.\\s\\(\\w*\\)"))
+        {
+            existencia = 100.0;
         }
+        else {
+            for (Inventario inve : inv) {
+                existencia += inve.getExistencia();
+            }
+        }
+            
         return existencia;
     }
     //getPrecioByNombre retorna un Double que representa el precio de venta del producto
@@ -121,7 +119,7 @@ public class Utilidades {
     }
     
     //Metodo addToJTableVenta() metodo especifico para llenar la tabla venta (Form GenarVenta)
-    public void addToJTableVenta(JTable jtable, String nombreProducto, int cantidad, Double descuento) {
+    public void addToJTableVenta(JTable jtable, String nombreProducto, Double cantidad, Double descuento) {
         Producto prod = getProductoByNombre(nombreProducto);
         //El modelo para la tabla solo para crear el objeto que contega, los datos que se quieren ingresar a la tabla
         jtableVentaModel venta = new jtableVentaModel(prod.getIdProducto(),
@@ -184,7 +182,7 @@ public class Utilidades {
     public boolean validarComboBox(JComboBox cbx) {
         try {
             String i = cbx.getSelectedItem().toString();
-            Integer j = Integer.parseInt(i);
+            Double j = Double.parseDouble(i);
             if (j <= 0) {
                 mostrarAlerta(cbx,"La cantidad a vender no puede ser menor a 1",
                         "Cantidad no válida");
@@ -208,9 +206,11 @@ public class Utilidades {
                 .setParameter("usser", usuario)
                 .setParameter("pssword", clave)
                 .getSingleResult();
+        if (bool){
         LogIn.usuario = (Usuario) manager.createNamedQuery("Usuario.findByNUsuario")
                 .setParameter("nUsuario", usuario)
-                .getSingleResult();
+                    .getResultList().stream().findFirst().orElse(null);
+        }
         return bool;
     }
     
@@ -220,7 +220,37 @@ public class Utilidades {
                 dim.height / 2 - jFrame.getSize().height / 2);
         jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/imagenes/palmera.png")));
     }
-    
+    public void crearVentaFracc(Cliente cliente, int idEmpleado, boolean ventafracc) {
+        List<Cliente> clientes = manager.createNamedQuery("Cliente.findAll")
+                    .getResultList();
+            //Los "recorremos" todos en busca de concidencias
+            Cliente cli = clientes.stream()
+                    .filter(client -> cliente.getNombre().equals(client.getNombre())
+                            && cliente.getApellido().equals(client.getApellido()))
+                    .findAny()
+                    .orElse(null);
+       
+        Venta venta = new Venta();
+        
+        venta.setIdCliente(cli);
+        venta.setIdUsuario(LogIn.usuario);
+        venta.setFecha(new Date());
+        venta.setNula('0');
+        //prueba
+        venta.setNumeroserial("n/a");
+        
+         try {
+            manager.getTransaction().begin();
+            manager.persist(venta);
+            manager.flush();
+            crearDetalleVenta(venta, true);
+         } catch (NumberFormatException e) {
+            manager.getTransaction().rollback();
+            mostrarAlerta(null,"Algo salio mal, intente de nuevo /n Error: "+e,
+                    "Error:");
+        }
+    }
+        
     public void crearVenta(Cliente cliente, int idEmpleado) {
         //Extraemos todos los clientes en la DB
         List<Cliente> clientes = manager.createNamedQuery("Cliente.findAll")
@@ -247,14 +277,15 @@ public class Utilidades {
         
         venta.setIdCliente(cli);
         venta.setIdUsuario(LogIn.usuario);
-        venta.setFecha(new Date());
+        venta.setFecha(new Date()); 
         venta.setNula('0');
-        
+       
+        venta.setNumeroserial("n/a"); //////////////
         try {
             manager.getTransaction().begin();
             manager.persist(venta);
             manager.flush();
-            crearDetalleVenta(venta);
+            crearDetalleVenta(venta, false);
         } catch (NumberFormatException e) {
             manager.getTransaction().rollback();
             mostrarAlerta(null,"Algo salio mal, intente de nuevo /n Error: "+e,
@@ -283,12 +314,15 @@ public class Utilidades {
                 //Busca id para el cliente
                 manager.persist(cliente);
                 manager.flush();
-                //Asignamos los telefonos previamente agregados a el cliente correspondiente
+                //Asignamos los telefonos previamente agregados a el cliente correspondiente y asignamos idcliente
                 if (tels != null) {
                     for (Telefono tel : tels)
                     {
+                        if (tel.Validar())
+                        {
                         tel.setIdCliente(cliente);
                     }
+                }
                 }
                 //Hacemos commit a los cambios realizados
                 manager.getTransaction().commit();
@@ -330,13 +364,13 @@ public class Utilidades {
         return id;
     }
     
-    private void crearDetalleVenta(Venta venta) {
+    private void crearDetalleVenta(Venta venta, boolean ventafracc) {
         try {
             for (jtableVentaModel j : temp) {
                 List<Inventario> listado = manager.createNativeQuery("SELECT * FROM inventario i where i.idproducto = ? ORDER BY i.fechavencimiento ASC",Inventario.class)
                         .setParameter(1, j.getIdProducto())
                         .getResultList();
-                cambioLote(listado, j, venta);
+                cambioLote(listado, j, venta, ventafracc);
             }
             manager.getTransaction().commit();
             GenerarVenta.cliente = null;
@@ -348,19 +382,38 @@ public class Utilidades {
             mostrarAlerta(null,"Error: " +e, "Error");
         }
     }
-    public void cambioLote(List<Inventario> idLotes, jtableVentaModel j, Venta venta){
+    public void cambioLote(List<Inventario> idLotes, jtableVentaModel j, Venta venta, boolean ventafracc){
         int i=0;
+        Historialprecioventa hpv = buscarHistorialPrecioVenta(j.getIdProducto(),j.getPreciounitario());
         while (j.getCantidad()>=1){
             Integer idFechaV = idLotes.get(i).getIdFechavencimiento();
             Detalleventa det = new Detalleventa();
+            Producto prod = (Producto) manager.createNamedQuery("Producto.findByIdProducto")
+                    .setParameter("idProducto", j.getIdProducto())
+                    .getSingleResult();
+            //Producto prod = new Producto(j.getIdProducto());
             
-            det.setIdProducto(new Producto(j.getIdProducto()));
+            det.setIdProducto(prod);
             det.setIdVenta(venta);
             det.setDescuento(j.getDescuento());
             det.setIdFechaVencimiento((Fechavencimiento)manager.createNamedQuery("Fechavencimiento.findByIdFechavencimiento").setParameter("idFechavencimiento",idFechaV).getSingleResult());
+            det.setIdHistorialPrecioVenta(hpv);
+
+            if(prod.getProducto().matches("\\b[\\w\\s]*\\.\\s\\(\\w*\\)"))
+            {
+                det.setVentaproductofracc(2);
+            }
+            else if (ventafracc)
+            {
+                det.setVentaproductofracc(1);
+            }
+            else 
+            {
+                det.setVentaproductofracc(0);
+            }
             
-            int a = idLotes.get(i).getExistencia();
-            int b = j.getCantidad();
+            Double a = idLotes.get(i).getExistencia();
+            Double b = j.getCantidad();
             if ((b-a)>=0) {
                 det.setCantidad(a);
             }
@@ -376,6 +429,29 @@ public class Utilidades {
             i++;
         }
     }
+        
+    private Historialprecioventa buscarHistorialPrecioVenta(Integer idProd, Double precio)
+    {
+        List<Historialprecioventa> hvpl;
+        Producto prod = manager.createNamedQuery("Producto.findByIdProducto",Producto.class)
+                .setParameter("idProducto", idProd)
+                .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
+                .getSingleResult();
+        Historialprecioventa hvp;
+        try {
+            hvpl = prod.getHistorialprecioventaList();
+            for (Historialprecioventa historial : hvpl) {
+                if(Objects.equals(historial.getPrecio(), precio)) return historial;
+            }
+        } catch (Exception e) {
+        }
+        hvp = new Historialprecioventa(prod);
+        hvp.setPrecio(precio);
+        manager.persist(hvp);
+        manager.flush();
+        return hvp;
+    }
+    
     public void clearJTable(JTable jTable) {
         DefaultTableModel model = (DefaultTableModel) jTable.getModel();
         model.setRowCount(0);
@@ -415,7 +491,8 @@ public class Utilidades {
     }
     public void fillJTable(JTable jtable,String tabla,String filtro,String busqueda,String []titulos){
         List<Producto> listado = manager.createQuery("SELECT p FROM "+tabla+" p where p."+filtro+" like \"%"+busqueda+"%\"").getResultList();
-        DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
+        DefaultTableModel Modelo = (DefaultTableModel) jtable.getModel();
+        Modelo.setRowCount(0);
         for (Producto p : listado) {
             Modelo.addRow(new Object[]{Integer.toString(p.getIdProducto()),p.getProducto(),p.getIdMarca().getMarca(),
                 p.getIdCategoria().getCategoria(),p.getDescripcion()});
@@ -423,6 +500,7 @@ public class Utilidades {
         jtable.setModel(Modelo);
         jtable.setDefaultEditor(Object.class, null);
     }
+    
     public List<Producto> obtenerproducto(String tabla,int id,String filtro){
         List<Producto> listado2 = manager.createQuery("SELECT p FROM "+tabla+" p where p."+filtro+"="+id).getResultList();
         return listado2;
@@ -547,7 +625,7 @@ public class Utilidades {
             model.addRow(j.toArray());
         });
     }
-    public void setCantidadJtable(JTable jtable,int index, int cantidad)
+    public void setCantidadJtable(JTable jtable,int index, Double cantidad)
     {
         temp.get(index).setCantidad(cantidad);
         DefaultTableModel model = (DefaultTableModel) jtable.getModel();
@@ -630,7 +708,8 @@ public class Utilidades {
     //llena el grid view con el arraylist de productos //formulario EntradaxProducto
     public void llenarJtablePE(ArrayList<Productos> lpn,JTable jtable,String []titulos){
         DateFormat formatoFecha= new SimpleDateFormat("yyyy-MM-dd");
-        DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
+        DefaultTableModel Modelo =(DefaultTableModel) jtable.getModel();
+        Modelo.setRowCount(0);
         for (Productos pn : lpn){
             
             String[] registrop =

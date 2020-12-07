@@ -47,6 +47,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     }
 )
 public class Detallecompra implements Serializable {
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "Cantidad")
+    private Double cantidad;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,8 +57,6 @@ public class Detallecompra implements Serializable {
     @Basic(optional = false)
     @Column(name = "idDetalleCompra")
     private Integer idDetalleCompra;
-    @Column(name = "Cantidad")
-    private Integer cantidad;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "PrecioUnitario")
     private Double precioUnitario;
@@ -84,13 +85,6 @@ public class Detallecompra implements Serializable {
         this.idDetalleCompra = idDetalleCompra;
     }
 
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
 
     public Double getPrecioUnitario() {
         return precioUnitario;
@@ -147,6 +141,14 @@ public class Detallecompra implements Serializable {
     @Override
     public String toString() {
         return "Entities.Detallecompra[ idDetalleCompra=" + idDetalleCompra + " ]";
+    }
+
+    public Double getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Double cantidad) {
+        this.cantidad = cantidad;
     }
     
 }

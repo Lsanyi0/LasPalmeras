@@ -15,7 +15,7 @@ public class MysqlConnection {
         
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/laspalmeras1","root","resident00RE");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/laspalmeras","root","");
             System.out.println("OK!");
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al conectarse con la base de datos /n Error: "+e, "Error",0);
