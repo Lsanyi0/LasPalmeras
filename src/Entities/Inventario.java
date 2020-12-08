@@ -37,8 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
         , @NamedQuery(name = "Inventario.findIdFechaVencimiento",query = "SELECT i.idFechavencimiento FROM Inventario i JOIN Fechavencimiento f WHERE i.existencia >= 1 AND i.idFechavencimiento = F.idFechavencimiento AND i.idProducto = :idProd ORDER BY f.fechavencimiento ASC")})
 public class Inventario implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "compra")
+    @Column(name = "Compra")
     private Double compra;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "Venta")
     private Double venta;
     @Column(name = "Existencia")

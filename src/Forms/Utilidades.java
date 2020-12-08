@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -95,14 +96,15 @@ public class Utilidades {
     //producto mediante su nombre
     public Double getExistenciaByNombre(String nombreProducto) {
         Producto prod = getProductoByNombre(nombreProducto);
-        List<Inventario> inv =  manager.createNamedQuery("Inventario.findByIdProducto")
-                .setParameter("idProducto", prod.getIdProducto())
-                .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
-                .getResultList();
+        //List<Inventario> inv =  manager.createNamedQuery("Inventario.findByIdProducto")
+        //        .setParameter("idProducto", prod.getIdProducto())
+        //        .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
+        //        .getResultList();
+        List<Inventario> inv = Prueba(prod.getIdProducto());
         Double existencia = 0.0;
         if(prod.getProducto().matches("\\b[\\w\\s]*\\.\\s\\(\\w*\\)"))
         {
-            existencia = 100.0;
+           return 100.0;
         }
         else {
             for (Inventario inve : inv) {
@@ -251,7 +253,7 @@ public class Utilidades {
         }
     }
         
-    public void crearVenta(Cliente cliente, int idEmpleado) {
+    public void crearVenta(Cliente cliente, int idEmpleado, Date fechaExpedicion, String Serial) {
         //Extraemos todos los clientes en la DB
         List<Cliente> clientes = manager.createNamedQuery("Cliente.findAll")
                 .getResultList();
@@ -273,14 +275,20 @@ public class Utilidades {
             mostrarAlerta(null,"Cliente no existente, intente de nuevo", "Error");
             return;
         }
+        
+        Calendar fecha = Calendar.getInstance();
+        fecha.setTime(fechaExpedicion);
+        fecha.add(Calendar.HOUR_OF_DAY, new Date().getHours());
+        fecha.add(Calendar.MINUTE, new Date().getMinutes());
+        fecha.add(Calendar.SECOND, new Date().getSeconds());
         Venta venta = new Venta();
         
         venta.setIdCliente(cli);
         venta.setIdUsuario(LogIn.usuario);
-        venta.setFecha(new Date()); 
+        venta.setFecha(fecha.getTime()); 
         venta.setNula('0');
-       
-        venta.setNumeroserial("n/a"); //////////////
+        venta.setNumeroserial(Serial);
+    
         try {
             manager.getTransaction().begin();
             manager.persist(venta);
@@ -367,9 +375,10 @@ public class Utilidades {
     private void crearDetalleVenta(Venta venta, boolean ventafracc) {
         try {
             for (jtableVentaModel j : temp) {
-                List<Inventario> listado = manager.createNativeQuery("SELECT * FROM inventario i where i.idproducto = ? ORDER BY i.fechavencimiento ASC",Inventario.class)
-                        .setParameter(1, j.getIdProducto())
-                        .getResultList();
+                //List<Inventario> listado = manager.createNativeQuery("SELECT * FROM inventario i where i.idproducto = ? ORDER BY i.fechavencimiento ASC",Inventario.class)
+                //        .setParameter(1, j.getIdProducto())
+                //       .getResultList();
+                List<Inventario> listado = Prueba(j.getIdProducto());
                 cambioLote(listado, j, venta, ventafracc);
             }
             manager.getTransaction().commit();
@@ -806,5 +815,46 @@ public class Utilidades {
             if (equals) return true;
         }
         return false;
+    }
+    
+    public List<Inventario> Prueba(int idProducto)
+    {
+        List<Compraseparada> csgo = manager.createNamedQuery("Compraseparada.findAll").getResultList();
+        List<Compraseparada> valorant = new ArrayList<>();
+        List<Ventaseparada> vs =  manager.createNamedQuery("Ventaseparada.findAll").getResultList();
+        List<Ventaseparada> vs2 = new ArrayList<>();
+        
+        List<Inventario> inv = new ArrayList<>();
+        
+        vs.stream().filter((v) -> (v.getIdProducto().getIdProducto() == idProducto)).forEach((v) -> {
+            vs2.add(v);
+        });   
+        csgo.stream().filter((csgo1) -> (csgo1.getIdProducto().getIdProducto() == idProducto)).forEach((csgo1) -> {
+            valorant.add(csgo1);
+        });
+        for (Compraseparada valorant1 : valorant) {
+            
+            Inventario tempo = new Inventario();
+            tempo.setCompra(valorant1.getCantidad());
+            tempo.setIdProducto(idProducto);
+            tempo.setIdFechavencimiento(valorant1.getIdFechavencimiento());
+            tempo.setExistencia(0.0);
+            
+            if (vs2.isEmpty()) {
+                tempo.setVenta(0.0);
+                tempo.setExistencia(tempo.getExistencia() + valorant1.getCantidad());
+            }
+            for (Ventaseparada vs21 : vs2) {    
+                tempo.setVenta(vs21.getCantidad());              
+                if (Objects.equals(valorant1.getIdFechavencimiento(), vs21.getIdfechavencimiento())) {    
+                    tempo.setExistencia( valorant1.getCantidad() - vs21.getCantidad());
+                    break;
+                } else {                  
+                    tempo.setExistencia(valorant1.getCantidad());
+                }
+            }
+            inv.add(tempo);
+        }
+        return inv;
     }
 }
