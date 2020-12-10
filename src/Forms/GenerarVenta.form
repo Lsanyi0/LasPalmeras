@@ -783,8 +783,10 @@
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="dpFechaExpedicion" pref="154" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" pref="315" max="-2" attributes="0"/>
+                      <Component id="dpFechaExpedicion" pref="140" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="204" max="-2" attributes="0"/>
+                      <Component id="cbxCreditoFiscal" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="lbFactura" max="32767" attributes="0"/>
                           <Component id="tbSerial" max="32767" attributes="0"/>
@@ -804,6 +806,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lbFechaExpedicion" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="tbSerial" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbxCreditoFiscal" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -844,6 +847,11 @@
             <Component class="org.jdesktop.swingx.JXDatePicker" name="dpFechaExpedicion">
             </Component>
             <Component class="javax.swing.JTextField" name="tbSerial">
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="cbxCreditoFiscal">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Credito Fiscal"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

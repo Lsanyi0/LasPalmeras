@@ -261,7 +261,7 @@ public class Reporteria extends javax.swing.JFrame {
     }//GEN-LAST:event_btCerrarSesionMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       List<Inventario> asd =  utilidades.Prueba(5);
+       List<Inventario> asd =  utilidades.VistaInventario(5);
     }//GEN-LAST:event_jButton1ActionPerformed
     
     public static void main(String args[]) {

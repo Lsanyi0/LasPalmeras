@@ -93,6 +93,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbFactura = new javax.swing.JLabel();
         dpFechaExpedicion = new org.jdesktop.swingx.JXDatePicker();
         tbSerial = new javax.swing.JTextField();
+        cbxCreditoFiscal = new javax.swing.JCheckBox();
         btVender = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
         lbTotal = new javax.swing.JLabel();
@@ -492,6 +493,8 @@ public class GenerarVenta extends javax.swing.JFrame {
         lbFactura.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         lbFactura.setText("No. Venta");
 
+        cbxCreditoFiscal.setText("Credito Fiscal");
+
         javax.swing.GroupLayout panelRegistroLayout = new javax.swing.GroupLayout(panelRegistro);
         panelRegistro.setLayout(panelRegistroLayout);
         panelRegistroLayout.setHorizontalGroup(
@@ -503,8 +506,10 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addGap(41, 41, 41)
                         .addComponent(lbFechaExpedicion)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dpFechaExpedicion, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                .addGap(315, 315, 315)
+                .addComponent(dpFechaExpedicion, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                .addGap(204, 204, 204)
+                .addComponent(cbxCreditoFiscal)
+                .addGap(18, 18, 18)
                 .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lbFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tbSerial))
@@ -519,7 +524,8 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbFechaExpedicion)
-                    .addComponent(tbSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tbSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxCreditoFiscal))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(panelRegistroLayout.createSequentialGroup()
                 .addComponent(dpFechaExpedicion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -772,7 +778,7 @@ public class GenerarVenta extends javax.swing.JFrame {
                 return;
             }
             try {
-                utilidades.crearVenta(cliente, LogIn.usuario.getIdUsuario(), dpFechaExpedicion.getDate(), tbSerial.getText());
+                utilidades.crearVenta(cliente, LogIn.usuario.getIdUsuario(), dpFechaExpedicion.getDate(), tbSerial.getText(),cbxCreditoFiscal.isSelected());
             } catch (Exception e) {
                 utilidades.mostrarAlerta(btVender,e + "", "Error");
             } finally {
@@ -1149,6 +1155,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JButton btVender;
     private javax.swing.JComboBox<String> cbBuscar;
     private javax.swing.JComboBox cbCantidad;
+    private javax.swing.JCheckBox cbxCreditoFiscal;
     public static javax.swing.JTable dgvPedidos;
     private org.jdesktop.swingx.JXDatePicker dpFechaExpedicion;
     public static javax.swing.JLabel feedbackCorrecto;

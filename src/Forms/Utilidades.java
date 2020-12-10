@@ -100,7 +100,7 @@ public class Utilidades {
         //        .setParameter("idProducto", prod.getIdProducto())
         //        .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
         //        .getResultList();
-        List<Inventario> inv = Prueba(prod.getIdProducto());
+        List<Inventario> inv = VistaInventario(prod.getIdProducto());
         Double existencia = 0.0;
         if(prod.getProducto().matches("\\b[\\w\\s]*\\.\\s\\(\\w*\\)"))
         {
@@ -245,7 +245,7 @@ public class Utilidades {
             manager.getTransaction().begin();
             manager.persist(venta);
             manager.flush();
-            crearDetalleVenta(venta, true);
+            crearDetalleVenta(venta, true, false);
          } catch (NumberFormatException e) {
             manager.getTransaction().rollback();
             mostrarAlerta(null,"Algo salio mal, intente de nuevo /n Error: "+e,
@@ -253,7 +253,7 @@ public class Utilidades {
         }
     }
         
-    public void crearVenta(Cliente cliente, int idEmpleado, Date fechaExpedicion, String Serial) {
+    public void crearVenta(Cliente cliente, int idEmpleado, Date fechaExpedicion, String Serial, boolean CreditoF) {
         //Extraemos todos los clientes en la DB
         List<Cliente> clientes = manager.createNamedQuery("Cliente.findAll")
                 .getResultList();
@@ -293,7 +293,7 @@ public class Utilidades {
             manager.getTransaction().begin();
             manager.persist(venta);
             manager.flush();
-            crearDetalleVenta(venta, false);
+            crearDetalleVenta(venta, false, CreditoF);
         } catch (NumberFormatException e) {
             manager.getTransaction().rollback();
             mostrarAlerta(null,"Algo salio mal, intente de nuevo /n Error: "+e,
@@ -372,14 +372,14 @@ public class Utilidades {
         return id;
     }
     
-    private void crearDetalleVenta(Venta venta, boolean ventafracc) {
+    private void crearDetalleVenta(Venta venta, boolean ventafracc, boolean CreditoF) {
         try {
             for (jtableVentaModel j : temp) {
                 //List<Inventario> listado = manager.createNativeQuery("SELECT * FROM inventario i where i.idproducto = ? ORDER BY i.fechavencimiento ASC",Inventario.class)
                 //        .setParameter(1, j.getIdProducto())
                 //       .getResultList();
-                List<Inventario> listado = Prueba(j.getIdProducto());
-                cambioLote(listado, j, venta, ventafracc);
+                List<Inventario> listado = VistaInventario(j.getIdProducto());
+                cambioLote(listado, j, venta, ventafracc, CreditoF);
             }
             manager.getTransaction().commit();
             GenerarVenta.cliente = null;
@@ -391,37 +391,56 @@ public class Utilidades {
             mostrarAlerta(null,"Error: " +e, "Error");
         }
     }
-    public void cambioLote(List<Inventario> idLotes, jtableVentaModel j, Venta venta, boolean ventafracc){
+    public void cambioLote(List<Inventario> idLotes, jtableVentaModel j, Venta venta, boolean ventafracc, boolean CreditoF){
         int i=0;
         Historialprecioventa hpv = buscarHistorialPrecioVenta(j.getIdProducto(),j.getPreciounitario());
         while (j.getCantidad()>=1){
-            Integer idFechaV = idLotes.get(i).getIdFechavencimiento();
-            Detalleventa det = new Detalleventa();
+            
             Producto prod = (Producto) manager.createNamedQuery("Producto.findByIdProducto")
                     .setParameter("idProducto", j.getIdProducto())
                     .getSingleResult();
+            
+            Integer idFechaV=0;
+            Double a  = 100.0;
+            Detalleventa det = new Detalleventa();
+            if(!prod.getProducto().matches("\\b[\\w\\s]*\\.\\s\\(\\w*\\)"))
+            {
+                idFechaV = idLotes.get(i).getIdFechavencimiento();
+                a = idLotes.get(i).getExistencia();
+                det.setIdFechaVencimiento((Fechavencimiento)manager.createNamedQuery("Fechavencimiento.findByIdFechavencimiento").setParameter("idFechavencimiento",idFechaV).getSingleResult());
+            }
+
             //Producto prod = new Producto(j.getIdProducto());
             
             det.setIdProducto(prod);
             det.setIdVenta(venta);
             det.setDescuento(j.getDescuento());
-            det.setIdFechaVencimiento((Fechavencimiento)manager.createNamedQuery("Fechavencimiento.findByIdFechavencimiento").setParameter("idFechavencimiento",idFechaV).getSingleResult());
+            
             det.setIdHistorialPrecioVenta(hpv);
 
             if(prod.getProducto().matches("\\b[\\w\\s]*\\.\\s\\(\\w*\\)"))
             {
-                det.setVentaproductofracc(2);
+                if(CreditoF)
+                {
+                    det.setVentaproductofracc(4);
+                }
+                else {
+                    det.setVentaproductofracc(2);
+                }
             }
             else if (ventafracc)
             {
                 det.setVentaproductofracc(1);
+            }
+            else if (CreditoF)
+            {
+                det.setVentaproductofracc(3);
             }
             else 
             {
                 det.setVentaproductofracc(0);
             }
             
-            Double a = idLotes.get(i).getExistencia();
             Double b = j.getCantidad();
             if ((b-a)>=0) {
                 det.setCantidad(a);
@@ -822,7 +841,7 @@ public class Utilidades {
         return false;
     }
     
-    public List<Inventario> Prueba(int idProducto)
+    public List<Inventario> VistaInventario(int idProducto)
     {
         List<Compraseparada> csgo = manager.createNamedQuery("Compraseparada.findAll")
                 .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
