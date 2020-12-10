@@ -717,8 +717,7 @@ public class Utilidades {
     //llena el grid view con el arraylist de productos //formulario EntradaxProducto
     public void llenarJtablePE(ArrayList<Productos> lpn,JTable jtable,String []titulos){
         DateFormat formatoFecha= new SimpleDateFormat("yyyy-MM-dd");
-        DefaultTableModel Modelo =(DefaultTableModel) jtable.getModel();
-        Modelo.setRowCount(0);
+        DefaultTableModel Modelo = new DefaultTableModel(null,titulos);
         for (Productos pn : lpn){
             
             String[] registrop =
@@ -755,14 +754,20 @@ public class Utilidades {
         }
         return codigo;
     }
-    public int crearCompra(int idprov,Date fecha,String representante,String dui){
+    public int crearCompra(int idprov,Date fecha,String representante,String dui,String Serial){
         int insertCompra =0;
+        Calendar fechan = Calendar.getInstance();
+        fechan.setTime(fecha);
+        fechan.add(Calendar.HOUR_OF_DAY, new Date().getHours());
+        fechan.add(Calendar.MINUTE, new Date().getMinutes());
+        fechan.add(Calendar.SECOND, new Date().getSeconds());
         try{
             StoredProcedureQuery np = manager.createNamedStoredProcedureQuery("Compra.comprar")
                     .setParameter("pidprov",idprov)
-                    .setParameter("pfecha",fecha)
+                    .setParameter("pfecha",fechan.getTime())
                     .setParameter("prepresentante",representante)
-                    .setParameter("pdui",dui);
+                    .setParameter("pdui",dui)
+                    .setParameter("pSerial", Serial);
             np.execute();
             insertCompra=Integer.valueOf(np.getOutputParameterValue("midcompra").toString());
         }catch(NumberFormatException e){
@@ -770,11 +775,11 @@ public class Utilidades {
         }
         return insertCompra;
     }
-    public int crearDetCompra(ArrayList<Productos>lpn,int idprov,Date fecha,String representante,String dui){
+    public int crearDetCompra(ArrayList<Productos>lpn,int idprov,Date fecha,String representante,String dui,String Serial){
         int x=-2;
         DateFormat f=new SimpleDateFormat("yyyy-MM-dd");
         
-        int codigoCompra=crearCompra(idprov,fecha,representante,dui);
+        int codigoCompra=crearCompra(idprov,fecha,representante,dui,Serial);
         try{
             for (Productos pn : lpn){
                 StoredProcedureQuery np = manager.createNamedStoredProcedureQuery("DetalleCompra.InsertDCompra")
@@ -819,9 +824,13 @@ public class Utilidades {
     
     public List<Inventario> Prueba(int idProducto)
     {
-        List<Compraseparada> csgo = manager.createNamedQuery("Compraseparada.findAll").getResultList();
+        List<Compraseparada> csgo = manager.createNamedQuery("Compraseparada.findAll")
+                .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
+                .getResultList();
         List<Compraseparada> valorant = new ArrayList<>();
-        List<Ventaseparada> vs =  manager.createNamedQuery("Ventaseparada.findAll").getResultList();
+        List<Ventaseparada> vs =  manager.createNamedQuery("Ventaseparada.findAll")
+                .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
+                .getResultList();
         List<Ventaseparada> vs2 = new ArrayList<>();
         
         List<Inventario> inv = new ArrayList<>();

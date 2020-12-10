@@ -44,9 +44,12 @@ import javax.xml.bind.annotation.XmlTransient;
         @StoredProcedureParameter(name = "pfecha",mode = ParameterMode.IN,type = Date.class),
         @StoredProcedureParameter(name = "prepresentante",mode = ParameterMode.IN,type = String.class),
         @StoredProcedureParameter(name = "pdui",mode = ParameterMode.IN,type = String.class),
-        @StoredProcedureParameter(name = "midcompra",mode = ParameterMode.OUT,type = Integer.class),
+        @StoredProcedureParameter(name = "pSerial",mode = ParameterMode.IN, type = String.class),
+        @StoredProcedureParameter(name = "midcompra",mode = ParameterMode.OUT,type = Integer.class)       
     })
 public class Compra implements Serializable {
+    @Column(name = "Seriales")
+    private String seriales;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -146,6 +149,14 @@ public class Compra implements Serializable {
     @Override
     public String toString() {
         return "Entities.Compra[ idCompra=" + idCompra + " ]";
+    }
+
+    public String getSeriales() {
+        return seriales;
+    }
+
+    public void setSeriales(String seriales) {
+        this.seriales = seriales;
     }
     
 }

@@ -30,7 +30,6 @@ public class EntradaxProducto extends javax.swing.JFrame {
         this.lbFecha.setText(formatoFecha.format(fechaActual));
         lpn=new ArrayList<>();
         llenarproveedores();
-        llenarcomboboxcant();
         this.tbNombreP.setEnabled(false);
         this.tbDireccionP.setEnabled(false);
         this.tbtelefonop.setEnabled(false);
@@ -70,13 +69,13 @@ public class EntradaxProducto extends javax.swing.JFrame {
         lbDescripcion = new javax.swing.JLabel();
         lbFechaVencimiento = new javax.swing.JLabel();
         dpFechaVencimiento = new org.jdesktop.swingx.JXDatePicker();
-        cbcant = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         btnAgregarProd = new javax.swing.JButton();
         TBCategoria = new javax.swing.JTextField();
         lbFechaVencimiento1 = new javax.swing.JLabel();
+        tbCantidad = new javax.swing.JTextField();
         panelProveedor = new javax.swing.JPanel();
-        CBProveedores = new javax.swing.JComboBox<>();
+        CBProveedores = new javax.swing.JComboBox<String>();
         RBNuevoProv = new javax.swing.JRadioButton();
         tbNombreP = new javax.swing.JTextField();
         tbDireccionP = new javax.swing.JTextField();
@@ -92,6 +91,9 @@ public class EntradaxProducto extends javax.swing.JFrame {
         btEliminarProducto = new javax.swing.JButton();
         panelRegistro = new javax.swing.JPanel();
         lbFecha = new javax.swing.JLabel();
+        dpFechaExpedicion = new org.jdesktop.swingx.JXDatePicker();
+        lbSerial = new javax.swing.JLabel();
+        tbSerial = new javax.swing.JTextField();
         PanelBusqueda = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         TbBProduct = new javax.swing.JTable();
@@ -211,8 +213,8 @@ public class EntradaxProducto extends javax.swing.JFrame {
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbcant, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(dpFechaVencimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)))
+                            .addComponent(dpFechaVencimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                            .addComponent(tbCantidad)))
                     .addComponent(btnAgregarProd, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
@@ -245,12 +247,12 @@ public class EntradaxProducto extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbDescripcion)))
                     .addGroup(panelProductoLayout.createSequentialGroup()
-                        .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(cbcant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(67, 67, 67)
+                            .addComponent(tbCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(59, 59, 59)
                         .addComponent(btnAgregarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelProveedor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "SELECCIONE EL PROVEEDOR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(255, 51, 51))); // NOI18N
@@ -332,7 +334,7 @@ public class EntradaxProducto extends javax.swing.JFrame {
                 .addGroup(panelProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(CBProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(RBNuevoProv)
@@ -388,20 +390,33 @@ public class EntradaxProducto extends javax.swing.JFrame {
         lbFecha.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbFecha.setText("12-12-12");
 
+        lbSerial.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbSerial.setText("Numero Factura:");
+
         javax.swing.GroupLayout panelRegistroLayout = new javax.swing.GroupLayout(panelRegistro);
         panelRegistro.setLayout(panelRegistroLayout);
         panelRegistroLayout.setHorizontalGroup(
             panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistroLayout.createSequentialGroup()
+            .addGroup(panelRegistroLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelRegistroLayout.createSequentialGroup()
+                        .addComponent(lbFecha)
+                        .addGap(18, 18, 18)
+                        .addComponent(dpFechaExpedicion, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))
+                    .addComponent(lbSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                    .addComponent(tbSerial)))
         );
         panelRegistroLayout.setVerticalGroup(
             panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRegistroLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbFecha))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistroLayout.createSequentialGroup()
+                .addGroup(panelRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dpFechaExpedicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbSerial)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tbSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         PanelBusqueda.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Busque Productos existentes y seleccione ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12), new java.awt.Color(0, 51, 204))); // NOI18N
@@ -504,7 +519,6 @@ public class EntradaxProducto extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Dui del representante:");
 
-        tbduirep.setText(" ");
         tbduirep.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tbduirepKeyTyped(evt);
@@ -537,7 +551,7 @@ public class EntradaxProducto extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tbduirep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         lbLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/imagenes/logout.png"))); // NOI18N
@@ -582,7 +596,7 @@ public class EntradaxProducto extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -590,10 +604,10 @@ public class EntradaxProducto extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(panelProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(panelRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(panelProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(panelRegistro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -620,17 +634,22 @@ public class EntradaxProducto extends javax.swing.JFrame {
 
     private void btGuardarEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarEntradaActionPerformed
         int x=0;
+        if(dpFechaExpedicion.getDate()==null)
+        {
+            utilidades.mostrarAlerta(this, "Fecha no seleccionada", "Sin fecha");
+            return;
+        }
         if(validarCamposGuardarEnt()==true){
             if(this.RBNuevoProv.isSelected()==true){
                 x=utilidades.crearDetCompra(
                         this.lpn,utilidades.insertProveedor(this.tbNombreP.getText(),this.tbDireccionP.getText(),this.tbtelefonop.getText()),
-                        fechaActual,this.tbRepresentante.getText(),this.tbduirep.getText());
+                        dpFechaExpedicion.getDate(),this.tbRepresentante.getText(),this.tbduirep.getText(),this.tbSerial.getText());
                 
             }
             else if(this.RBNuevoProv.isSelected()==false){
                 x=utilidades.crearDetCompra(
                         this.lpn,utilidades.findProvbyname(this.CBProveedores.getSelectedItem().toString()),
-                        fechaActual,this.tbRepresentante.getText(),this.tbduirep.getText());
+                        dpFechaExpedicion.getDate(),this.tbRepresentante.getText(),this.tbduirep.getText(),this.tbSerial.getText());
             }
             if(x!=-1){
                 JOptionPane.showMessageDialog(null, "Registro existoso","Registro",JOptionPane.INFORMATION_MESSAGE);
@@ -687,31 +706,33 @@ public class EntradaxProducto extends javax.swing.JFrame {
             String []tituloss = {"id","producto","marca","categoria","descripcion","precio","cantidad","caducidad"};
             if(existente==-1){
                 
-                lpn.add(new Productos(LidProducto,this.TBCategoria.getText(),this.tbMarca.getText(),
-                        this.tbNombre.getText(),this.tbDescripcion.getText(),
-                        Double.parseDouble(this.tbPrecioU.getText()),
-                        Integer.parseInt(this.cbcant.getSelectedItem().toString()),this.dpFechaVencimiento.getDate()));
-                utilidades.llenarJtablePE(this.lpn, this.dgvEntradas, tituloss);
+                lpn.add(new Productos(LidProducto,TBCategoria.getText(),tbMarca.getText(),
+                        tbNombre.getText(),tbDescripcion.getText(),
+                        Double.parseDouble(tbPrecioU.getText()),
+                        Integer.parseInt(tbCantidad.getText()),dpFechaVencimiento.getDate()));
+                utilidades.llenarJtablePE(lpn, dgvEntradas,tituloss);
             }else if(existente!=-1){
                 int r= JOptionPane.showConfirmDialog(
-                        null,"AVISO!ya tiene ese producto en lista de compra si continua se aumentara el producto, se editara la caducidad y el precio. ¿desea continuar?","CONTINUAR!",JOptionPane.YES_NO_OPTION);
-                if(r==JOptionPane.YES_OPTION){
+                        null,"AVISO! Ya tiene ese producto en lista de compra si continua se aumentara el producto, se editara la caducidad y el precio. ¿desea continuar?","CONTINUAR!",JOptionPane.YES_NO_OPTION);
+                switch (r) {
+                    case JOptionPane.YES_OPTION:
                     lpn.get(existente).
                             setCantidad(lpn.get(existente).getCantidad()+
-                                    Integer.parseInt(this.cbcant.getSelectedItem().toString()));
-                    lpn.get(existente).setFechavencimiento(this.dpFechaVencimiento.getDate());
-                    lpn.get(existente).setPrecio(Double.parseDouble(this.tbPrecioU.getText()));
-                    utilidades.llenarJtablePE(this.lpn, this.dgvEntradas, tituloss);
+                                        Integer.parseInt(tbCantidad.getText()));
+                        lpn.get(existente).setFechavencimiento(dpFechaVencimiento.getDate());
+                        lpn.get(existente).setPrecio(Double.parseDouble(tbPrecioU.getText()));
+                        utilidades.llenarJtablePE(lpn, dgvEntradas,tituloss);
+                        break;
+                    case JOptionPane.NO_OPTION:
+                        break;
+                    case JOptionPane.CLOSED_OPTION:
+                        break;
+                    default:
+                        break;
                 }
-                else if(r==JOptionPane.NO_OPTION){
-                    
                 }
-                else if(r==JOptionPane.CLOSED_OPTION){
-                    
                 }
-            }
-        }
-        else if(validarCamposAggProd()==false){
+        else if(!validarCamposAggProd()){
             JOptionPane.showMessageDialog(null, "Algun campo esta vacio","Registro",JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnAgregarProdActionPerformed
@@ -807,7 +828,7 @@ public class EntradaxProducto extends javax.swing.JFrame {
                 int fila = this.dgvEntradas.getSelectedRow();
                 int idproducto = Integer.parseInt(this.dgvEntradas.getValueAt(fila,0).toString());
                 utilidades.eliminarProdPE(this.lpn, idproducto);
-                utilidades.llenarJtablePE(this.lpn, this.dgvEntradas, tituloss);
+                utilidades.llenarJtablePE(this.lpn, this.dgvEntradas,tituloss);
             }
             else if(r==JOptionPane.NO_OPTION){
                 
@@ -870,12 +891,6 @@ public class EntradaxProducto extends javax.swing.JFrame {
             this.CBProveedores.addItem(p.getProveedor());
         }
     }
-    public void llenarcomboboxcant(){
-        this.cbcant.removeAllItems();
-        for (int i = 1; i < 26; i++) {
-            this.cbcant.addItem(Integer.toString(i));
-        }
-    }
     public boolean validarCamposAggProd(){
         boolean validado=false;
         if((this.tbNombre.getText().length()!=0)&&(this.TBCategoria.getText().length()!=0)&&
@@ -895,12 +910,12 @@ public class EntradaxProducto extends javax.swing.JFrame {
         if(this.RBNuevoProv.isSelected()==true){
             if((this.tbNombreP.getText().length()!=0)&&
                     (this.tbDireccionP.getText().length()!=0)&&(this.tbtelefonop.getText().length()!=0)
-                    &&(validarrepresentante()==true)&&(this.dgvEntradas.getRowCount()>0)){
+                    &&(validarrepresentante()==true)&&(this.dgvEntradas.getRowCount()>0)&&!this.tbSerial.getText().isEmpty()){
                 validado=true;
             }
         }
         else if(this.RBNuevoProv.isSelected()==false){
-            if((validarrepresentante()==true)&&(this.dgvEntradas.getRowCount()>0)){
+            if((validarrepresentante()==true)&&(this.dgvEntradas.getRowCount()>0)&&!this.tbSerial.getText().isEmpty()){
                 validado=true;}
         }
         else{validado=false;}
@@ -966,8 +981,8 @@ public class EntradaxProducto extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarP;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JComboBox<String> cbcant;
     private javax.swing.JTable dgvEntradas;
+    private org.jdesktop.swingx.JXDatePicker dpFechaExpedicion;
     private org.jdesktop.swingx.JXDatePicker dpFechaVencimiento;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -989,12 +1004,14 @@ public class EntradaxProducto extends javax.swing.JFrame {
     private javax.swing.JLabel lbMarca;
     private javax.swing.JLabel lbNonbre;
     private javax.swing.JLabel lbPrecio;
+    private javax.swing.JLabel lbSerial;
     private javax.swing.JLabel lblDireccionP;
     private javax.swing.JLabel lblNombreP;
     private javax.swing.JLabel lbltelefonoP;
     private javax.swing.JPanel panelProducto;
     private javax.swing.JPanel panelProveedor;
     private javax.swing.JPanel panelRegistro;
+    private javax.swing.JTextField tbCantidad;
     private javax.swing.JTextArea tbDescripcion;
     private javax.swing.JTextField tbDireccionP;
     private javax.swing.JTextField tbMarca;
@@ -1002,6 +1019,7 @@ public class EntradaxProducto extends javax.swing.JFrame {
     private javax.swing.JTextField tbNombreP;
     private javax.swing.JTextField tbPrecioU;
     private javax.swing.JTextField tbRepresentante;
+    private javax.swing.JTextField tbSerial;
     private javax.swing.JTextField tbduirep;
     private javax.swing.JTextField tbtelefonop;
     private javax.swing.JTextField txtBusquedaP;
