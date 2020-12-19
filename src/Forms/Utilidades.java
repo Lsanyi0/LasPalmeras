@@ -741,7 +741,7 @@ public class Utilidades {
             
             String[] registrop =
             {Integer.toString(pn.getCodigo()),pn.getProducto(),pn.getMarca(),pn.getCategoria(),
-                pn.getDescripcion(),Double.toString(pn.getPrecio()),Integer.toString(pn.getCantidad()),
+                pn.getDescripcion(),Double.toString(pn.getPrecio()),Double.toString(pn.getCantidad()),
                 formatoFecha.format(pn.getFechavencimiento())};
             
             Modelo.addRow(registrop);

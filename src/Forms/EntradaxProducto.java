@@ -709,7 +709,7 @@ public class EntradaxProducto extends javax.swing.JFrame {
                 lpn.add(new Productos(LidProducto,TBCategoria.getText(),tbMarca.getText(),
                         tbNombre.getText(),tbDescripcion.getText(),
                         Double.parseDouble(tbPrecioU.getText()),
-                        Integer.parseInt(tbCantidad.getText()),dpFechaVencimiento.getDate()));
+                        Double.parseDouble(tbCantidad.getText()),dpFechaVencimiento.getDate()));
                 utilidades.llenarJtablePE(lpn, dgvEntradas,tituloss);
             }else if(existente!=-1){
                 int r= JOptionPane.showConfirmDialog(
@@ -718,7 +718,7 @@ public class EntradaxProducto extends javax.swing.JFrame {
                     case JOptionPane.YES_OPTION:
                     lpn.get(existente).
                             setCantidad(lpn.get(existente).getCantidad()+
-                                        Integer.parseInt(tbCantidad.getText()));
+                                        Double.parseDouble(tbCantidad.getText()));
                         lpn.get(existente).setFechavencimiento(dpFechaVencimiento.getDate());
                         lpn.get(existente).setPrecio(Double.parseDouble(tbPrecioU.getText()));
                         utilidades.llenarJtablePE(lpn, dgvEntradas,tituloss);

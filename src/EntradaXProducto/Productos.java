@@ -18,9 +18,9 @@ public class Productos {
     String producto;
     String descripcion;
     Double precio;
-    int cantidad;
+    Double cantidad;
     Date fechavencimiento;
-    public Productos(int codigo, String categoria, String marca, String producto, String descripcion, Double precio, int cantidad, Date fechavencimiento) {
+    public Productos(int codigo, String categoria, String marca, String producto, String descripcion, Double precio, Double cantidad, Date fechavencimiento) {
         this.codigo=codigo;
         this.categoria = categoria;
         this.marca = marca;
@@ -53,7 +53,7 @@ public class Productos {
         return precio;
     }
 
-    public int getCantidad() {
+    public Double getCantidad() {
         return cantidad;
     }
 
@@ -85,7 +85,7 @@ public class Productos {
         this.precio = precio;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(Double cantidad) {
         this.cantidad = cantidad;
     }
 
