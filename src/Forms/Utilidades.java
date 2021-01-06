@@ -843,38 +843,54 @@ public class Utilidades {
     
     public List<Inventario> VistaInventario(int idProducto)
     {
-        List<Compraseparada> csgo = manager.createNamedQuery("Compraseparada.findAll")
+        List<Detallecompra> csgo = manager.createNamedQuery("Detallecompra.findAll")
                 .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
                 .getResultList();
-        List<Compraseparada> valorant = new ArrayList<>();
-        List<Ventaseparada> vs =  manager.createNamedQuery("Ventaseparada.findAll")
+        List<Detallecompra> valorant = new ArrayList<>();
+        List<Detallecompra> csgoBeta = new ArrayList<>();
+        
+        List<Detalleventa> vs =  manager.createNamedQuery("Detalleventa.findAll")
                 .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
                 .getResultList();
-        List<Ventaseparada> vs2 = new ArrayList<>();
+        List<Detalleventa> vs2 = new ArrayList<>();
+        List<Detalleventa> vsCode = new ArrayList<>();
         
         List<Inventario> inv = new ArrayList<>();
         
-        vs.stream().filter((v) -> (v.getIdProducto().getIdProducto() == idProducto)).forEach((v) -> {
+        for (Detallecompra csgo1 : csgo) {
+            if(csgo1.getIdProducto().getIdProducto() == idProducto)
+            {
+                csgoBeta.add(csgo1);
+            } 
+        }
+        for (Detalleventa vss : vs) {
+            if(vss.getIdProducto().getIdProducto() == idProducto)
+            {
+                vsCode.add(vss);
+            }
+        }
+        
+        vsCode.stream().filter((v) -> (v.getIdProducto().getIdProducto() == idProducto)).forEach((v) -> {
             vs2.add(v);
         });   
-        csgo.stream().filter((csgo1) -> (csgo1.getIdProducto().getIdProducto() == idProducto)).forEach((csgo1) -> {
+        csgoBeta.stream().filter((csgo1) -> (csgo1.getIdProducto().getIdProducto() == idProducto)).forEach((csgo1) -> {
             valorant.add(csgo1);
         });
-        for (Compraseparada valorant1 : valorant) {
+        for (Detallecompra valorant1 : valorant) {
             
             Inventario tempo = new Inventario();
             tempo.setCompra(valorant1.getCantidad());
             tempo.setIdProducto(idProducto);
-            tempo.setIdFechavencimiento(valorant1.getIdFechavencimiento());
+            tempo.setIdFechavencimiento(valorant1.getIdFechaVencimiento().getIdFechavencimiento());
             tempo.setExistencia(0.0);
             
             if (vs2.isEmpty()) {
                 tempo.setVenta(0.0);
                 tempo.setExistencia(tempo.getExistencia() + valorant1.getCantidad());
             }
-            for (Ventaseparada vs21 : vs2) {    
+            for (Detalleventa vs21 : vs2) {    
                 tempo.setVenta(vs21.getCantidad());              
-                if (Objects.equals(valorant1.getIdFechavencimiento(), vs21.getIdfechavencimiento())) {    
+                if (Objects.equals(valorant1.getIdFechaVencimiento(), vs21.getIdFechaVencimiento())) {    
                     tempo.setExistencia( valorant1.getCantidad() - vs21.getCantidad());
                     break;
                 } else {                  
@@ -884,5 +900,9 @@ public class Utilidades {
             inv.add(tempo);
         }
         return inv;
+    }
+    public void Refresh()
+    {
+        manager.getEntityManagerFactory().getCache().evictAll();
     }
 }

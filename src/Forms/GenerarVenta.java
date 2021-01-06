@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.util.ArrayList;
 import javax.swing.AbstractAction;
+import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
@@ -87,6 +88,7 @@ public class GenerarVenta extends javax.swing.JFrame {
         feedbackError = new javax.swing.JLabel();
         lbFeedback = new javax.swing.JLabel();
         btDescontarInventario = new javax.swing.JButton();
+        btRefresh = new javax.swing.JButton();
         panelRegistro = new javax.swing.JPanel();
         lbFecha = new javax.swing.JLabel();
         lbFechaExpedicion = new javax.swing.JLabel();
@@ -410,6 +412,13 @@ public class GenerarVenta extends javax.swing.JFrame {
             }
         });
 
+        btRefresh.setText("jButton1");
+        btRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btRefreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelProductoLayout = new javax.swing.GroupLayout(panelProducto);
         panelProducto.setLayout(panelProductoLayout);
         panelProductoLayout.setHorizontalGroup(
@@ -444,7 +453,11 @@ public class GenerarVenta extends javax.swing.JFrame {
                         .addGap(7, 7, 7)))
                 .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
-                    .addComponent(btDescontarInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelProductoLayout.createSequentialGroup()
+                        .addComponent(btDescontarInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btRefresh)
+                        .addGap(0, 71, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelProductoLayout.setVerticalGroup(
@@ -478,7 +491,9 @@ public class GenerarVenta extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btDescontarInventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btDescontarInventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btRefresh))
                 .addGap(2, 2, 2))
         );
 
@@ -1049,6 +1064,10 @@ public class GenerarVenta extends javax.swing.JFrame {
                 utilidades.mostrarAlerta(btDescontarInventario,e + "", "Error");
             }
     }//GEN-LAST:event_btDescontarInventarioActionPerformed
+
+    private void btRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRefreshActionPerformed
+        utilidades.Refresh();
+    }//GEN-LAST:event_btRefreshActionPerformed
     private static Double stringToDouble(String string) {
         try {
             Double var = Double.parseDouble(string);
@@ -1152,6 +1171,7 @@ public class GenerarVenta extends javax.swing.JFrame {
     private javax.swing.JLabel btCerrarSesion;
     private javax.swing.JButton btDescontarInventario;
     private javax.swing.JButton btLimpiar;
+    private javax.swing.JButton btRefresh;
     private javax.swing.JButton btVender;
     private javax.swing.JComboBox<String> cbBuscar;
     private javax.swing.JComboBox cbCantidad;
