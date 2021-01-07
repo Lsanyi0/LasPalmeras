@@ -861,7 +861,7 @@ public class Utilidades {
         csgo.stream().filter((csgo1) -> (csgo1.getIdProducto().getIdProducto() == idProducto)).forEach((csgo1) -> {
             valorant.add(csgo1);
         });
-        
+              
         for (Detallecompra detC : valorant) {
             Inventario invv = new Inventario();
             invv.setCompra(detC.getCantidad());
@@ -871,13 +871,20 @@ public class Utilidades {
             invv.setVenta(0.0);
             inv.add(invv);
         }
+        Producto prod = (Producto) manager.createNamedQuery("Producto.findByIdProducto")
+                    .setParameter("idProducto", idProducto)
+                    .getSingleResult();
+        
+        if(prod.getProducto().matches("\\b[\\w\\s]*\\.\\s\\(\\w*\\)"))
+        {
+            return inv;
+        }
+        
         Double TotalVenta = 0.0;
         for (Detalleventa vs21 : vs2) {
             TotalVenta += vs21.getCantidad();
         }
-        
-        int it = 0;
-        
+        int it = 0;       
         while (TotalVenta>=1) {
             Double a = inv.get(it).getExistencia();
             Double z=0.0;
