@@ -442,7 +442,7 @@ public class Utilidades {
             }
             
             Double b = j.getCantidad();
-            if ((b-a)>=0) {
+            if ((b-a)>=0) {//agarrar el maximo por si no cabe la venta en la compra
                 det.setCantidad(a);
             }
             else
@@ -845,59 +845,54 @@ public class Utilidades {
     {
         List<Detallecompra> csgo = manager.createNamedQuery("Detallecompra.findAll")
                 .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
-                .getResultList();
+                .getResultList();//idprod
         List<Detallecompra> valorant = new ArrayList<>();
-        List<Detallecompra> csgoBeta = new ArrayList<>();
         
         List<Detalleventa> vs =  manager.createNamedQuery("Detalleventa.findAll")
                 .setHint("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH)
                 .getResultList();
         List<Detalleventa> vs2 = new ArrayList<>();
-        List<Detalleventa> vsCode = new ArrayList<>();
         
         List<Inventario> inv = new ArrayList<>();
         
-        for (Detallecompra csgo1 : csgo) {
-            if(csgo1.getIdProducto().getIdProducto() == idProducto)
-            {
-                csgoBeta.add(csgo1);
-            } 
-        }
-        for (Detalleventa vss : vs) {
-            if(vss.getIdProducto().getIdProducto() == idProducto)
-            {
-                vsCode.add(vss);
-            }
-        }
-        
-        vsCode.stream().filter((v) -> (v.getIdProducto().getIdProducto() == idProducto)).forEach((v) -> {
+        vs.stream().filter((v) -> (v.getIdProducto().getIdProducto() == idProducto)).forEach((v) -> {
             vs2.add(v);
         });   
-        csgoBeta.stream().filter((csgo1) -> (csgo1.getIdProducto().getIdProducto() == idProducto)).forEach((csgo1) -> {
+        csgo.stream().filter((csgo1) -> (csgo1.getIdProducto().getIdProducto() == idProducto)).forEach((csgo1) -> {
             valorant.add(csgo1);
         });
-        for (Detallecompra valorant1 : valorant) {
-            
-            Inventario tempo = new Inventario();
-            tempo.setCompra(valorant1.getCantidad());
-            tempo.setIdProducto(idProducto);
-            tempo.setIdFechavencimiento(valorant1.getIdFechaVencimiento().getIdFechavencimiento());
-            tempo.setExistencia(0.0);
-            
-            if (vs2.isEmpty()) {
-                tempo.setVenta(0.0);
-                tempo.setExistencia(tempo.getExistencia() + valorant1.getCantidad());
+        
+        for (Detallecompra detC : valorant) {
+            Inventario invv = new Inventario();
+            invv.setCompra(detC.getCantidad());
+            invv.setIdProducto(idProducto);
+            invv.setIdFechavencimiento(detC.getIdFechaVencimiento().getIdFechavencimiento());
+            invv.setExistencia(detC.getCantidad());
+            invv.setVenta(0.0);
+            inv.add(invv);
+        }
+        Double TotalVenta = 0.0;
+        for (Detalleventa vs21 : vs2) {
+            TotalVenta += vs21.getCantidad();
+        }
+        
+        int it = 0;
+        
+        while (TotalVenta>=1) {
+            Double a = inv.get(it).getExistencia();
+            Double z=0.0;
+            if ((TotalVenta-a)>=0) {
+               inv.get(it).setVenta(a);
+               z = a;
             }
-            for (Detalleventa vs21 : vs2) {    
-                tempo.setVenta(vs21.getCantidad());              
-                if (Objects.equals(valorant1.getIdFechaVencimiento(), vs21.getIdFechaVencimiento())) {    
-                    tempo.setExistencia( valorant1.getCantidad() - vs21.getCantidad());
-                    break;
-                } else {                  
-                    tempo.setExistencia(valorant1.getCantidad());
-                }
+            else
+            {
+               inv.get(it).setVenta(TotalVenta);
+               z = TotalVenta;
             }
-            inv.add(tempo);
+            inv.get(it).setExistencia(a-z);
+            TotalVenta = TotalVenta - z;
+            it++;
         }
         return inv;
     }
